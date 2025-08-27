@@ -1,0 +1,229 @@
+* {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* TELA DE LOGIN */
+
+.login {
+    display: flex;
+    width: 100%;
+    height: 100vh;
+    align-items: center;
+    justify-content: center;
+}
+
+aside {
+    width: 50%;
+    height: 70vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+
+    img {
+        width: 50%;
+    }
+
+    h2 {
+        color: #278FC5;
+    }
+
+    h5 {
+        color: #718088;
+    }
+
+    .formulario {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        width: 30vw;
+        height: 30vh;
+
+        span {
+            font-size: 0.8rem;
+        }
+
+        .input {
+            padding: 10px;
+            border: 1px solid #b3b3b3;
+            border-radius: 3px;
+        }
+    }
+
+}
+
+button {
+    width: 30vw;
+    height: 5vh;
+    background-color: #278FC5;
+    border: none;
+    border-radius: 3px;
+
+
+    a {
+        text-decoration: none;
+        color: #fff;
+    }
+}
+
+article {
+    width: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #278FC5;
+
+    img {
+        width: 70%;
+    }
+}
+
+/* TELA DE GERENCIAMENTO DE PROJETOS */
+
+.titulo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    color: #278FC5;
+    padding-bottom: 20px;
+
+    img {
+        width: 10%;
+        position: relative;
+        right: 31vw;
+    }
+
+    h1 {
+        position: relative;
+        right: 5vw;
+    }
+}
+
+.tela-gerenciar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    padding: 20px;
+    height: auto;
+
+    .gerenciar-projeto {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-evenly;
+        height: 80vh;
+
+        .gerenciamento {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+            height: 40vh;
+
+            .opcoes-projeto {
+                display: flex;
+                width: 30vw;
+                height: 10vh;
+                align-items: center;
+                justify-content: space-between;
+            }
+
+            .selacao-projeto {
+                display: flex;
+                flex-direction: column;
+                height: 10vh;
+
+                select {
+                    padding: 10px;
+                    border: 1px solid #b3b3b3;
+                    border-radius: 3px;
+                    width: 30vw;
+                }
+            }
+        }
+    }
+
+}
+
+/* TELA DE CRIAÇÃO DE PROJETOS */
+
+.criar-projeto {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    height: auto;
+    padding: 20px;
+}
+
+.upload-container {
+    max-width: 500px;
+    margin: 0 0 8px;
+    padding: 20px;
+    border: 2px dashed #278FC5;
+    border-radius: 5px;
+    text-align: center;
+    background-color: #fff;
+
+    img {
+        width: 30%;
+    }
+
+    input[type="file"] {
+        display: none;
+    }
+
+    label {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #278FC5;
+        color: #fff;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+}
+
+.novo-projeto {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    width: 100%;
+    height: 50vh;
+
+    span {
+        font-size: 1rem;
+        font-weight: 500;
+    }
+
+    input {
+        padding: 10px;
+        border: 1px solid #b3b3b3;
+        border-radius: 3px;
+    }
+
+    .data-estimada{
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+
+        .combo{
+            display: flex;
+            width: 48vw;
+            flex-direction: column;
+        }
+    }
+}
+
+.proximo {
+    display: flex;
+    width: 100%;
+    justify-content: end;
+    padding-top: 10px;
+
+    button{
+        width: 100%;
+    }
+}
