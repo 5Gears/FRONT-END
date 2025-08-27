@@ -93,12 +93,12 @@ article {
     img {
         width: 10%;
         position: relative;
-        right: 31vw;
+        left: 31vw;
     }
 
     h1 {
         position: relative;
-        right: 5vw;
+        left: 5vw;
     }
 }
 
@@ -226,4 +226,87 @@ article {
     button{
         width: 100%;
     }
+}
+
+/* TELA DE FAQ */
+
+/* Botão hamburguer */
+.hamburger {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    width: 30px;
+    height: 22px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    cursor: pointer;
+    z-index: 1001;
+}
+
+.hamburger span {
+    display: block;
+    height: 4px;
+    background: #278FC5;
+    border-radius: 4px;
+    transition: 0.3s;
+}
+
+/* Checkbox invisível */
+.menu-toggle {
+    display: none;
+}
+
+/* Menu lateral */
+.menu {
+    position: fixed;
+    top: 0;
+    left: -250px;
+    width: 250px;
+    height: 100%;
+    background: #fff;
+    box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+    padding-top: 60px;
+    transition: left 0.3s ease;
+    z-index: 1000;
+}
+
+.menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.menu ul li {
+    border-bottom: 1px solid #eee;
+}
+
+.menu ul li a {
+    display: block;
+    padding: 15px 20px;
+    color: #111827;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.menu ul li a:hover {
+    background: #f9fafb;
+}
+
+/* Abrir menu quando checkbox estiver marcado */
+.menu-toggle:checked ~ .menu {
+    left: 0;
+}
+
+/* Animação do ícone ao abrir */
+.menu-toggle:checked + .hamburger span:nth-child(1) {
+    transform: rotate(45deg) translateY(9px);
+}
+
+.menu-toggle:checked + .hamburger span:nth-child(2) {
+    opacity: 0;
+}
+
+.menu-toggle:checked + .hamburger span:nth-child(3) {
+    transform: rotate(-45deg) translateY(-9px);
 }
