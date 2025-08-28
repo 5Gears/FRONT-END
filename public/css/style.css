@@ -122,7 +122,13 @@ article {
             display: flex;
             flex-direction: column;
             justify-content: space-evenly;
-            height: 40vh;
+            height: 50vh;
+            width: 40vw;
+            background-color: #f9fafb;
+            border-radius: 20px;
+            border: 3px solid #e5e7eb;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, .08);
+            align-items: center;
 
             .opcoes-projeto {
                 display: flex;
@@ -157,6 +163,7 @@ article {
     justify-content: space-evenly;
     height: auto;
     padding: 20px;
+    align-items: center;
 }
 
 .upload-container {
@@ -167,6 +174,7 @@ article {
     border-radius: 5px;
     text-align: center;
     background-color: #fff;
+    width: 40vw;
 
     img {
         width: 30%;
@@ -190,7 +198,7 @@ article {
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
-    width: 100%;
+    width: 35.5vw;
     height: 50vh;
 
     span {
@@ -220,11 +228,13 @@ article {
 .proximo {
     display: flex;
     width: 100%;
-    justify-content: end;
-    padding-top: 10px;
+    height: 10vh;
+    justify-content: center;
+    align-items: center;
+    padding-top: 20px;
 
     button{
-        width: 100%;
+        width: 35.5vw;
     }
 }
 
