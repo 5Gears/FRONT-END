@@ -89,6 +89,7 @@ article {
     width: 100%;
     color: #278FC5;
     padding-bottom: 20px;
+    border-bottom: 1px solid #eee;
 
     img {
         width: 10%;
@@ -211,18 +212,6 @@ article {
         border: 1px solid #b3b3b3;
         border-radius: 3px;
     }
-
-    .data-estimada{
-        display: flex;
-        width: 100%;
-        justify-content: space-between;
-
-        .combo{
-            display: flex;
-            width: 48vw;
-            flex-direction: column;
-        }
-    }
 }
 
 .proximo {
@@ -233,7 +222,7 @@ article {
     align-items: center;
     padding-top: 20px;
 
-    button{
+    button {
         width: 35.5vw;
     }
 }
@@ -275,7 +264,7 @@ article {
     width: 250px;
     height: 100%;
     background: #fff;
-    box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
     padding-top: 60px;
     transition: left 0.3s ease;
     z-index: 1000;
@@ -304,19 +293,60 @@ article {
 }
 
 /* Abrir menu quando checkbox estiver marcado */
-.menu-toggle:checked ~ .menu {
+.menu-toggle:checked~.menu {
     left: 0;
 }
 
 /* Animação do ícone ao abrir */
-.menu-toggle:checked + .hamburger span:nth-child(1) {
+.menu-toggle:checked+.hamburger span:nth-child(1) {
     transform: rotate(45deg) translateY(9px);
 }
 
-.menu-toggle:checked + .hamburger span:nth-child(2) {
+.menu-toggle:checked+.hamburger span:nth-child(2) {
     opacity: 0;
 }
 
-.menu-toggle:checked + .hamburger span:nth-child(3) {
+.menu-toggle:checked+.hamburger span:nth-child(3) {
     transform: rotate(-45deg) translateY(-9px);
+}
+
+/* TELA DE CADASTRO */
+
+.tela-cadastro {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 20px;
+
+    img {
+        left: 28vw;
+    }
+
+    .formulario {
+        display: flex;
+        flex-direction: column;
+        height: 80vh;
+        align-items: center;
+        justify-content: center;
+
+        .form {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+            width: 35.5vw;
+            height: 50vh;
+
+            span {
+                font-size: 1rem;
+                font-weight: 500;
+            }
+
+            input {
+                padding: 10px;
+                border: 1px solid #b3b3b3;
+                border-radius: 3px;
+            }
+        }
+    }
 }

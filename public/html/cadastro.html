@@ -4,15 +4,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Criar Novo Projeto</title>
+    <title>Cadastro de Profissionais</title>
     <link rel="stylesheet" href="../css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
-    <div class="criar-projeto">
+
+    <div class="tela-cadastro">
         <div class="titulo">
-            <h1>CRIAR NOVO PROJETO</h1>
+            <h1>CADASTRO DE PROFISSIONAIS</h1>
             <img src="../assets/logo.png" alt="">
         </div>
 
@@ -35,31 +36,20 @@
             </ul>
         </nav>
 
-        <div class="upload-container" id="uploadContainer">
-            <img src="../assets/ri_upload-cloud-fill.png" alt="">
-            <h5>Upload de Arquivos</h5>
-            <form id="uploadForm">
-                <input type="file" id="fileInput" accept="file/*">
-                <label for="fileInput">Escolher Arquivo</label>
-            </form>
-            <div id="imageContainer"></div>
-        </div>
-        <div class="novo-projeto">
-            <span>Nome do Projeto</span>
-            <input type="text">
-            <span>Descrição do Projeto</span>
-            <input type="text">
-            <span>Tempo Estimado (Horas)</span>
-            <input type="text">
-            <span>Orçamento</span>
-            <input type="text">
-            <span>Data Inicio</span>
-            <input type="text">
-            <span>Data Estimada de Fechamento</span>
-            <input type="text">
-        </div>
-        <div class="proximo">
-            <button><a href="">PROXIMO</a></button>
+        <div class="formulario">
+            <div class="form">
+                <span>Nome</span>
+                <input type="text">
+                <span>Email</span>
+                <input type="email">
+                <span>CPF</span>
+                <input type="text">
+                <span>Telefone</span>
+                <input type="text">
+            </div>
+            <div class="proximo">
+                <button><a href="">PROXIMO</a></button>
+            </div>
         </div>
     </div>
 
