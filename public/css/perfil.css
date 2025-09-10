@@ -1,0 +1,32 @@
+body {
+    padding: 20px;
+}
+
+.perfil {
+    display: flex;
+    height: 30vh;
+    gap: 30px;
+    align-items: center;
+
+    img {
+        width: 13rem;
+        height: 13rem;
+    }
+
+
+}
+
+.perfil-card {
+    display: grid;
+    height: 50vh;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    align-items: center;
+    place-items: center;
+
+    .card {
+        width: 80%;
+        height: 20vh;
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+    }
+}
