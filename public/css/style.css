@@ -392,3 +392,17 @@ article {
         }
     }
 }
+
+.alterar-excluir {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+
+    button {
+        width: 15vw;
+    }
+
+    .excluir{
+        background-color: #FF4242;
+    }
+}
