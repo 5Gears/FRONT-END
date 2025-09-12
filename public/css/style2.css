@@ -1,0 +1,165 @@
+/* TELA DE VISUALIZACAO_PROJETOS */
+.display-flex {
+    display: flex;
+}
+
+.row {
+    flex-direction: row;
+}
+
+.column {
+    flex-direction: column;
+}
+
+.full {
+    height: 100%;
+    width: 100%;
+}
+
+.meio {
+    justify-content: center;
+}
+
+.alinhar-meio {
+    align-items: center;
+}
+
+.justify-beetwen {
+    justify-content: space-between;
+}
+
+.container {
+    width: 95%;
+}
+
+.boxtitulo {
+    height: 15vh;
+}
+
+.boximagem {
+    width: 10%;
+
+    img {
+        height: auto;
+        width: 100%;
+    }
+}
+
+.borda {
+    border: 1px solid #ddd;
+    background: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+.boxbuscar {
+    height: 40%;
+    width: 65%;
+
+    border: 1px solid #ddd;
+    background: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+
+    img {
+        width: 16px;
+        height: 16px;
+    }
+
+    .tamanhoponta {
+        width: 5%;
+    }
+
+    .format {
+        height: 35%;
+        width: 35%;
+    }
+
+    .borda {
+        background-color: #c4dcea;
+        border-radius: 8px;
+        padding: 8px;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+
+    .borda:hover {
+        background: #9ccde8;
+    }
+
+    .search-input {
+        flex: 1;
+    }
+
+    .search-input input {
+        border: none;
+        outline: none;
+        height: auto;
+        width: 100%;
+        font-size: 16px;
+        padding: 6px;
+    }
+
+}
+
+.boxcabecalho {
+    height: 15vh;
+
+
+
+    /* Esconde o checkbox original */
+    input[type="radio"] {
+        display: none;
+    }
+
+    /* Estilo do quadrado */
+    label {
+        width: 20px;
+        height: 20px;
+        border: 2px solid #333;
+        display: inline-block;
+        cursor: pointer;
+        border-radius: 3px;
+        /* deixa levemente arredondado */
+        position: relative;
+    }
+
+    /* Quando o checkbox está marcado */
+    input[type="radio"]:checked+label::after {
+        content: "";
+        position: absolute;
+        top: 2px;
+        left: 6px;
+        width: 5px;
+        height: 10px;
+        border: solid #333;
+        border-width: 0 2px 2px 0;
+        transform: rotate(45deg);
+    }
+
+    .boxradio {
+        width: 10%;
+    }
+
+    .boxtexto {
+        width: 90%;
+
+        .texto {
+            width: 15%;
+        }
+    }
+
+    .bordalateral {
+         box-shadow:
+            -2px 0px 8px rgba(0, 0, 0, .09);
+    }
+
+    .bordatitulo {
+        box-shadow:
+            -2px 0px 8px rgba(0, 0, 0, .08),
+            /* esquerda */
+            2px 0px 8px rgba(0, 0, 0, .08),
+            /* direita */
+            0px -2px 8px rgba(0, 0, 0, .08);
+        /* topo */
+
+    }
+}
