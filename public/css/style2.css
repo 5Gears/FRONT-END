@@ -28,6 +28,10 @@
     justify-content: space-between;
 }
 
+.justify-evenly {
+    justify-content: space-evenly;
+}
+
 .container {
     width: 95%;
 }
@@ -55,9 +59,19 @@
     height: 40%;
     width: 65%;
 
-    border: 1px solid #ddd;
-    background: #fff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+    span {
+        color: #278FC5;
+        font-weight: 700;
+        font-size: 64px;
+        font-style: bold;
+
+    }
+
+    .borda {
+        border: 1px solid #ddd;
+        background: #fff;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+    }
 
     img {
         width: 16px;
@@ -100,10 +114,10 @@
 
 }
 
+
+/* TELA DE VISUALIZAÇÃO DE PROJETOS */
 .boxcabecalho {
     height: 15vh;
-
-
 
     /* Esconde o checkbox original */
     input[type="radio"] {
@@ -148,7 +162,7 @@
     }
 
     .bordalateral {
-         box-shadow:
+        box-shadow:
             -2px 0px 8px rgba(0, 0, 0, .09);
     }
 
@@ -162,4 +176,177 @@
         /* topo */
 
     }
+}
+
+/* TELA DE BUSCA PROFISSIONAL */
+
+.boxprofissional {
+    height: 80vh;
+
+    .boxinput {
+        height: 15vh;
+        width: 40%;
+
+        .tituloinput {
+
+            span {
+                color: #278FC5;
+                font-weight: 700;
+                font-size: 24px;
+                font-style: bold;
+            }
+        }
+
+        input {
+            width: 95%;
+            height: 5vh;
+
+        }
+
+
+    }
+
+    .boxinput2 {
+        height: 30vh;
+        width: 40%;
+
+        .tituloinput {
+            width: 97%;
+        }
+
+        span {
+            color: #278FC5;
+            font-weight: 700;
+            font-size: 24px;
+            font-style: bold;
+        }
+
+        .certificacoes {
+            border: #061219 1px solid;
+            width: 97%;
+            height: 20vh;
+        }
+
+        .add {
+            height: 100%;
+            width: 5%;
+            border-radius: 100%;
+
+            background-color: #278FC5;
+            cursor: pointer;
+            border: none;
+            outline: none;
+            box-shadow: 0px 2px 6px rgba(0, 0, 0, .2);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+            img {
+                width: 14px;
+                height: 14px;
+
+                filter: invert(1);
+                /* deixa o + branco caso seja SVG/PNG preto */
+            }
+
+        }
+
+        .add:hover {
+            transform: scale(1.1);
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, .3);
+        }
+    }
+
+    .boxbotao {
+        height: 70px;
+        width: 850px;
+
+        button {
+            height: 100%;
+            background-color: #2196f3;
+            /* azul */
+            color: #fff;
+            /* texto branco */
+            border: none;
+            padding: 12px 40px;
+            /* altura e largura */
+            font-size: 14px;
+            font-weight: 500;
+            border-radius: 4px;
+            /* cantos arredondados */
+            cursor: pointer;
+            text-align: center;
+            width: 100%;
+            /* ocupa toda a largura */
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        button:hover {
+            background-color: #1976d2;
+            /* azul mais escuro no hover */
+            transform: scale(1.02);
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+    }
+}
+
+/* TELA MEU APONTAMENTO */
+
+.boxmeuapontamento {
+    height: 80vh;
+
+    .boxbsucar {
+        height: 90%;
+        width: 20%;
+    }
+
+    .boxapontamento {
+        height: 90%;
+        width: 75%;
+
+        border: 1px solid rgba(0, 0, 0, 0.500);
+
+        img{
+            height: 100%;
+            width: 100%;
+            
+        }
+    }
+
+    .buscar {
+        height: 7%;
+        width: 100%;
+
+
+        .input {
+            width: 100%;
+
+
+            input {
+                width: 95%;
+
+                flex: 1;
+                border: 1px solid rgba(0, 0, 0, 0.500);
+                outline: none;
+                font-size: 14px;
+                padding: 6px;
+            }
+        }
+
+        .img {
+            height: 100%;
+            width: 10%;
+
+
+
+            img {
+                height: 16px;
+                width: 16px;
+            }
+        }
+    }
+
+
+
 }
