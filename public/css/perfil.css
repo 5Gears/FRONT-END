@@ -1,0 +1,63 @@
+body {
+    padding: 20px;
+}
+
+.perfil {
+    display: flex;
+    height: 30vh;
+    gap: 30px;
+    align-items: center;
+
+    img {
+        width: 13rem;
+        height: 13rem;
+    }
+
+
+}
+
+.infos {
+    h3 {
+        font-weight: 300;
+    }
+}
+
+.perfil-card {
+    display: grid;
+    height: 50vh;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    align-items: center;
+    place-items: center;
+    
+    .card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 80%;
+        height: 20vh;
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+        padding: 10px;
+    }
+
+    .titulo-card {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 2rem;
+        font-weight: 800;
+        border-bottom: 1px solid #278FC5;
+        color: #278FC5;
+    }
+
+    .conteudo-card {
+        display: flex;
+        align-items: start;
+        justify-content: center;
+        width: 100%;
+        height: 7rem;
+        font-size: large;
+        flex-direction: column;
+    }
+}
