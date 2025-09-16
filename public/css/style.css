@@ -59,7 +59,8 @@ button {
     background-color: #278FC5;
     border: none;
     border-radius: 3px;
-
+    color: #fff;
+    cursor: pointer;
 
     a {
         text-decoration: none;
@@ -332,7 +333,7 @@ article {
             flex-direction: column;
             justify-content: space-evenly;
             width: 35.5vw;
-            height: 50vh;
+            height: 60vh;
 
             span {
                 font-size: 1rem;
