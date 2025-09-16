@@ -38,16 +38,16 @@
         <div class="gerenciar-projeto">
             <div class="gerenciamento">
                 <div class="opcoes-projeto">
-                    <input type="checkbox" name="" id="">
+                    <input type="checkbox" name="" id="criarProjeto">
                     <span>Criar Novo Projeto</span>
-                    <input type="checkbox" name="" id="">
+                    <input type="checkbox" name="" id="editarProjeto">
                     <span>Editar Projeto</span>
                 </div>
                 <div class="selacao-projeto">
                     <span>Selecionar Projeto</span>
                     <select name="" id=""></select>
                 </div>
-                <button><a href="./criar_projeto.html">CONFIRMAR</a></button>
+                <button id="confirmar">CONFIRMAR</button>
             </div>
         </div>
     </div>
@@ -55,3 +55,15 @@
 </body>
 
 </html>
+
+<script>
+    document.getElementById("confirmar").addEventListener("click", function () {
+        if (document.getElementById("criarProjeto").checked) {
+            window.location.href = "./criar_projeto.html";
+        } else if (document.getElementById("editarProjeto").checked) {
+            window.location.href = "./editar_alocação.html";
+        } else {
+            alert("Selecione uma opção antes de confirmar.");
+        }
+    });
+</script>
