@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Busca Profissional</title>
+    <link rel="stylesheet" href="../css/style2.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<body>
+
+    <body>
+        <div class="confia-no-vo">
+
+            <div class="titulo">
+                <h1>BUSCA DE PROFISSIONAL</h1>
+                <img src="../assets/logo.png" alt="">
+            </div>
+
+            <!-- Hambúrguer + Menu lateral -->
+            <input type="checkbox" id="menu-toggle" class="menu-toggle">
+            <label for="menu-toggle" class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </label>
+
+            <nav class="menu">
+                <ul>
+                    <li><a href="#">Início</a></li>
+                    <li><a href="./gerenciamento.html">Gerenciar Projetos</a></li>
+                    <li><a href="./cadastro.html">Cadastro de Profissionais</a></li>
+                    <li><a href="./busca_profissonal.html">Busca de Profissionais</a></li>
+                    <li><a href="#">Calendário de Horas</a></li>
+                    <li><a href="#">Feedback de Profissionais</a></li>
+                    <li><a href="./faq.html">Ajuda & FAQ</a></li>
+
+                </ul>
+            </nav>
+        </div>
+
+        <div class="boxprofissional display-flex column full alinhar-meio">
+            <div class="container display-flex row justify-evenly">
+                <div class="boxinput display-flex column meio ">
+                    <div class="tituloinput">
+                        <span>
+                            Nome do Profissional
+                        </span>
+                        <input type="text">
+                    </div>
+                </div>
+                <div class="boxinput display-flex column meio">
+                    <div class="tituloinput">
+                        <span>
+                            Formação
+                        </span>
+                        <input type="text">
+                    </div>
+                </div>
+            </div>
+            <div class="container display-flex row justify-evenly">
+                <div class="boxinput display-flex column meio">
+                    <div class="tituloinput">
+                        <span>
+                            Disponibilidade Nescessária
+                        </span>
+                        <input type="text">
+                    </div>
+                </div>
+                <div class="boxinput display-flex column meio">
+                    <div class="tituloinput">
+                        <span>
+                            Cargo
+                        </span>
+                        <input type="text">
+                    </div>
+                </div>
+            </div>
+            <div class="container display-flex row justify-evenly">
+                <div class="boxinput2 display-flex column meio">
+                    <div class="tituloinput display-flex row justify-beetwen alinhar-meio">
+                        <span>
+                            Competência Técnica
+                        </span>
+                    </div>
+                    <div class="certificacoes">
+
+                    </div>
+                </div>
+                <div class="boxinput2 display-flex column meio">
+                    <div class="tituloinput display-flex row justify-beetwen alinhar-meio">
+                        <span>
+                            Certificações
+                        </span>
+                        <div class="add display-flex meio alinhar-meio">
+                            <img src="../assets/icon-add.png" alt="">
+                        </div>
+                    </div>
+                    <div class="certificacoes">
+
+                    </div>
+                </div>
+            </div>
+            <div class="container display-flex alinhar-meio meio">
+                <div class="boxbotao">
+                    <button>
+                        BUSCAR
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- <button onclick="abrirFormulario()">Abrir Formulário</button>
+        <button onclick="aprovarOuRejeitar()">Abrir Projeto</button> -->
+    </body>
+
+</html>
+
+<script>
+    function abrirFormulario() {
+        Swal.fire({
+            title: 'Adicionar licença ou certificado',
+            html: `
+      <input type="text" id="nome" class="swal2-input" placeholder="Nome do profissional">
+      <input type="text" id="organizacao" class="swal2-input" placeholder="Organização Emissora">
+      <input type="date" id="inicio" class="swal2-input" placeholder="Data de emissão (Início)">
+      <input type="date" id="fim" class="swal2-input" placeholder="Data de expiração (Fim)">
+    `,
+            focusConfirm: false,
+            showCancelButton: true,
+            confirmButtonText: 'Salvar',
+            cancelButtonText: 'Cancelar',
+            preConfirm: () => {
+                return {
+                    nome: document.getElementById('nome').value,
+                    organizacao: document.getElementById('organizacao').value,
+                    inicio: document.getElementById('inicio').value,
+                    fim: document.getElementById('fim').value
+                }
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                console.log('Dados salvos:', result.value);
+            }
+        })
+    }
+
+    function aprovarOuRejeitar() {
+        Swal.fire({
+            title: 'Nome do Projeto',
+            html: `
+      <input type="text" id="descricao" class="swal2-input" placeholder="Descrição">
+      <input type="text" id="orcamento" class="swal2-input" placeholder="Orçamento">
+      <input type="date" id="inicio" class="swal2-input" placeholder="Data de emissão (Início)">
+      <input type="date" id="fim" class="swal2-input" placeholder="Data de expiração (Fim)">
+    `,
+            showDenyButton: true,
+            confirmButtonText: 'APROVAR',
+            denyButtonText: 'REJEITAR',
+            confirmButtonColor: 'green',
+            denyButtonColor: 'red',
+            preConfirm: () => {
+                return {
+                    descricao: document.getElementById('descricao').value,
+                    orcamento: document.getElementById('orcamento').value,
+                    inicio: document.getElementById('inicio').value,
+                    fim: document.getElementById('fim').value
+                }
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                console.log('Projeto aprovado:', result.value);
+            } else if (result.isDenied) {
+                console.log('Projeto rejeitado:', result.value);
+            }
+        })
+    }
+
+</script>
