@@ -309,7 +309,7 @@ body {
                 text-decoration: none;
                 color: #fff;
             }
-            
+
         }
     }
 }
@@ -372,4 +372,49 @@ body {
 
 
 
+}
+
+.swal2-html-container {
+    margin: 15px !important;
+    padding: 15px !important;
+}
+
+.swal2-html-container label {
+    display: block;
+    margin: 8px 0 4px;
+    font-size: 14px;
+    color: #333;
+}
+
+.swal2-input {
+    display: block;
+    width: 100% !important;
+    margin: 0 0 12px !important;
+}
+
+.btn-salvar, 
+.btn-cancelar {
+    color: #fff;
+    font-size: 14px;
+}
+
+/* Botão salvar */
+.btn-salvar {
+    background-color: #278FC5 !important;
+}
+
+
+
+/* Botão cancelar */
+.btn-cancelar {
+    background-color: #FF4242 !important;
+}
+
+
+
+/* Botão do SweetAlert2 de sucesso */
+.swal2-popup .swal2-confirm {
+    background-color: #278FC5 !important;
+    color: #fff !important;
+    font-size: 14px;
 }
