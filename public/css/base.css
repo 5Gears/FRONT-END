@@ -328,13 +328,6 @@ body {
         height: 90%;
         width: 75%;
 
-        border: 1px solid rgba(0, 0, 0, 0.500);
-
-        img {
-            height: 100%;
-            width: 100%;
-
-        }
     }
 
     .buscar {
@@ -369,10 +362,51 @@ body {
             }
         }
     }
-
-
-
 }
+
+/* Ajustes para o calendário Vis Timeline */
+
+#timeline-container {
+    height: 90%;
+    width: 75%;
+    border-radius: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    border: 1 solid black;
+}
+
+#timeline {
+    flex: 1;
+    height: 100%;
+    width: 100%;
+    border: none;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    overflow: hidden;
+    /* mantém o arredondamento visível */
+    background: white;
+}
+
+/* Remove bordas internas padrão da timeline */
+.vis-timeline {
+    border: none !important;
+}
+
+/* Ajuste opcional para dar suavidade */
+.vis-panel.vis-background {
+    border-radius: 20px 20px 0 0;
+    overflow: hidden;
+}
+
+/* Deixa os projetos bem visíveis */
+.vis-item {
+    border-radius: 8px !important;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+
+
+/* SWEET ALERT */
 
 .swal2-html-container {
     margin: 15px !important;
@@ -392,7 +426,7 @@ body {
     margin: 0 0 12px !important;
 }
 
-.btn-salvar, 
+.btn-salvar,
 .btn-cancelar {
     color: #fff;
     font-size: 14px;
@@ -403,14 +437,10 @@ body {
     background-color: #278FC5 !important;
 }
 
-
-
 /* Botão cancelar */
 .btn-cancelar {
     background-color: #FF4242 !important;
 }
-
-
 
 /* Botão do SweetAlert2 de sucesso */
 .swal2-popup .swal2-confirm {
