@@ -17,7 +17,6 @@
             <img src="../assets/logo.png" alt="">
         </div>
 
-        <!-- Hambúrguer + Menu lateral -->
         <input type="checkbox" id="menu-toggle" class="menu-toggle">
         <label for="menu-toggle" class="hamburger">
             <span></span>
@@ -27,7 +26,7 @@
 
         <nav class="menu">
             <ul>
-                <li><a href="#">Início</a></li>
+                <li><a href="./perfil.html">Início</a></li>
                 <li><a href="./gerenciamento.html">Gerenciar Projetos</a></li>
                 <li><a href="./cadastro.html">Cadastro de Profissionais</a></li>
                 <li><a href="./busca_profissonal.html">Busca de Profissionais</a></li>
@@ -56,6 +55,95 @@
         </div>
     </div>
 
+    <input type="checkbox" id="chat-toggle" class="chat-toggle">
+
+    <label for="chat-toggle" class="chatbot-icon">
+        <img src="../assets/chatbot (2).png" alt="Chatbot" class="chat-icon-img">
+    </label>
+
+    <aside class="chat-sidebar">
+        <div class="chat-header">
+            <h2>Chat de Suporte</h2>
+            <label for="chat-toggle" class="close-chat">X</label>
+        </div>
+        <div class="chat-body">
+        </div>
+        <div class="chat-input">
+            <input type="text" placeholder="Digite sua mensagem...">
+            <button>Enviar</button>
+        </div>
+    </aside>
+
 </body>
 
 </html>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // 1. Seleciona os elementos principais
+        const chatBody = document.querySelector('.chat-body');
+        const inputField = document.querySelector('.chat-input input');
+        const sendButton = document.querySelector('.chat-input button');
+
+        // 2. Função para adicionar uma nova mensagem ao chat
+        function addMessage(text, isUser = true) {
+            // Cria o elemento da mensagem
+            const messageDiv = document.createElement('div');
+            messageDiv.classList.add('chat-message');
+
+            // Adiciona classe para estilizar se for o usuário ou o bot
+            messageDiv.classList.add(isUser ? 'user-message' : 'bot-message');
+
+            messageDiv.textContent = text;
+
+            // Adiciona a mensagem ao corpo do chat
+            chatBody.appendChild(messageDiv);
+
+            // Rola para baixo para mostrar a mensagem mais recente
+            chatBody.scrollTop = chatBody.scrollHeight;
+        }
+
+        // 3. Função de envio de mensagem
+        function handleSendMessage() {
+            const userText = inputField.value.trim();
+
+            if (userText !== "") {
+                // Adiciona a mensagem do usuário
+                addMessage(userText, true);
+
+                // Limpa o input
+                inputField.value = '';
+
+                // 4. (Opcional) Simula uma resposta do chatbot após um pequeno atraso
+                setTimeout(() => {
+                    // Lógica de resposta simples (você expandirá isso depois)
+                    let botResponse = "Obrigado pela sua mensagem! Um agente de suporte responderá em breve.";
+
+                    // Exemplo de resposta baseada na palavra-chave
+                    if (userText.toLowerCase().includes('alocação')) {
+                        botResponse = "Para alocar um profissional, preencha todos os campos do formulário na tela principal.";
+                    } else if (userText.toLowerCase().includes('ajuda')) {
+                        botResponse = "Estou aqui para ajudar com dúvidas sobre projetos e cadastro.";
+                    }
+
+                    addMessage(botResponse, false);
+                }, 800);
+            }
+        }
+
+        // 5. Adiciona ouvintes de evento
+
+        // Envia mensagem ao clicar no botão
+        sendButton.addEventListener('click', handleSendMessage);
+
+        // Envia mensagem ao pressionar Enter no input
+        inputField.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                handleSendMessage();
+            }
+        });
+
+        // Mensagem inicial do bot
+        addMessage("Bem-vindo! No que posso ajudar hoje?", false);
+    });
+</script>
