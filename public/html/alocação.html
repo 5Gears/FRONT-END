@@ -7,6 +7,7 @@
     <title>Alocação de Profissionais</title>
     <link rel="stylesheet" href="../css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
 </head>
 
 <body>
@@ -77,73 +78,4 @@
 </body>
 
 </html>
-
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        // 1. Seleciona os elementos principais
-        const chatBody = document.querySelector('.chat-body');
-        const inputField = document.querySelector('.chat-input input');
-        const sendButton = document.querySelector('.chat-input button');
-
-        // 2. Função para adicionar uma nova mensagem ao chat
-        function addMessage(text, isUser = true) {
-            // Cria o elemento da mensagem
-            const messageDiv = document.createElement('div');
-            messageDiv.classList.add('chat-message');
-
-            // Adiciona classe para estilizar se for o usuário ou o bot
-            messageDiv.classList.add(isUser ? 'user-message' : 'bot-message');
-
-            messageDiv.textContent = text;
-
-            // Adiciona a mensagem ao corpo do chat
-            chatBody.appendChild(messageDiv);
-
-            // Rola para baixo para mostrar a mensagem mais recente
-            chatBody.scrollTop = chatBody.scrollHeight;
-        }
-
-        // 3. Função de envio de mensagem
-        function handleSendMessage() {
-            const userText = inputField.value.trim();
-
-            if (userText !== "") {
-                // Adiciona a mensagem do usuário
-                addMessage(userText, true);
-
-                // Limpa o input
-                inputField.value = '';
-
-                // 4. (Opcional) Simula uma resposta do chatbot após um pequeno atraso
-                setTimeout(() => {
-                    // Lógica de resposta simples (você expandirá isso depois)
-                    let botResponse = "Obrigado pela sua mensagem! Um agente de suporte responderá em breve.";
-
-                    // Exemplo de resposta baseada na palavra-chave
-                    if (userText.toLowerCase().includes('alocação')) {
-                        botResponse = "Para alocar um profissional, preencha todos os campos do formulário na tela principal.";
-                    } else if (userText.toLowerCase().includes('ajuda')) {
-                        botResponse = "Estou aqui para ajudar com dúvidas sobre projetos e cadastro.";
-                    }
-
-                    addMessage(botResponse, false);
-                }, 800);
-            }
-        }
-
-        // 5. Adiciona ouvintes de evento
-
-        // Envia mensagem ao clicar no botão
-        sendButton.addEventListener('click', handleSendMessage);
-
-        // Envia mensagem ao pressionar Enter no input
-        inputField.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                handleSendMessage();
-            }
-        });
-
-        // Mensagem inicial do bot
-        addMessage("Bem-vindo! No que posso ajudar hoje?", false);
-    });
-</script>
+<script src="../js/alocacao.js"></script>
