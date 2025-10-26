@@ -328,13 +328,6 @@ body {
         height: 90%;
         width: 75%;
 
-        border: 1px solid rgba(0, 0, 0, 0.500);
-
-        img {
-            height: 100%;
-            width: 100%;
-
-        }
     }
 
     .buscar {
@@ -369,7 +362,26 @@ body {
             }
         }
     }
+}
 
+/* Ajustes para o calendário Vis Timeline */
 
+#timeline-container {
+    height: 90%;
+    width: 75%;
+    border-radius: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    border: 1 solid black;
+}
 
+#timeline {
+    flex: 1;
+    height: 100%;
+    width: 100%;
+    border: none;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    overflow: hidden;
+    /* mantém o arredondamento visível */
+    background: white;
 }
