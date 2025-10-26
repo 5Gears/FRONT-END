@@ -9,6 +9,11 @@
     <link rel="stylesheet" href="../css/base.css">
     <link rel="stylesheet" href="../css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Biblioteca -->
+    <link href="https://unpkg.com/vis-timeline@latest/styles/vis-timeline-graph2d.min.css" rel="stylesheet" />
+    <script src="https://unpkg.com/vis-timeline@latest/standalone/umd/vis-timeline-graph2d.min.js"></script>
+
 </head>
 
 <body>
@@ -52,8 +57,8 @@
                 </div>
 
             </div>
-            <div class="boxapontamento">
-                <img src="../assets/GANTT.png" alt="">
+            <div class="boxapontamento" id="timeline-container">
+                <div id="timeline"></div>
             </div>
         </div>
 
@@ -61,3 +66,4 @@
 </body>
 
 </html>
+<script src="../../js/meuapontamento.js"></script>

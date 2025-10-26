@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="../css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 
+    <script src="/js/popupCertificado.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
@@ -96,7 +97,7 @@
                         <span>
                             Certificações
                         </span>
-                        <div class="add display-flex meio alinhar-meio">
+                        <div class="add display-flex meio alinhar-meio" onclick="licencaCertificado()">
                             <img src="../assets/icon-add.png" alt="">
                         </div>
                     </div>
@@ -113,71 +114,8 @@
                 </div>
             </div>
         </div>
-
-        <!-- <button onclick="abrirFormulario()">Abrir Formulário</button>
-        <button onclick="aprovarOuRejeitar()">Abrir Projeto</button> -->
+        <!-- <button onclick="licencaCertificado()">Abrir Certificado</button> -->
+        <!-- <button onclick="nomeProjeto()">Abrir Projeto</button> -->
     </body>
 
 </html>
-
-<script>
-    function abrirFormulario() {
-        Swal.fire({
-            title: 'Adicionar licença ou certificado',
-            html: `
-      <input type="text" id="nome" class="swal2-input" placeholder="Nome do profissional">
-      <input type="text" id="organizacao" class="swal2-input" placeholder="Organização Emissora">
-      <input type="date" id="inicio" class="swal2-input" placeholder="Data de emissão (Início)">
-      <input type="date" id="fim" class="swal2-input" placeholder="Data de expiração (Fim)">
-    `,
-            focusConfirm: false,
-            showCancelButton: true,
-            confirmButtonText: 'Salvar',
-            cancelButtonText: 'Cancelar',
-            preConfirm: () => {
-                return {
-                    nome: document.getElementById('nome').value,
-                    organizacao: document.getElementById('organizacao').value,
-                    inicio: document.getElementById('inicio').value,
-                    fim: document.getElementById('fim').value
-                }
-            }
-        }).then((result) => {
-            if (result.isConfirmed) {
-                console.log('Dados salvos:', result.value);
-            }
-        })
-    }
-
-    function aprovarOuRejeitar() {
-        Swal.fire({
-            title: 'Nome do Projeto',
-            html: `
-      <input type="text" id="descricao" class="swal2-input" placeholder="Descrição">
-      <input type="text" id="orcamento" class="swal2-input" placeholder="Orçamento">
-      <input type="date" id="inicio" class="swal2-input" placeholder="Data de emissão (Início)">
-      <input type="date" id="fim" class="swal2-input" placeholder="Data de expiração (Fim)">
-    `,
-            showDenyButton: true,
-            confirmButtonText: 'APROVAR',
-            denyButtonText: 'REJEITAR',
-            confirmButtonColor: 'green',
-            denyButtonColor: 'red',
-            preConfirm: () => {
-                return {
-                    descricao: document.getElementById('descricao').value,
-                    orcamento: document.getElementById('orcamento').value,
-                    inicio: document.getElementById('inicio').value,
-                    fim: document.getElementById('fim').value
-                }
-            }
-        }).then((result) => {
-            if (result.isConfirmed) {
-                console.log('Projeto aprovado:', result.value);
-            } else if (result.isDenied) {
-                console.log('Projeto rejeitado:', result.value);
-            }
-        })
-    }
-
-</script>
