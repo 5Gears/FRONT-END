@@ -3,7 +3,7 @@ async function realizarLogin() {
   const senha = document.getElementById("senha").value.trim();
 
   if (!email || !senha) {
-    alert("Por favor, preencha o e-mail e a senha.");
+    Swal.fire('⚠️ Atenção', 'Por favor, preencha o e-mail e a senha.', 'warning');
     return;
   }
 
@@ -16,31 +16,30 @@ async function realizarLogin() {
       body: JSON.stringify(body)
     });
 
-    if (!response.ok) {
-      const errorData = await response.json();
-      alert(errorData.erro || "Erro ao tentar realizar login.");
-      return;
-    }
+    const data = await response.json().catch(() => ({}));
 
-    const data = await response.json();
-
-    if (data.primeiroAcesso) {
+    if (response.status === 401 && data.erro?.includes("primeiro acesso")) {
       localStorage.setItem("emailUsuario", email);
-      alert("Primeiro acesso detectado! Defina uma nova senha.");
+      await Swal.fire('🔐 Primeiro acesso detectado!', 'Defina uma nova senha.', 'info');
       window.location.href = "../html/loginPrimeiroAcesso.html";
       return;
     }
 
-    localStorage.setItem("usuarioId", data.usuarioId);
+    if (!response.ok) {
+      Swal.fire('❌ Erro', data.erro || 'Erro ao tentar realizar login.', 'error');
+      return;
+    }
+
+    localStorage.setItem("usuarioId", data.id);
     localStorage.setItem("nomeUsuario", data.nome);
     localStorage.setItem("token", data.token);
-    localStorage.setItem("emailUsuario", email);
+    localStorage.setItem("emailUsuario", data.email);
 
-    alert("Bem-vindo!");
+    await Swal.fire('✅ Sucesso', 'Bem-vindo!', 'success');
     window.location.href = "../html/cadastro.html";
 
   } catch (error) {
     console.error("Erro na requisição:", error);
-    alert("Não foi possível conectar ao servidor.");
-  }
+    Swal.fire('⚠️ Erro', 'Não foi possível conectar ao servidor.', 'error');
+  }
 }

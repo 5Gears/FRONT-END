@@ -31,7 +31,7 @@ async function carregarCargos() {
         });
     } catch (error) {
         console.error("Erro ao carregar cargos:", error);
-        alert("Não foi possível carregar os cargos.");
+        Swal.fire('⚠️ Atenção', 'Não foi possível carregar os cargos.', 'warning');
     }
 }
 
@@ -60,7 +60,7 @@ function carregarNiveisPermissao() {
 async function cadastrarUsuario() {
     const usuarioIdLogado = localStorage.getItem("usuarioId");
     if (!usuarioIdLogado) {
-        alert("Usuário não identificado. Faça login novamente.");
+        await Swal.fire('⚠️ Atenção', 'Usuário não identificado. Faça login novamente.', 'warning');
         window.location.href = "./login.html";
         return;
     }
@@ -92,13 +92,14 @@ async function cadastrarUsuario() {
         }
 
         const data = await response.json();
-        alert(`Usuário ${data.nome} cadastrado com sucesso!`);
+
+        await Swal.fire('✅ Sucesso', `Usuário <b>${data.nome}</b> cadastrado com sucesso!`, 'success');
 
         const formDiv = document.getElementById("formUsuario");
         formDiv.querySelectorAll("input, select").forEach(el => el.value = "");
 
     } catch (error) {
         console.error(error);
-        alert("Erro ao cadastrar usuário: " + error.message);
+        Swal.fire('❌ Erro', 'Erro ao cadastrar usuário: ' + error.message, 'error');
     }
 }
