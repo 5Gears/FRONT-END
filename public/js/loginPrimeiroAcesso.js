@@ -3,18 +3,18 @@ async function confirmarPrimeiroAcesso() {
   const confirmarSenha = document.getElementById("confirmarSenha").value.trim();
 
   if (!novaSenha || !confirmarSenha) {
-    alert("Preencha todos os campos!");
+    Swal.fire('⚠️ Atenção', 'Preencha todos os campos!', 'warning');
     return;
   }
 
   if (novaSenha !== confirmarSenha) {
-    alert("As senhas não coincidem!");
+    Swal.fire('❌ Erro', 'As senhas não coincidem!', 'error');
     return;
   }
 
   const email = localStorage.getItem("emailUsuario");
   if (!email) {
-    alert("Usuário não identificado. Volte para o login.");
+    await Swal.fire('⚠️ Atenção', 'Usuário não identificado. Volte para o login.', 'warning');
     window.location.href = "./login.html";
     return;
   }
@@ -23,18 +23,21 @@ async function confirmarPrimeiroAcesso() {
     const response = await fetch("http://localhost:8080/api/login/primeiro-acesso", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email: email, senha: novaSenha })
+      body: JSON.stringify({ email, senha: novaSenha })
     });
 
+    const data = await response.json().catch(() => ({}));
+
     if (response.ok) {
-      alert("Senha cadastrada com sucesso! Faça login novamente.");
+      await Swal.fire('✅ Sucesso', 'Senha cadastrada com sucesso! Faça login novamente.', 'success');
+      localStorage.removeItem("emailUsuario");
       window.location.href = "./login.html";
     } else {
-      const errorData = await response.json();
-      alert("Erro ao definir senha: " + (errorData.erro || "Tente novamente."));
+      Swal.fire('❌ Erro', data.erro || 'Erro ao definir senha. Tente novamente.', 'error');
     }
+
   } catch (error) {
     console.error("Erro na requisição:", error);
-    alert("Erro de conexão com o servidor.");
-  }
+    Swal.fire('⚠️ Erro', 'Erro de conexão com o servidor.', 'error');
+  }
 }
