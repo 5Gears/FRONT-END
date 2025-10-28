@@ -4,13 +4,12 @@
 
 const API_BASE_URL = 'http://localhost:8080/api/assistente/chatbot';
 const PROJETO_API_URL = 'http://localhost:8080/api/projetos';
-let chatStep = 1;
-let aguardandoConfirmacao = false;
+
 let aguardandoAlocacao = false;
 let projetoSelecionado = { nome: '', id: null };
 let usuariosSugeridos = [];
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     const chatBody = document.querySelector('.chat-body');
     const inputField = document.querySelector('.chat-input input');
     const sendButton = document.querySelector('.chat-input button');
@@ -27,14 +26,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function clearChat() {
         chatBody.innerHTML = '';
-        chatStep = 1;
-        aguardandoConfirmacao = false;
         aguardandoAlocacao = false;
         projetoSelecionado = { nome: '', id: null };
         usuariosSugeridos = [];
-        localStorage.removeItem('idProjetoSelecionado');
-        localStorage.removeItem('sugestoesSunnyBot');
-        addMessage("Olá! 👋 Sou o SunnyBOT e vou te ajudar na alocação de profissionais.\nPor favor, digite o nome do projeto para começarmos.", false);
+        addMessage("Olá! 👋 Sou o SunnyBOT. Carregando informações do projeto...", false);
     }
 
     function preencherFormularioProjeto() {
@@ -82,47 +77,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // ========== Etapa 1 – Validar Projeto ==========
-    async function handleStep1(userText) {
-    let nomeProjeto = userText.trim();
-
-    // Limpeza automática do prefixo e caracteres indesejados
-    nomeProjeto = nomeProjeto
-        .replace(/^projeto\s+/i, '')        
-        .replace(/^project\s+/i, '')        
-        .replace(/^projetinho\s+/i, '')     
-        .replace(/[^a-zA-ZÀ-ÿ0-9\s._-]/g, '') 
-        .trim();
-
-    
-    nomeProjeto = nomeProjeto.normalize('NFC');
-
-    if (nomeProjeto.length < 3) {
-        addMessage("Por favor, insira um nome de projeto válido.", false);
-        return;
-    }
-
-    addMessage(`Buscando projeto '${nomeProjeto}'...`, false);
-
-    try {
-        const body = { nomeProjeto, mensagem: "iniciar" };
-        const resp = await postToBackend('/validar-projeto', body);
-
-        projetoSelecionado = { nome: resp.projeto, id: resp.idProjeto };
-        chatStep = 2;
-
-        addMessage(`Projeto '${projetoSelecionado.nome}' encontrado!`, false);
-        addMessage("Deseja buscar profissionais para esse projeto agora? (Responda 'sim' ou 'não')", false);
-
-        aguardandoConfirmacao = true;
-    } catch (err) {
-        addMessage("Projeto não encontrado. Verifique o nome e tente novamente.", false);
-        chatStep = 1;
-    }
-}
-
-    // ========== Etapa 3 – Buscar Profissionais ==========
-    async function handleStep3(userText) {
+    // ========== Etapa principal – Buscar Profissionais ==========
+    async function handleBuscaProfissionais(userText) {
         if (userText.trim().length < 10) {
             addMessage("Descreva melhor a sua necessidade, por favor.", false);
             return;
@@ -130,7 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         addMessage("Processando sua solicitação...", false);
 
-        const body = { nomeProjeto: projetoSelecionado.nome, mensagem: userText };
+        const body = { idProjeto: projetoSelecionado.id, nomeProjeto: projetoSelecionado.nome, mensagem: userText };
         const resp = await postToBackend('/demandar-profissionais', body);
         const { idProjeto, usuarios } = resp;
 
@@ -139,6 +95,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         preencherFormularioProjeto();
         usuariosSugeridos = usuarios;
+
+        if (!usuarios || usuarios.length === 0) {
+            addMessage("Não encontrei profissionais adequados à sua solicitação.", false);
+            return;
+        }
 
         let texto = "Profissionais sugeridos:\n\n";
         texto += usuarios.map(u =>
@@ -161,7 +122,6 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
         chatBody.appendChild(buttonDiv);
 
-        // animação suave de entrada (fade + bounce)
         buttonDiv.animate(
             [
                 { opacity: 0, transform: 'scale(0.8)' },
@@ -199,12 +159,6 @@ document.addEventListener('DOMContentLoaded', () => {
             showCancelButton: true,
             cancelButtonText: "Cancelar",
             background: '#fff',
-            backdrop: `
-                rgba(0,0,0,0.4)
-                url("https://i.gifer.com/embedded/download/ZZ5H.gif")
-                left top
-                no-repeat
-            `,
             showClass: {
                 popup: 'swal2-show animate__animated animate__fadeInDown'
             },
@@ -234,59 +188,54 @@ document.addEventListener('DOMContentLoaded', () => {
                         showConfirmButton: false,
                         timer: 1500
                     });
-                    addMessage("Todos os profissionais selecionados foram alocados com sucesso!", false);
+                    addMessage("✅ Todos os profissionais foram alocados com sucesso!", false);
                 } catch (err) {
                     Swal.fire('Erro', 'Falha ao alocar um ou mais profissionais.', 'error');
-                    addMessage("Ocorreu um erro durante a alocação.", false);
+                    addMessage("❌ Ocorreu um erro durante a alocação.", false);
                 }
             } else {
                 addMessage("Operação cancelada. Nenhum profissional foi alocado.", false);
             }
 
             aguardandoAlocacao = false;
-            chatStep = 1;
-            projetoSelecionado = { nome: '', id: null };
-            usuariosSugeridos = [];
         });
     }
 
     // ========== Controle Principal ==========
     async function processMessage(userText) {
         try {
-            const texto = userText.toLowerCase();
-
-            if (aguardandoConfirmacao) {
-                aguardandoConfirmacao = false;
-                if (texto.includes('sim')) {
-                    chatStep = 3;
-                    addMessage(`Perfeito! Agora descreva os profissionais que você deseja alocar no projeto '${projetoSelecionado.nome}'.`, false);
-                    addMessage(`Exemplo: "Preciso de 3 analistas de dados plenos com experiência em Python e Power BI."`, false);
-                } else {
-                    chatStep = 1;
-                    addMessage("Certo! Quando quiser iniciar novamente, basta me dizer o nome do projeto.", false);
-                }
-                return;
-            }
-
             if (aguardandoAlocacao) {
                 aguardandoAlocacao = false;
-                if (texto.includes('sim')) abrirPopupAlocacao();
-                else {
-                    chatStep = 1;
-                    addMessage("Tudo bem! Você pode fazer a alocação manual depois.", false);
-                }
+                if (userText.toLowerCase().includes('sim')) abrirPopupAlocacao();
+                else addMessage("Tudo bem! Você pode fazer a alocação manual depois.", false);
                 return;
             }
 
-            switch (chatStep) {
-                case 1: await handleStep1(userText); break;
-                case 3: await handleStep3(userText); break;
-                default: addMessage("O fluxo do SunnyBOT foi interrompido. Reiniciando...", false); clearChat();
+            if (!projetoSelecionado.id) {
+                addMessage("⚠️ Nenhum projeto selecionado. Volte à tela de edição e escolha um projeto.", false);
+                return;
             }
+
+            await handleBuscaProfissionais(userText);
         } catch (err) {
             addMessage(`❌ Erro: ${err.message}`, false);
-            clearChat();
         }
+    }
+
+    // ========== Inicialização ==========
+    const idProjeto = localStorage.getItem('idProjeto');
+    if (idProjeto) {
+        try {
+            const resp = await fetch(`${PROJETO_API_URL}/${idProjeto}`);
+            const projeto = await resp.json();
+            projetoSelecionado = { nome: projeto.nome, id: projeto.idProjeto };
+            addMessage(`Olá! 👋 Sou o SunnyBOT. Projeto selecionado: ${projetoSelecionado.nome}.`, false);
+            addMessage(`Descreva os profissionais que deseja alocar neste projeto.`, false);
+        } catch (err) {
+            addMessage("Erro ao carregar o projeto. Volte à tela anterior e selecione novamente.", false);
+        }
+    } else {
+        addMessage("⚠️ Nenhum projeto selecionado. Volte à tela anterior e escolha um projeto.", false);
     }
 
     // ========== Eventos ==========
@@ -304,8 +253,4 @@ document.addEventListener('DOMContentLoaded', () => {
             sendButton.click();
         }
     });
-
-    window.addEventListener('beforeunload', () => clearChat());
-
-    addMessage("Olá! 👋 Sou o SunnyBOT e vou te ajudar na alocação de profissionais.\nPor favor, digite o nome do projeto para começarmos.", false);
 });

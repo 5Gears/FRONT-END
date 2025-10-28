@@ -1,158 +1,97 @@
-// Variáveis de estado global para rastrear o fluxo do chatbot
-let chatStep = 1;
-let projetoSelecionado = { nome: '', id: null };
-const API_BASE_URL = 'http://localhost:8080/api/assistente'; // URL do backend
+// ===========================================
+// Alocação Manual de Profissionais (FiveGears)
+// ===========================================
 
-document.addEventListener('DOMContentLoaded', () => {
-    // 1. Seleciona os elementos principais
-    const chatBody = document.querySelector('.chat-body');
-    const inputField = document.querySelector('.chat-input input');
-    const sendButton = document.querySelector('.chat-input button');
-    const alocarForm = document.querySelector('.formulario');
+const API_PROJETOS = 'http://localhost:8080/api/projetos';
+const API_USUARIOS = 'http://localhost:8080/api/usuarios';
+const idProjeto = localStorage.getItem('idProjeto');
 
-    // --- Funções de UI do Chatbot ---
+document.addEventListener('DOMContentLoaded', async () => {
+  const inputNomeProf = document.querySelector('.form input:nth-of-type(1)');
+  const selectProjeto = document.querySelector('.form select');
+  const inputInicio = document.querySelector('.form input:nth-of-type(2)');
+  const inputFim = document.querySelector('.form input:nth-of-type(3)');
+  const inputHorasDia = document.querySelector('.form input:nth-of-type(4)');
 
-    function addMessage(text, isUser = true) {
-        const messageDiv = document.createElement('div');
-        messageDiv.classList.add('chat-message');
-        messageDiv.classList.add(isUser ? 'user-message' : 'bot-message');
-        messageDiv.textContent = text;
-        chatBody.appendChild(messageDiv);
-        chatBody.scrollTop = chatBody.scrollHeight;
+  const inputHorasTotais = document.createElement('input');
+  inputHorasTotais.type = 'text';
+  inputHorasTotais.placeholder = 'Total de horas do projeto';
+  document.querySelector('.form').appendChild(inputHorasTotais);
+
+  const btnAlocar = document.querySelector('.proximo button a');
+
+  if (!idProjeto) {
+    Swal.fire({
+      icon: 'warning',
+      title: 'Projeto não selecionado',
+      text: 'Volte e escolha um projeto antes de alocar profissionais.',
+      confirmButtonText: 'OK'
+    }).then(() => (window.location.href = './editar_alocacao.html'));
+    return;
+  }
+
+  async function carregarProjeto() {
+    try {
+      const res = await fetch(`${API_PROJETOS}/${idProjeto}`);
+      const projeto = await res.json();
+      selectProjeto.innerHTML = `<option value="${projeto.id}" selected>${projeto.nome}</option>`;
+      selectProjeto.disabled = true;
+    } catch {
+      Swal.fire('Erro', 'Não foi possível carregar o projeto.', 'error');
+    }
+  }
+
+  async function alocarProfissional(event) {
+    event.preventDefault();
+
+    const nome = inputNomeProf.value.trim();
+    const dataInicio = inputInicio.value.trim();
+    const dataFim = inputFim.value.trim();
+    const horasPorDia = inputHorasDia.value.trim();
+    const horasTotais = inputHorasTotais.value.trim();
+
+    if (!nome || !dataInicio || !dataFim || !horasPorDia || !horasTotais) {
+      Swal.fire('Atenção', 'Preencha todos os campos.', 'warning');
+      return;
     }
 
-    function showSuggestionsAndPopulateForm(usuarios) {
-        let suggestionsHTML = 'Sugestões encontradas:\n';
-        const selectNomeProjeto = alocarForm ? alocarForm.querySelector('select') : null;
+    try {
+      const resUser = await fetch(`${API_USUARIOS}?nome=${encodeURIComponent(nome)}`);
+      const usuarios = await resUser.json();
+      if (!usuarios.length) throw new Error(`Usuário "${nome}" não encontrado`);
+      const idUsuario = usuarios[0].id;
 
-        // Preenche o select do projeto, se existir
-        if (selectNomeProjeto) {
-            selectNomeProjeto.innerHTML = '';
-            const option = document.createElement('option');
-            option.value = projetoSelecionado.id;
-            option.textContent = projetoSelecionado.nome;
-            selectNomeProjeto.appendChild(option);
-            selectNomeProjeto.disabled = true;
-        }
+      const body = {
+        dataAlocacao: dataInicio,
+        dataSaida: dataFim,
+        horasPorDia: parseInt(horasPorDia),
+        horasAlocadas: parseInt(horasTotais)
+      };
 
-        // Exibe as sugestões no chat
-        suggestionsHTML += usuarios.map(u =>
-            `ID: ${u.id}, Nome: ${u.nome}, Cargo: ${u.cargo} (${u.senioridade}), Valor/Hora: R$ ${u.valorHora.toFixed(2)}`
-        ).join('\n');
+      const res = await fetch(`${API_PROJETOS}/${idProjeto}/usuarios/${idUsuario}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      });
 
-        addMessage(suggestionsHTML, false);
-        addMessage(`*O front-end armazenou as sugestões e o ID do projeto*. Por favor, utilize o formulário principal para preencher o restante dos dados e realizar a alocação manual (Etapa 7).`, false);
+      if (!res.ok) throw new Error(await res.text());
+
+      Swal.fire('Sucesso', `Usuário "${nome}" alocado com sucesso!`, 'success');
+      limparCampos();
+    } catch (err) {
+      console.error(err);
+      Swal.fire('Erro', err.message || 'Falha ao alocar.', 'error');
     }
+  }
 
-    // --- Funções de Comunicação com o Backend ---
+  function limparCampos() {
+    inputNomeProf.value = '';
+    inputInicio.value = '';
+    inputFim.value = '';
+    inputHorasDia.value = '';
+    inputHorasTotais.value = '';
+  }
 
-    async function postToBackend(endpoint, body) {
-        try {
-            const response = await fetch(`${API_BASE_URL}${endpoint}`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(body)
-            });
-
-            const data = await response.json();
-
-            if (!response.ok) {
-                throw new Error(data.erro || `Erro HTTP: ${response.status}`);
-            }
-
-            return data;
-        } catch (error) {
-            console.error('Erro na comunicação com a API:', error);
-            throw error;
-        }
-    }
-
-    // --- Lógica do Chatbot ---
-
-    async function processChatbotFlow(userText) {
-        try {
-            switch (chatStep) {
-                case 1:
-                    await handleStep1(userText);
-                    break;
-                case 3:
-                    await handleStep3(userText);
-                    break;
-                default:
-                    addMessage("O SunnyBOT está fora de um fluxo de alocação. Por favor, reinicie a conversa.", false);
-            }
-        } catch (error) {
-            const errorMessage = error.message.includes('Erro HTTP') ?
-                error.message :
-                `Ocorreu um erro: ${error.message}. Tente novamente.`;
-            addMessage(`[ERRO BOT] ${errorMessage}`, false);
-
-            // Reinicia o fluxo
-            chatStep = 1;
-            addMessage("Olá, sou o SunnyBOT! Estou aqui para te ajudar a alocar pessoas em seu projeto. Por favor, informe o nome do projeto em que deseja trabalhar.", false);
-            projetoSelecionado = { nome: '', id: null };
-            localStorage.removeItem('idProjetoSelecionado');
-            localStorage.removeItem('sugestoesSunnyBot');
-        }
-    }
-
-    async function handleStep1(nomeProjeto) {
-        const projetoClean = nomeProjeto.trim();
-        if (projetoClean.length < 3) {
-            addMessage("Por favor, forneça um nome de projeto válido.", false);
-            return;
-        }
-
-        const requestBody = { nomeProjeto: projetoClean, mensagem: "ponto" };
-        const validacao = await postToBackend('/chatbot/validar-projeto', requestBody);
-
-        projetoSelecionado.nome = validacao.projeto;
-        projetoSelecionado.id = validacao.idProjeto;
-
-        chatStep = 3;
-        addMessage(`Projeto '${projetoSelecionado.nome}' validado com sucesso! Agora, descreva a demanda de profissionais que você precisa (Ex: Preciso de 5 programadores júnior com conhecimento em segurança).`, false);
-    }
-
-    async function handleStep3(demanda) {
-        if (demanda.trim().length < 10) {
-            addMessage("Por favor, descreva a demanda com mais detalhes.", false);
-            return;
-        }
-
-        addMessage("Processando sua demanda... (Etapas 3, 4, 5)", false);
-
-        const requestBody = { nomeProjeto: projetoSelecionado.nome, mensagem: demanda };
-        const responseData = await postToBackend('/chatbot/demandar-profissionais', requestBody);
-
-        const idProjeto = responseData.idProjeto;
-        const usuariosSugestao = responseData.usuarios;
-
-        localStorage.setItem('idProjetoSelecionado', idProjeto);
-        localStorage.setItem('sugestoesSunnyBot', JSON.stringify(usuariosSugestao));
-
-        showSuggestionsAndPopulateForm(usuariosSugestao);
-
-        // Reinicia o fluxo
-        chatStep = 1;
-        projetoSelecionado = { nome: '', id: null };
-    }
-
-    // --- Eventos de envio de mensagem ---
-
-    function handleSendMessage() {
-        const userText = inputField.value.trim();
-        if (userText !== "") {
-            addMessage(userText, true);
-            inputField.value = '';
-            processChatbotFlow(userText);
-        }
-    }
-
-    sendButton.addEventListener('click', handleSendMessage);
-    inputField.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') handleSendMessage();
-    });
-
-    // Mensagem inicial do bot
-    addMessage("Olá, sou o SunnyBOT! Estou aqui para te ajudar a alocar pessoas em seu projeto. Por favor, informe o nome do projeto em que deseja trabalhar.", false);
+  await carregarProjeto();
+  btnAlocar.addEventListener('click', alocarProfissional);
 });
