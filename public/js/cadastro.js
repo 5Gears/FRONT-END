@@ -58,7 +58,7 @@ function carregarNiveisPermissao() {
 }
 
 async function cadastrarUsuario() {
-    const usuarioIdLogado = localStorage.getItem("usuarioId");
+    const usuarioIdLogado = localStorage.getItem("idEmpresa");
     if (!usuarioIdLogado) {
         await Swal.fire('⚠️ Atenção', 'Usuário não identificado. Faça login novamente.', 'warning');
         window.location.href = "./login.html";
