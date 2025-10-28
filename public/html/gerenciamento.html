@@ -7,6 +7,7 @@
     <title>Gerenciar Projetos</title>
     <link rel="stylesheet" href="../css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>
@@ -16,7 +17,6 @@
             <img src="../assets/logo.png" alt="">
         </div>
 
-        <!-- Hambúrguer + Menu lateral -->
         <input type="checkbox" id="menu-toggle" class="menu-toggle">
         <label for="menu-toggle" class="hamburger">
             <span></span>
@@ -33,7 +33,7 @@
                 <li><a href="./meu_apontamento.html">Calendário de Horas</a></li>
                 <li><a href="#">Feedback de Profissionais</a></li>
                 <li><a href="./faq.html">Ajuda & FAQ</a></li>
-                <li><button><img src="../assets/logout.png" alt=""></button></li>
+                <li><button onclick="realizarLogout()"><img src="../assets/logout.png" alt=""></button></li>
             </ul>
         </nav>
 
@@ -53,7 +53,8 @@
             </div>
         </div>
     </div>
-
+    <script src="../js/gerenciarProjetos.js"></script>
+    <script src="../js/logout.js"></script>
 </body>
 
 </html>
