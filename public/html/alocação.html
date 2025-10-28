@@ -1,82 +1,77 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alocação de Profissionais</title>
-    <link rel="stylesheet" href="../css/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alocação de Profissionais</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>
 
-    <div class="tela-alocaçao">
-        <div class="titulo">
-            <h1>ALOCAÇÃO DE PROFISSIONAIS</h1>
-            <img src="../assets/logo.png" alt="">
-        </div>
-
-        <input type="checkbox" id="menu-toggle" class="menu-toggle">
-        <label for="menu-toggle" class="hamburger">
-            <span></span>
-            <span></span>
-            <span></span>
-        </label>
-
-        <nav class="menu">
-            <ul>
-                <li><a href="./perfil.html">Início</a></li>
-                <li><a href="./gerenciamento.html">Gerenciar Projetos</a></li>
-                <li><a href="./cadastro.html">Cadastro de Profissionais</a></li>
-                <li><a href="./busca_profissonal.html">Busca de Profissionais</a></li>
-                <li><a href="./meu_apontamento.html">Calendário de Horas</a></li>
-                <li><a href="#">Feedback de Profissionais</a></li>
-                <li><a href="./faq.html">Ajuda & FAQ</a></li>
-                <li><button><img src="../assets/logout.png" alt=""></button></li>
-            </ul>
-        </nav>
-
-        <div class="formulario">
-            <div class="form">
-                <span>Nome do Profissional</span>
-                <input type="text">
-                <span>Nome do Projeto</span>
-                <select name="" id=""></select>
-                <span>Data alocação (Início)</span>
-                <input type="text">
-                <span>Data alocação (Fim)</span>
-                <input type="text">
-                <span>Quantidade de horas por dia</span>
-                <input type="text">
-            </div>
-            <div class="proximo">
-                <button><a href="">ALOCAR</a></button>
-            </div>
-        </div>
+  <div class="tela-alocaçao">
+    <div class="titulo">
+      <h1>ALOCAÇÃO DE PROFISSIONAIS</h1>
+      <img src="../assets/logo.png" alt="">
     </div>
 
-    <input type="checkbox" id="chat-toggle" class="chat-toggle">
-
-    <label for="chat-toggle" class="chatbot-icon">
-        <img src="../assets/chatbot (2).png" alt="Chatbot" class="chat-icon-img">
+    <input type="checkbox" id="menu-toggle" class="menu-toggle">
+    <label for="menu-toggle" class="hamburger">
+      <span></span><span></span><span></span>
     </label>
 
-    <aside class="chat-sidebar">
-        <div class="chat-header">
-            <h2>Chat de Suporte</h2>
-            <label for="chat-toggle" class="close-chat">X</label>
-        </div>
-        <div class="chat-body">
-        </div>
-        <div class="chat-input">
-            <input type="text" placeholder="Digite sua mensagem...">
-            <button>Enviar</button>
-        </div>
-    </aside>
+    <nav class="menu">
+      <ul>
+        <li><a href="./perfil.html">Início</a></li>
+        <li><a href="./gerenciamento.html">Gerenciar Projetos</a></li>
+        <li><a href="./cadastro.html">Cadastro de Profissionais</a></li>
+        <li><a href="./busca_profissonal.html">Busca de Profissionais</a></li>
+        <li><a href="./meu_apontamento.html">Calendário de Horas</a></li>
+        <li><a href="#">Feedback de Profissionais</a></li>
+        <li><a href="./faq.html">Ajuda & FAQ</a></li>
+        <li><button><img src="../assets/logout.png" alt=""></button></li>
+      </ul>
+    </nav>
 
+    <div class="formulario">
+      <div class="form">
+        <span>Nome do Profissional</span>
+        <input type="text">
+        <span>Nome do Projeto</span>
+        <select></select>
+        <span>Data alocação (Início)</span>
+        <input type="text">
+        <span>Data alocação (Fim)</span>
+        <input type="text">
+        <span>Quantidade de horas por dia</span>
+        <input type="text">
+      </div>
+      <div class="proximo">
+        <button><a href="">ALOCAR</a></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chatbot -->
+  <input type="checkbox" id="chat-toggle" class="chat-toggle">
+  <label for="chat-toggle" class="chatbot-icon">
+    <img src="../assets/chatbot (2).png" alt="Chatbot" class="chat-icon-img">
+  </label>
+
+  <aside class="chat-sidebar">
+    <div class="chat-header">
+      <h2>SunnyBOT</h2>
+      <label for="chat-toggle" class="close-chat">X</label>
+    </div>
+    <div class="chat-body"></div>
+    <div class="chat-input">
+      <input type="text" placeholder="Digite sua mensagem...">
+      <button>Enviar</button>
+    </div>
+  </aside>
+
+  <script src="../js/chatbot.js"></script>
 </body>
-
 </html>
-<script src="../js/alocacao.js"></script>
