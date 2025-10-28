@@ -35,6 +35,25 @@ async function realizarLogin() {
     localStorage.setItem("token", data.token);
     localStorage.setItem("emailUsuario", data.email);
 
+    try {
+      const usuarioResponse = await fetch(`http://localhost:8080/api/usuarios/${data.id}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${data.token}`
+        }
+      });
+
+      if (usuarioResponse.ok) {
+        const usuarioData = await usuarioResponse.json();
+        localStorage.setItem("idEmpresa", usuarioData.idEmpresa);
+      } else {
+        console.warn("Não foi possível obter os dados completos do usuário.");
+      }
+    } catch (erroUsuario) {
+      console.error("Erro ao buscar os dados do usuário:", erroUsuario);
+    }
+
     await Swal.fire('✅ Sucesso', 'Bem-vindo!', 'success');
     window.location.href = "../html/cadastro.html";
 
