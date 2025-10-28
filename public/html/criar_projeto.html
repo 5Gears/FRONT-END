@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="../css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="../assets/5Gears-removebg-preview.png">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>
@@ -34,7 +35,7 @@
                 <li><a href="./meu_apontamento.html">Calendário de Horas</a></li>
                 <li><a href="#">Feedback de Profissionais</a></li>
                 <li><a href="./faq.html">Ajuda & FAQ</a></li>
-                <li><button><img src="../assets/logout.png" alt=""></button></li>
+                <li><button onclick="realizarLogout()"><img src="../assets/logout.png" alt=""></button></li>
             </ul>
         </nav>
 
@@ -47,25 +48,41 @@
             </form>
             <div id="imageContainer"></div>
         </div>
+
         <div class="novo-projeto">
             <span>Nome do Projeto</span>
-            <input type="text">
+            <input type="text" id="nomeProjeto">
+
             <span>Descrição do Projeto</span>
-            <input type="text">
+            <input type="text" id="descricaoProjeto">
+
             <span>Tempo Estimado (Horas)</span>
-            <input type="text">
-            <span>Orçamento</span>
-            <input type="text">
-            <span>Data Inicio</span>
-            <input type="text">
+            <input type="number" id="tempoEstimado">
+
+            <span>Orçamento (R$)</span>
+            <input type="number" step="0.01" id="orcamento">
+
+            <span>Data de Início</span>
+            <input type="date" id="dataInicio">
+
             <span>Data Estimada de Fechamento</span>
-            <input type="text">
+            <input type="date" id="dataFim">
+
+            <span>Cliente</span>
+            <select id="clienteId">
+                <option value="">Selecione um cliente</option>
+            </select>
+
+            <span>Competências Requeridas</span>
+            <input type="text" id="competenciasRequeridas">
         </div>
+
         <div class="proximo">
-            <button><a href="./perfil.html">PROXIMO</a></button>
+            <button id="btnCriarProjeto">CONFIRMAR</button>
         </div>
     </div>
 
+    <script src="../js/criarProjeto.js"></script>
 </body>
 
 </html>
