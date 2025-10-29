@@ -1,7 +1,9 @@
 const BASE_URL = "http://localhost:8080/api";
 
+// Senioridades disponíveis
 const senioridades = ["ESTAGIARIO", "JUNIOR", "PLENO", "SENIOR"];
 
+// Níveis de permissão
 const niveisPermissao = {
     "FUNCIONARIO": 1,
     "GERENTE": 2,
@@ -15,6 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
     carregarNiveisPermissao();
 });
 
+// Carregar cargos do backend
 async function carregarCargos() {
     try {
         const response = await fetch(`${BASE_URL}/cargos`);
@@ -22,10 +25,10 @@ async function carregarCargos() {
         const cargos = await response.json();
 
         const selectCargo = document.getElementById("cargo");
-        selectCargo.innerHTML = "<option value=''>Selecione</option>";
+        selectCargo.innerHTML = "<option value=''>Selecione um cargo</option>";
         cargos.forEach(cargo => {
             const option = document.createElement("option");
-            option.value = cargo.idCargo;
+            option.value = cargo.nome; // importante: enviamos o nome, não o ID
             option.text = cargo.nome;
             selectCargo.appendChild(option);
         });
@@ -35,31 +38,34 @@ async function carregarCargos() {
     }
 }
 
+// Carregar senioridades
 function carregarSenioridades() {
     const select = document.getElementById("senioridade");
     select.innerHTML = "<option value=''>Selecione</option>";
     senioridades.forEach(s => {
         const option = document.createElement("option");
         option.value = s;
-        option.text = s;
+        option.text = s.charAt(0).toUpperCase() + s.slice(1).toLowerCase(); // exibição amigável
         select.appendChild(option);
     });
 }
 
+// Carregar níveis de permissão
 function carregarNiveisPermissao() {
     const select = document.getElementById("nivelPermissao");
     select.innerHTML = "<option value=''>Selecione</option>";
     Object.keys(niveisPermissao).forEach(nivel => {
         const option = document.createElement("option");
         option.value = niveisPermissao[nivel];
-        option.text = nivel; 
+        option.text = nivel;
         select.appendChild(option);
     });
 }
 
+// Função para cadastrar usuário
 async function cadastrarUsuario() {
-    const usuarioIdLogado = localStorage.getItem("idEmpresa");
-    if (!usuarioIdLogado) {
+    const idEmpresa = localStorage.getItem("idEmpresa");
+    if (!idEmpresa) {
         await Swal.fire('⚠️ Atenção', 'Usuário não identificado. Faça login novamente.', 'warning');
         window.location.href = "./login.html";
         return;
@@ -71,13 +77,19 @@ async function cadastrarUsuario() {
         cpf: document.getElementById("cpf").value.trim(),
         telefone: document.getElementById("telefone").value.trim(),
         area: document.getElementById("area").value.trim(),
-        cargaHoraria: parseInt(document.getElementById("cargaHoraria").value),
-        valorHora: parseFloat(document.getElementById("valorHora").value),
-        idCargo: parseInt(document.getElementById("cargo").value),
-        senioridade: document.getElementById("senioridade").value,
-        idNivel: parseInt(document.getElementById("nivelPermissao").value),
-        idEmpresa: parseInt(usuarioIdLogado)
+        cargaHoraria: parseInt(document.getElementById("cargaHoraria").value) || 0,
+        valorHora: parseFloat(document.getElementById("valorHora").value) || 0,
+        idEmpresa: parseInt(idEmpresa),
+        idNivel: parseInt(document.getElementById("nivelPermissao").value) || 1,
+        cargoNome: document.getElementById("cargo").value || null,
+        senioridade: document.getElementById("senioridade").value || null
     };
+
+    // Validação mínima
+    if (!usuario.nome || !usuario.email) {
+        Swal.fire('⚠️ Atenção', 'Nome e e-mail são obrigatórios.', 'warning');
+        return;
+    }
 
     try {
         const response = await fetch(`${BASE_URL}/usuarios`, {
@@ -87,16 +99,15 @@ async function cadastrarUsuario() {
         });
 
         if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.erro || "Erro ao cadastrar usuário");
+            const errorData = await response.json().catch(() => ({}));
+            throw new Error(errorData.message || "Erro ao cadastrar usuário");
         }
 
         const data = await response.json();
+        Swal.fire('✅ Sucesso', `Usuário <b>${data.nome}</b> cadastrado com sucesso!`, 'success');
 
-        await Swal.fire('✅ Sucesso', `Usuário <b>${data.nome}</b> cadastrado com sucesso!`, 'success');
-
-        const formDiv = document.getElementById("formUsuario");
-        formDiv.querySelectorAll("input, select").forEach(el => el.value = "");
+        // Resetar formulário
+        document.getElementById("formUsuario").querySelectorAll("input, select").forEach(el => el.value = "");
 
     } catch (error) {
         console.error(error);
