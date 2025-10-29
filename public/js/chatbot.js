@@ -126,83 +126,97 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     async function abrirPopupAlocacao() {
-        if (!usuariosSugeridos.length) {
-            addMessage('Nenhum profissional disponível para alocar.', false);
-            return;
-        }
-
-        // Gera HTML com inputs
-        const html = `
-            <div style="text-align:left;max-height:350px;overflow-y:auto">
-                ${usuariosSugeridos
-                    .map(u => {
-                        const valorHora = u.valorHora ? u.valorHora.toFixed(2) : '0.00';
-                        return `
-                            <div style="margin-bottom:12px;border-bottom:1px solid #eee;padding-bottom:6px">
-                                <input type="checkbox" id="user_${u.id}" value="${u.id}">
-                                <label for="user_${u.id}">
-                                    <b>${u.nome}</b> (${u.senioridade}) – ${u.cargo} – R$${valorHora}/h
-                                </label><br>
-                                <small>Horas por dia:</small>
-                                <input type="number" id="horasDia_${u.id}" min="1" value="4" style="width:60px;margin-left:5px">
-                                <small>Total:</small>
-                                <input type="number" id="horasTotais_${u.id}" min="1" value="20" style="width:60px;margin-left:5px">
-                            </div>
-                        `;
-                    })
-                    .join('')}
-            </div>
-        `;
-
-        // Captura os dados antes de fechar o modal
-        const result = await Swal.fire({
-            title: `Selecione e defina as horas para <b>${projetoSelecionado.nome}</b>`,
-            html,
-            confirmButtonText: 'Confirmar Alocação',
-            showCancelButton: true,
-            cancelButtonText: 'Cancelar',
-            width: 600,
-            background: '#fff',
-            preConfirm: () => {
-                const checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
-                const selecionados = Array.from(checkboxes).map(cb => {
-                    const id = parseInt(cb.value);
-                    const horasPorDia = parseInt(document.getElementById(`horasDia_${id}`).value) || 4;
-                    const horasAlocadas = parseInt(document.getElementById(`horasTotais_${id}`).value) || 8;
-                    return { id, horasPorDia, horasAlocadas };
-                });
-                return selecionados;
-            }
-        });
-
-        if (result.isConfirmed) {
-            const selecionados = result.value || [];
-
-            if (!selecionados.length) {
-                addMessage('Nenhum profissional selecionado.', false);
-                return;
-            }
-
-            addMessage(
-                `Alocando ${selecionados.length} profissional${selecionados.length > 1 ? 'es' : ''}...`,
-                false
-            );
-
-            try {
-                for (const { id, horasPorDia, horasAlocadas } of selecionados) {
-                    await postAlocacao(projetoSelecionado.id, id, horasAlocadas, horasPorDia);
-                }
-
-                Swal.fire('✅ Sucesso', 'Profissionais alocados com sucesso!', 'success');
-                addMessage(`✅ ${selecionados.length} profissional${selecionados.length > 1 ? 'es foram' : ' foi'} alocado${selecionados.length > 1 ? 's' : ''} com sucesso!`, false);
-            } catch (err) {
-                Swal.fire('Erro', 'Falha ao alocar um ou mais profissionais.', 'error');
-                addMessage(`❌ Ocorreu um erro: ${err.message}`, false);
-            }
-        }
-
-        aguardandoAlocacao = false;
+    if (!usuariosSugeridos.length) {
+        addMessage('Nenhum profissional disponível para alocar.', false);
+        return;
     }
+
+    // Construção dinâmica do HTML com inputs para horas
+    const html = `
+        <div style="text-align:left;max-height:300px;overflow-y:auto">
+            ${usuariosSugeridos.map(u => `
+                <div style="margin-bottom:10px;padding:6px 0;border-bottom:1px solid #ddd;">
+                    <input type="checkbox" id="user_${u.id}" value="${u.id}">
+                    <label for="user_${u.id}">
+                        <b>${u.nome}</b> (${u.senioridade}) – ${u.cargo} – R$${u.valorHora.toFixed(2)}/h
+                    </label><br>
+                    <div style="margin-left:22px;margin-top:4px;">
+                        <label>Horas por dia: </label>
+                        <input id="horasPorDia_${u.id}" type="number" min="1" max="12" style="width:60px" value="4">
+                        &nbsp;
+                        <label>Total: </label>
+                        <input id="horasTotais_${u.id}" type="number" min="1" max="200" style="width:60px" value="20">
+                    </div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+
+    const result = await Swal.fire({
+        title: `Selecione e defina as horas para <b>${projetoSelecionado.nome}</b>`,
+        html,
+        confirmButtonText: 'Confirmar',
+        showCancelButton: true,
+        cancelButtonText: 'Cancelar',
+        focusConfirm: false,
+        background: '#fff',
+        preConfirm: () => {
+            // coleta de dados segura
+            const selecionados = Array.from(document.querySelectorAll('input[type="checkbox"]:checked')).map(cb => {
+                const id = parseInt(cb.value);
+
+                // Seleciona os inputs relacionados a este usuário
+                const horasPorDiaEl = document.getElementById(`horasPorDia_${id}`);
+                const horasTotaisEl = document.getElementById(`horasTotais_${id}`);
+
+                // Evita crash caso o elemento não exista
+                const horasPorDia = horasPorDiaEl?.value ? parseInt(horasPorDiaEl.value) : 0;
+                const horasTotais = horasTotaisEl?.value ? parseInt(horasTotaisEl.value) : 0;
+
+                return {
+                    idUsuario: id,
+                    horasPorDia,
+                    horasTotais
+                };
+            });
+
+            if (selecionados.length === 0) {
+                Swal.showValidationMessage('Selecione pelo menos um profissional.');
+                return false;
+            }
+
+            // Valida se algum campo está vazio
+            for (const s of selecionados) {
+                if (s.horasPorDia <= 0 || s.horasTotais <= 0) {
+                    Swal.showValidationMessage('Preencha as horas de todos os selecionados.');
+                    return false;
+                }
+            }
+
+            console.log("Selecionados no popup:", selecionados);
+            return selecionados;
+        }
+    });
+
+    if (result.isConfirmed && result.value) {
+        const selecionados = result.value;
+        addMessage(`Alocando ${selecionados.length} profissional(is)...`, false);
+
+        try {
+            for (const s of selecionados) {
+                await postAlocacao(projetoSelecionado.id, s.idUsuario, s.horasTotais, s.horasPorDia);
+            }
+            Swal.fire('✅ Sucesso', 'Profissionais alocados com sucesso!', 'success');
+            addMessage('✅ Todos os profissionais foram alocados com sucesso!', false);
+        } catch (err) {
+            console.error("Erro ao alocar:", err);
+            Swal.fire('Erro', 'Falha ao alocar um ou mais profissionais.', 'error');
+            addMessage(`❌ Ocorreu um erro: ${err.message}`, false);
+        }
+    }
+
+    aguardandoAlocacao = false;
+}
 
     // ===========================================
     // Inicialização do Chatbot
