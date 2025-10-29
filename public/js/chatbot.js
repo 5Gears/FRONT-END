@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const sendButton = document.querySelector('.chat-input button');
 
     // ===========================================
-    // Utilidades de interface
+    // Utilidades
     // ===========================================
     function addMessage(text, isUser = true) {
         const msg = document.createElement('div');
@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     // ===========================================
-    // Comunicação com o backend
+    // Comunicação com o Backend
     // ===========================================
     async function postToBackend(endpoint, body) {
         const res = await fetch(`${API_BASE_URL}${endpoint}`, {
@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     // ===========================================
-    // Busca de profissionais
+    // Busca de Profissionais
     // ===========================================
     async function handleBuscaProfissionais(userText) {
         if (userText.trim().length < 10) {
@@ -113,7 +113,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     // ===========================================
-    // Botão e pop-up de alocação
+    // Botão e Pop-up de Alocação
     // ===========================================
     function exibirBotaoAlocar() {
         const div = document.createElement('div');
@@ -131,7 +131,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             return;
         }
 
-        // Gera o HTML do pop-up com campos de horas
+        // Gera HTML com inputs
         const html = `
             <div style="text-align:left;max-height:350px;overflow-y:auto">
                 ${usuariosSugeridos
@@ -154,6 +154,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             </div>
         `;
 
+        // Captura os dados antes de fechar o modal
         const result = await Swal.fire({
             title: `Selecione e defina as horas para <b>${projetoSelecionado.nome}</b>`,
             html,
@@ -161,12 +162,21 @@ document.addEventListener('DOMContentLoaded', async () => {
             showCancelButton: true,
             cancelButtonText: 'Cancelar',
             width: 600,
-            background: '#fff'
+            background: '#fff',
+            preConfirm: () => {
+                const checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+                const selecionados = Array.from(checkboxes).map(cb => {
+                    const id = parseInt(cb.value);
+                    const horasPorDia = parseInt(document.getElementById(`horasDia_${id}`).value) || 4;
+                    const horasAlocadas = parseInt(document.getElementById(`horasTotais_${id}`).value) || 8;
+                    return { id, horasPorDia, horasAlocadas };
+                });
+                return selecionados;
+            }
         });
 
         if (result.isConfirmed) {
-            const checkboxes = Swal.getPopup().querySelectorAll('input[type="checkbox"]:checked');
-            const selecionados = Array.from(checkboxes).map(cb => parseInt(cb.value));
+            const selecionados = result.value || [];
 
             if (!selecionados.length) {
                 addMessage('Nenhum profissional selecionado.', false);
@@ -179,15 +189,12 @@ document.addEventListener('DOMContentLoaded', async () => {
             );
 
             try {
-                for (const idUsuario of selecionados) {
-                    const horasPorDia = parseInt(document.getElementById(`horasDia_${idUsuario}`).value) || 4;
-                    const horasAlocadas = parseInt(document.getElementById(`horasTotais_${idUsuario}`).value) || 8;
-
-                    await postAlocacao(projetoSelecionado.id, idUsuario, horasAlocadas, horasPorDia);
+                for (const { id, horasPorDia, horasAlocadas } of selecionados) {
+                    await postAlocacao(projetoSelecionado.id, id, horasAlocadas, horasPorDia);
                 }
 
                 Swal.fire('✅ Sucesso', 'Profissionais alocados com sucesso!', 'success');
-                addMessage('✅ Todos os profissionais foram alocados com sucesso!', false);
+                addMessage(`✅ ${selecionados.length} profissional${selecionados.length > 1 ? 'es foram' : ' foi'} alocado${selecionados.length > 1 ? 's' : ''} com sucesso!`, false);
             } catch (err) {
                 Swal.fire('Erro', 'Falha ao alocar um ou mais profissionais.', 'error');
                 addMessage(`❌ Ocorreu um erro: ${err.message}`, false);
@@ -198,7 +205,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     // ===========================================
-    // Inicialização do chat
+    // Inicialização do Chatbot
     // ===========================================
     const idProjeto = localStorage.getItem('idProjeto');
     const nomeProjeto = localStorage.getItem('nomeProjeto');
@@ -224,7 +231,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     // ===========================================
-    // Envio e processamento de mensagens
+    // Envio e Processamento de Mensagens
     // ===========================================
     sendButton.addEventListener('click', () => {
         const text = inputField.value.trim();
