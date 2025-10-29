@@ -3,18 +3,18 @@
 // ===========================================
 
 const API_BASE_URL = 'http://localhost:8080/api/assistente/chatbot';
-const API_PROJETOS_CHATBOT = 'http://localhost:8080/api/projetos'; // nome diferente p/ não colidir com outros scripts
+const API_PROJETOS_CHATBOT = 'http://localhost:8080/api/projetos';
 
-// ⏱️ Defaults (ajuste aqui as horas padrão)
-const DEFAULT_HORAS_DIA   = 0;   
-const DEFAULT_HORAS_TOTAL = 0;  
+// 🕒 Defaults (inputs vazios — gerente deve preencher)
+const DEFAULT_HORAS_DIA = '';
+const DEFAULT_HORAS_TOTAL = '';
 
 let aguardandoAlocacao = false;
 let projetoSelecionado = null;
 let usuariosSugeridos = [];
 
 document.addEventListener('DOMContentLoaded', async () => {
-  const chatBody   = document.querySelector('.chat-body');
+  const chatBody = document.querySelector('.chat-body');
   const inputField = document.querySelector('.chat-input input');
   const sendButton = document.querySelector('.chat-input button');
 
@@ -27,17 +27,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     chatBody.scrollTop = chatBody.scrollHeight;
   }
 
-  function clearChat() {
-    chatBody.innerHTML = '';
-    aguardandoAlocacao = false;
-    projetoSelecionado = null;
-    usuariosSugeridos = [];
-    addMessage('Olá 👋 Sou o SunnyBOT! Carregando informações do projeto...', false);
-  }
-
   // -------- Backend --------
   async function postToBackend(endpoint, body) {
-    const res  = await fetch(`${API_BASE_URL}${endpoint}`, {
+    const res = await fetch(`${API_BASE_URL}${endpoint}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body)
@@ -47,7 +39,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     return data;
   }
 
-  async function postAlocacao(idProjeto, idUsuario, horasAlocadas = DEFAULT_HORAS_TOTAL, horasPorDia = DEFAULT_HORAS_DIA) {
+  async function postAlocacao(idProjeto, idUsuario, horasAlocadas, horasPorDia) {
     const body = {
       dataAlocacao: new Date().toISOString().split('T')[0],
       dataSaida: null,
@@ -55,16 +47,18 @@ document.addEventListener('DOMContentLoaded', async () => {
       horasAlocadas
     };
 
+    console.log('📦 Enviando alocação:', { idProjeto, idUsuario, body });
+
     const res = await fetch(`${API_PROJETOS_CHATBOT}/${idProjeto}/usuarios/${idUsuario}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body)
     });
 
-    if (!res.ok) {
-      const txt = await res.text();
-      throw new Error(txt || `Erro ${res.status}`);
-    }
+    const data = await res.text();
+    console.log('📬 Resposta do backend:', res.status, data);
+
+    if (!res.ok) throw new Error(data || `Erro ${res.status}`);
   }
 
   // -------- Busca de profissionais --------
@@ -132,10 +126,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             </label><br>
             <div style="margin-left:22px;margin-top:6px;">
               <label>Horas por dia: </label>
-              <input id="horasPorDia_${u.id}" type="number" min="1" max="12" style="width:70px" value="${DEFAULT_HORAS_DIA}">
+              <input id="horasPorDia_${u.id}" type="number" min="1" max="12" style="width:70px" value="${DEFAULT_HORAS_DIA}" placeholder="00">
               &nbsp;
               <label>Total: </label>
-              <input id="horasTotais_${u.id}" type="number" min="1" max="200" style="width:70px" value="${DEFAULT_HORAS_TOTAL}">
+              <input id="horasTotais_${u.id}" type="number" min="1" max="200" style="width:70px" value="${DEFAULT_HORAS_TOTAL}" placeholder="00">
             </div>
           </div>
         `).join('')}
@@ -151,18 +145,15 @@ document.addEventListener('DOMContentLoaded', async () => {
       focusConfirm: false,
       background: '#fff',
       preConfirm: () => {
-        // sempre leia os campos de DENTRO do popup:
         const popup = Swal.getPopup();
 
-        // monta os selecionados
         const selecionados = Array.from(popup.querySelectorAll('input[type="checkbox"]:checked')).map(cb => {
           const id = Number(cb.value);
           const hpdEl = popup.querySelector(`#horasPorDia_${CSS.escape(String(id))}`);
           const httEl = popup.querySelector(`#horasTotais_${CSS.escape(String(id))}`);
 
-          // valores numéricos robustos
-          const horasPorDia = Number((hpdEl && hpdEl.value) ? hpdEl.value : NaN);
-          const horasTotais = Number((httEl && httEl.value) ? httEl.value : NaN);
+          const horasPorDia = Number(hpdEl?.value);
+          const horasTotais = Number(httEl?.value);
 
           return { idUsuario: id, horasPorDia, horasTotais };
         });
@@ -172,7 +163,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           return false;
         }
 
-        // validação: nada de NaN/0
+        // validação: impedir campos vazios, 0, NaN
         for (const s of selecionados) {
           if (!Number.isFinite(s.horasPorDia) || !Number.isFinite(s.horasTotais) ||
               s.horasPorDia <= 0 || s.horasTotais <= 0) {
@@ -206,7 +197,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   // -------- Inicialização --------
-  const idProjeto  = localStorage.getItem('idProjeto');
+  const idProjeto = localStorage.getItem('idProjeto');
   const nomeProjeto = localStorage.getItem('nomeProjeto');
 
   if (idProjeto) {
