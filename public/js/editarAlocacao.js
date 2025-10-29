@@ -47,7 +47,7 @@ function alocarEquipe() {
   }
 
   localStorage.setItem("idProjeto", idProjeto);
-  window.location.href = "./alocação.html";
+  window.location.href = "./alocacão.html";
 }
 
 async function alterarProjeto() {
