@@ -11,12 +11,13 @@
 
 <body>
 
-  <div class="tela-alocaçao">
+  <div class="tela-alocacao">
     <div class="titulo">
       <h1>ALOCAÇÃO DE PROFISSIONAIS</h1>
-      <img src="../assets/logo.png" alt="">
+      <img src="../assets/logo.png" alt="Logo FiveGears">
     </div>
 
+    <!-- MENU LATERAL -->
     <input type="checkbox" id="menu-toggle" class="menu-toggle">
     <label for="menu-toggle" class="hamburger">
       <span></span><span></span><span></span>
@@ -31,30 +32,43 @@
         <li><a href="./meu_apontamento.html">Calendário de Horas</a></li>
         <li><a href="#">Feedback de Profissionais</a></li>
         <li><a href="./faq.html">Ajuda & FAQ</a></li>
-        <li><button><img src="../assets/logout.png" alt=""></button></li>
+        <li><button><img src="../assets/logout.png" alt="Logout"></button></li>
       </ul>
     </nav>
 
+    <!-- FORMULÁRIO DE ALOCAÇÃO -->
     <div class="formulario">
       <div class="form">
+
+        <!-- Projeto preenchido automaticamente -->
+        <span>Projeto Selecionado</span>
+        <select disabled></select>
+
+        <!-- Nome do profissional -->
         <span>Nome do Profissional</span>
-        <input type="text">
-        <span>Nome do Projeto</span>
-        <select></select>
+        <input type="text" placeholder="Ex: João da Silva">
+
+        <!-- Período -->
         <span>Data alocação (Início)</span>
-        <input type="text">
+        <input type="date">
         <span>Data alocação (Fim)</span>
-        <input type="text">
+        <input type="date">
+
+        <!-- Horas -->
         <span>Quantidade de horas por dia</span>
-        <input type="text">
+        <input type="number" min="1" max="12" placeholder="Ex: 6">
+        <span>Total de horas no projeto</span>
+        <input type="number" min="1" placeholder="Ex: 120">
+
       </div>
+
       <div class="proximo">
-        <button><a href="">ALOCAR</a></button>
+        <button><a href="#">ALOCAR</a></button>
       </div>
     </div>
   </div>
 
-  <!-- Chatbot -->
+  <!-- CHATBOT -->
   <input type="checkbox" id="chat-toggle" class="chat-toggle">
   <label for="chat-toggle" class="chatbot-icon">
     <img src="../assets/chatbot (2).png" alt="Chatbot" class="chat-icon-img">
@@ -72,6 +86,7 @@
     </div>
   </aside>
 
-  <script src="../js/chatbot.js"></script>
+  <!-- SCRIPTS -->
+  <script src="../js/alocacao.js"></script>
 </body>
 </html>

@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   const btnAlocar = document.querySelector('.proximo button a');
 
-  if (!idProjeto) {
+  /*if (!idProjeto) {
     Swal.fire({
       icon: 'warning',
       title: 'Projeto não selecionado',
@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       confirmButtonText: 'OK'
     }).then(() => (window.location.href = './editar_alocacao.html'));
     return;
-  }
+  }*/
 
   async function carregarProjeto() {
     try {
