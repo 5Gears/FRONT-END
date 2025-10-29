@@ -6,18 +6,17 @@ const API_BASE_URL = 'http://localhost:8080/api/assistente/chatbot';
 const API_PROJETOS = 'http://localhost:8080/api/projetos';
 
 let aguardandoAlocacao = false;
-let aguardandoHoras = false;
 let projetoSelecionado = null;
 let usuariosSugeridos = [];
 
-// ===========================================
-// Utilidades
-// ===========================================
 document.addEventListener('DOMContentLoaded', async () => {
     const chatBody = document.querySelector('.chat-body');
     const inputField = document.querySelector('.chat-input input');
     const sendButton = document.querySelector('.chat-input button');
 
+    // ===========================================
+    // Utilidades de interface
+    // ===========================================
     function addMessage(text, isUser = true) {
         const msg = document.createElement('div');
         msg.classList.add('chat-message', isUser ? 'user-message' : 'bot-message');
@@ -29,14 +28,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     function clearChat() {
         chatBody.innerHTML = '';
         aguardandoAlocacao = false;
-        aguardandoHoras = false;
         projetoSelecionado = null;
         usuariosSugeridos = [];
         addMessage('Olá 👋 Sou o SunnyBOT! Carregando informações do projeto...', false);
     }
 
     // ===========================================
-    // Comunicação com Backend
+    // Comunicação com o backend
     // ===========================================
     async function postToBackend(endpoint, body) {
         const res = await fetch(`${API_BASE_URL}${endpoint}`, {
@@ -49,10 +47,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         return data;
     }
 
-    async function postAlocacao(idProjeto, idUsuario) {
-        const horasPorDia = parseInt(localStorage.getItem('horasPorDia')) || 4;
-        const horasAlocadas = parseInt(localStorage.getItem('horasAlocadas')) || 8;
-
+    async function postAlocacao(idProjeto, idUsuario, horasAlocadas = 8, horasPorDia = 4) {
         const body = {
             dataAlocacao: new Date().toISOString().split('T')[0],
             dataSaida: null,
@@ -70,19 +65,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             const data = await res.text();
             throw new Error(data || `Erro ${res.status}`);
         }
-    }
-
-    // ===========================================
-    // Extração de horas do texto
-    // ===========================================
-    function extrairHorasDaMensagem(mensagem) {
-        const regexDia = /(\d+)\s*(?:h|hora|horas)\s*(?:por\s*dia|diárias?)/i;
-        const regexTotal = /total\s*(?:de)?\s*(\d+)\s*(?:h|hora|horas)/i;
-
-        const horasPorDia = regexDia.exec(mensagem)?.[1] ? parseInt(regexDia.exec(mensagem)[1]) : null;
-        const horasAlocadas = regexTotal.exec(mensagem)?.[1] ? parseInt(regexTotal.exec(mensagem)[1]) : null;
-
-        return { horasPorDia, horasAlocadas };
     }
 
     // ===========================================
@@ -131,7 +113,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     // ===========================================
-    // Pop-up de alocação
+    // Botão e pop-up de alocação
     // ===========================================
     function exibirBotaoAlocar() {
         const div = document.createElement('div');
@@ -140,23 +122,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         chatBody.appendChild(div);
 
         const btn = div.querySelector('.alocar-btn');
-        btn.addEventListener('click', verificarHorasAntesDeAlocar);
-    }
-
-    async function verificarHorasAntesDeAlocar() {
-        const horasPorDia = parseInt(localStorage.getItem('horasPorDia'));
-        const horasAlocadas = parseInt(localStorage.getItem('horasAlocadas'));
-
-        if (!horasPorDia || !horasAlocadas) {
-            aguardandoHoras = true;
-            addMessage(
-                'Antes de alocar, me diga: quantas horas por dia e total de horas você deseja para cada profissional?',
-                false
-            );
-            return;
-        }
-
-        await abrirPopupAlocacao();
+        btn.addEventListener('click', abrirPopupAlocacao);
     }
 
     async function abrirPopupAlocacao() {
@@ -165,17 +131,22 @@ document.addEventListener('DOMContentLoaded', async () => {
             return;
         }
 
+        // Gera o HTML do pop-up com campos de horas
         const html = `
-            <div style="text-align:left;max-height:300px;overflow-y:auto">
+            <div style="text-align:left;max-height:350px;overflow-y:auto">
                 ${usuariosSugeridos
                     .map(u => {
                         const valorHora = u.valorHora ? u.valorHora.toFixed(2) : '0.00';
                         return `
-                            <div style="margin-bottom:8px">
+                            <div style="margin-bottom:12px;border-bottom:1px solid #eee;padding-bottom:6px">
                                 <input type="checkbox" id="user_${u.id}" value="${u.id}">
                                 <label for="user_${u.id}">
                                     <b>${u.nome}</b> (${u.senioridade}) – ${u.cargo} – R$${valorHora}/h
-                                </label>
+                                </label><br>
+                                <small>Horas por dia:</small>
+                                <input type="number" id="horasDia_${u.id}" min="1" value="4" style="width:60px;margin-left:5px">
+                                <small>Total:</small>
+                                <input type="number" id="horasTotais_${u.id}" min="1" value="20" style="width:60px;margin-left:5px">
                             </div>
                         `;
                     })
@@ -184,11 +155,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         `;
 
         const result = await Swal.fire({
-            title: `Selecione quem deseja alocar em <b>${projetoSelecionado.nome}</b>`,
+            title: `Selecione e defina as horas para <b>${projetoSelecionado.nome}</b>`,
             html,
             confirmButtonText: 'Confirmar Alocação',
             showCancelButton: true,
             cancelButtonText: 'Cancelar',
+            width: 600,
             background: '#fff'
         });
 
@@ -208,8 +180,12 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             try {
                 for (const idUsuario of selecionados) {
-                    await postAlocacao(projetoSelecionado.id, idUsuario);
+                    const horasPorDia = parseInt(document.getElementById(`horasDia_${idUsuario}`).value) || 4;
+                    const horasAlocadas = parseInt(document.getElementById(`horasTotais_${idUsuario}`).value) || 8;
+
+                    await postAlocacao(projetoSelecionado.id, idUsuario, horasAlocadas, horasPorDia);
                 }
+
                 Swal.fire('✅ Sucesso', 'Profissionais alocados com sucesso!', 'success');
                 addMessage('✅ Todos os profissionais foram alocados com sucesso!', false);
             } catch (err) {
@@ -222,7 +198,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     // ===========================================
-    // Inicialização
+    // Inicialização do chat
     // ===========================================
     const idProjeto = localStorage.getItem('idProjeto');
     const nomeProjeto = localStorage.getItem('nomeProjeto');
@@ -248,7 +224,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     // ===========================================
-    // Envio e Processamento de Mensagens
+    // Envio e processamento de mensagens
     // ===========================================
     sendButton.addEventListener('click', () => {
         const text = inputField.value.trim();
@@ -267,34 +243,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     async function processMessage(userText) {
         try {
-            // Se o bot estava aguardando as horas
-            if (aguardandoHoras) {
-                const { horasPorDia, horasAlocadas } = extrairHorasDaMensagem(userText);
-
-                if (!horasPorDia || !horasAlocadas) {
-                    addMessage(
-                        'Não entendi direito 😅. Me diga algo como "4 horas por dia e 20 horas no total".',
-                        false
-                    );
-                    return;
-                }
-
-                localStorage.setItem('horasPorDia', horasPorDia);
-                localStorage.setItem('horasAlocadas', horasAlocadas);
-
-                addMessage(
-                    `Perfeito! Usarei ${horasPorDia}h/dia, total de ${horasAlocadas}h por profissional.`,
-                    false
-                );
-
-                aguardandoHoras = false;
-                await abrirPopupAlocacao();
-                return;
-            }
-
             if (aguardandoAlocacao) {
                 aguardandoAlocacao = false;
-                if (userText.toLowerCase().includes('sim')) await verificarHorasAntesDeAlocar();
+                if (userText.toLowerCase().includes('sim')) await abrirPopupAlocacao();
                 else addMessage('Tudo bem! Você pode fazer a alocação manual depois.', false);
                 return;
             }
@@ -303,11 +254,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                 addMessage('⚠️ Nenhum projeto selecionado.', false);
                 return;
             }
-
-            const { horasPorDia, horasAlocadas } = extrairHorasDaMensagem(userText);
-
-            if (horasPorDia) localStorage.setItem('horasPorDia', horasPorDia);
-            if (horasAlocadas) localStorage.setItem('horasAlocadas', horasAlocadas);
 
             await handleBuscaProfissionais(userText);
         } catch (err) {
