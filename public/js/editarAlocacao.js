@@ -104,7 +104,6 @@ async function alterarProjeto() {
     }
 }
 
-
 async function excluirProjeto() {
   const select = document.querySelector("select");
   const idProjeto = select.value;
