@@ -5,10 +5,6 @@
 const API_BASE_URL = 'http://localhost:8080/api/assistente/chatbot';
 const API_PROJETOS_CHATBOT = 'http://localhost:8080/api/projetos';
 
-// 🕒 Defaults (inputs vazios — gerente deve preencher)
-const DEFAULT_HORAS_DIA = '';
-const DEFAULT_HORAS_TOTAL = '';
-
 let aguardandoAlocacao = false;
 let projetoSelecionado = null;
 let usuariosSugeridos = [];
@@ -18,7 +14,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const inputField = document.querySelector('.chat-input input');
   const sendButton = document.querySelector('.chat-input button');
 
-  // -------- Utilidades --------
+  // ========== Utilidades ==========
   function addMessage(text, isUser = true) {
     const msg = document.createElement('div');
     msg.classList.add('chat-message', isUser ? 'user-message' : 'bot-message');
@@ -27,7 +23,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     chatBody.scrollTop = chatBody.scrollHeight;
   }
 
-  // -------- Backend --------
   async function postToBackend(endpoint, body) {
     const res = await fetch(`${API_BASE_URL}${endpoint}`, {
       method: 'POST',
@@ -41,13 +36,16 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   async function postAlocacao(idProjeto, idUsuario, horasAlocadas, horasPorDia) {
     const body = {
+      idProjeto,
+      idUsuario,
+      status: "ALOCADO",
       dataAlocacao: new Date().toISOString().split('T')[0],
       dataSaida: null,
       horasPorDia,
       horasAlocadas
     };
 
-    console.log('📦 Enviando alocação:', { idProjeto, idUsuario, body });
+    console.log("📦 Enviando alocação:", body);
 
     const res = await fetch(`${API_PROJETOS_CHATBOT}/${idProjeto}/usuarios/${idUsuario}`, {
       method: 'POST',
@@ -55,13 +53,19 @@ document.addEventListener('DOMContentLoaded', async () => {
       body: JSON.stringify(body)
     });
 
-    const data = await res.text();
-    console.log('📬 Resposta do backend:', res.status, data);
+    if (!res.ok) {
+      const txt = await res.text();
+      const msg = txt || `Erro ${res.status}`;
+      console.error("🚫 Falha ao alocar:", msg);
+      Swal.fire('⚠️ Erro de alocação', msg, 'warning');
+      throw new Error(msg);
+    }
 
-    if (!res.ok) throw new Error(data || `Erro ${res.status}`);
+    const respText = await res.text();
+    console.log("✅ Resposta do backend:", res.status, respText);
   }
 
-  // -------- Busca de profissionais --------
+  // ========== Busca de profissionais ==========
   async function handleBuscaProfissionais(userText) {
     if (userText.trim().length < 5) {
       addMessage('Descreva melhor a sua necessidade, por favor.', false);
@@ -85,7 +89,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     usuariosSugeridos = usuarios || [];
 
     if (usuariosSugeridos.length === 0) {
-      addMessage('😕 Não encontrei profissionais adequados à sua solicitação.', false);
+      addMessage('😕 Nenhum profissional disponível para essa demanda.', false);
       return;
     }
 
@@ -101,7 +105,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     aguardandoAlocacao = true;
   }
 
-  // -------- Botão + Pop-up de alocação --------
+  // ========== Pop-up de alocação ==========
   function exibirBotaoAlocar() {
     const div = document.createElement('div');
     div.classList.add('chat-action');
@@ -126,10 +130,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             </label><br>
             <div style="margin-left:22px;margin-top:6px;">
               <label>Horas por dia: </label>
-              <input id="horasPorDia_${u.id}" type="number" min="1" max="12" style="width:70px" value="${DEFAULT_HORAS_DIA}" placeholder="00">
+              <input id="horasPorDia_${u.id}" type="number" min="1" max="12" style="width:70px" placeholder="00">
               &nbsp;
               <label>Total: </label>
-              <input id="horasTotais_${u.id}" type="number" min="1" max="200" style="width:70px" value="${DEFAULT_HORAS_TOTAL}" placeholder="00">
+              <input id="horasTotais_${u.id}" type="number" min="1" max="200" style="width:70px" placeholder="00">
             </div>
           </div>
         `).join('')}
@@ -142,36 +146,27 @@ document.addEventListener('DOMContentLoaded', async () => {
       confirmButtonText: 'Confirmar',
       showCancelButton: true,
       cancelButtonText: 'Cancelar',
-      focusConfirm: false,
       background: '#fff',
       preConfirm: () => {
         const popup = Swal.getPopup();
-
         const selecionados = Array.from(popup.querySelectorAll('input[type="checkbox"]:checked')).map(cb => {
           const id = Number(cb.value);
-          const hpdEl = popup.querySelector(`#horasPorDia_${CSS.escape(String(id))}`);
-          const httEl = popup.querySelector(`#horasTotais_${CSS.escape(String(id))}`);
-
-          const horasPorDia = Number(hpdEl?.value);
-          const horasTotais = Number(httEl?.value);
-
-          return { idUsuario: id, horasPorDia, horasTotais };
+          const hpd = Number(popup.querySelector(`#horasPorDia_${id}`)?.value || NaN);
+          const htl = Number(popup.querySelector(`#horasTotais_${id}`)?.value || NaN);
+          return { idUsuario: id, horasPorDia: hpd, horasTotais: htl };
         });
 
-        if (selecionados.length === 0) {
+        if (!selecionados.length) {
           Swal.showValidationMessage('Selecione pelo menos um profissional.');
           return false;
         }
 
-        // validação: impedir campos vazios, 0, NaN
         for (const s of selecionados) {
-          if (!Number.isFinite(s.horasPorDia) || !Number.isFinite(s.horasTotais) ||
-              s.horasPorDia <= 0 || s.horasTotais <= 0) {
+          if (!Number.isFinite(s.horasPorDia) || !Number.isFinite(s.horasTotais) || s.horasPorDia <= 0 || s.horasTotais <= 0) {
             Swal.showValidationMessage('Preencha as horas de todos os selecionados.');
             return false;
           }
         }
-
         return selecionados;
       }
     });
@@ -188,15 +183,14 @@ document.addEventListener('DOMContentLoaded', async () => {
         addMessage('✅ Todos os profissionais foram alocados com sucesso!', false);
       } catch (err) {
         console.error('Erro ao alocar:', err);
-        Swal.fire('Erro', 'Falha ao alocar um ou mais profissionais.', 'error');
-        addMessage(`❌ Ocorreu um erro: ${err.message}`, false);
+        addMessage(`❌ Erro: ${err.message}`, false);
       }
     }
 
     aguardandoAlocacao = false;
   }
 
-  // -------- Inicialização --------
+  // ========== Inicialização ==========
   const idProjeto = localStorage.getItem('idProjeto');
   const nomeProjeto = localStorage.getItem('nomeProjeto');
 
@@ -220,7 +214,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     addMessage('⚠️ Nenhum projeto selecionado. Volte à tela anterior e escolha um projeto.', false);
   }
 
-  // -------- Envio + Processamento --------
+  // ========== Envio ==========
   sendButton.addEventListener('click', () => {
     const text = inputField.value.trim();
     if (!text) return;
