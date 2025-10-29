@@ -543,6 +543,12 @@ article {
     overflow-y: auto;
     font-size: 0.9rem;
     color: #444;
+
+    /* Correções para manter mensagens dentro do chat */
+    box-sizing: border-box;       /* inclui padding na largura total */
+    width: 100%;                  /* garante que não ultrapasse a sidebar */
+    max-width: 100%;              /* previne overflow horizontal */
+    word-break: break-word;       /* força quebra de palavras longas */
 }
 
 .chat-input {
@@ -603,4 +609,44 @@ article {
     /* Alinha o box à esquerda */
     border-top-left-radius: 5px;
     /* Deixa o canto superior esquerdo mais quadrado */
+}
+
+/* --- BOTÃO DE ALOCAR NO CHAT --- */
+.chat-action {
+    display: flex;
+    justify-content: flex-start; /* Alinha à esquerda do chat */
+    padding: 10px 0;
+}
+
+.chat-action .alocar-btn {
+    background-color: #278FC5;  /* mesma cor do botão "Enviar" */
+    color: white;
+    border: none;
+    border-radius: 6px;         /* suaviza as bordas */
+    padding: 8px 16px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+}
+
+.chat-action .alocar-btn:hover {
+    background-color: #1a6fa0;  /* tom mais escuro no hover */
+}
+
+.chat-action .alocar-btn:active {
+    transform: scale(0.97);     /* efeito de clique */
+}
+
+.chat-action .alocar-btn:disabled {
+    background-color: #b0c4d9;  /* cor cinza clara quando desabilitado */
+    cursor: not-allowed;
+}
+
+.swal2-confirm {
+    background-color: #278FC5;
+}
+
+.swal2-confirm:hover {
+    background-color: #1a6fa0;
 }
