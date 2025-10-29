@@ -1,9 +1,14 @@
 // ===========================================
 // SunnyBOT – Integração Chatbot (FiveGears)
+// Versão estável (sem inputs de hora)
 // ===========================================
 
 const API_BASE_URL = 'http://localhost:8080/api/assistente/chatbot';
 const API_PROJETOS_CHATBOT = 'http://localhost:8080/api/projetos';
+
+// ⏱️ Horas padrão de alocação
+const DEFAULT_HORAS_DIA = 8;
+const DEFAULT_HORAS_TOTAL = 40;
 
 let aguardandoAlocacao = false;
 let projetoSelecionado = null;
@@ -14,7 +19,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const inputField = document.querySelector('.chat-input input');
   const sendButton = document.querySelector('.chat-input button');
 
-  // ========== Utilidades ==========
+  // -------- Funções utilitárias --------
   function addMessage(text, isUser = true) {
     const msg = document.createElement('div');
     msg.classList.add('chat-message', isUser ? 'user-message' : 'bot-message');
@@ -23,6 +28,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     chatBody.scrollTop = chatBody.scrollHeight;
   }
 
+  function clearChat() {
+    chatBody.innerHTML = '';
+    aguardandoAlocacao = false;
+    projetoSelecionado = null;
+    usuariosSugeridos = [];
+    addMessage('Olá 👋 Sou o SunnyBOT! Carregando informações do projeto...', false);
+  }
+
+  // -------- Requisições ao backend --------
   async function postToBackend(endpoint, body) {
     const res = await fetch(`${API_BASE_URL}${endpoint}`, {
       method: 'POST',
@@ -34,18 +48,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     return data;
   }
 
-  async function postAlocacao(idProjeto, idUsuario, horasAlocadas, horasPorDia) {
+  async function postAlocacao(idProjeto, idUsuario, horasAlocadas = DEFAULT_HORAS_TOTAL, horasPorDia = DEFAULT_HORAS_DIA) {
     const body = {
-      idProjeto,
-      idUsuario,
-      status: "ALOCADO",
       dataAlocacao: new Date().toISOString().split('T')[0],
       dataSaida: null,
       horasPorDia,
       horasAlocadas
     };
-
-    console.log("📦 Enviando alocação:", body);
 
     const res = await fetch(`${API_PROJETOS_CHATBOT}/${idProjeto}/usuarios/${idUsuario}`, {
       method: 'POST',
@@ -55,20 +64,14 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     if (!res.ok) {
       const txt = await res.text();
-      const msg = txt || `Erro ${res.status}`;
-      console.error("🚫 Falha ao alocar:", msg);
-      Swal.fire('⚠️ Erro de alocação', msg, 'warning');
-      throw new Error(msg);
+      throw new Error(txt || `Erro ${res.status}`);
     }
-
-    const respText = await res.text();
-    console.log("✅ Resposta do backend:", res.status, respText);
   }
 
-  // ========== Busca de profissionais ==========
+  // -------- Busca de profissionais --------
   async function handleBuscaProfissionais(userText) {
-    if (userText.trim().length < 5) {
-      addMessage('Descreva melhor a sua necessidade, por favor.', false);
+    if (userText.trim().length < 4) {
+      addMessage('Por favor, descreva melhor o perfil desejado.', false);
       return;
     }
 
@@ -89,7 +92,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     usuariosSugeridos = usuarios || [];
 
     if (usuariosSugeridos.length === 0) {
-      addMessage('😕 Nenhum profissional disponível para essa demanda.', false);
+      addMessage('😕 Não encontrei profissionais adequados à sua solicitação.', false);
       return;
     }
 
@@ -105,7 +108,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     aguardandoAlocacao = true;
   }
 
-  // ========== Pop-up de alocação ==========
+  // -------- Botão de alocação --------
   function exibirBotaoAlocar() {
     const div = document.createElement('div');
     div.classList.add('chat-action');
@@ -114,6 +117,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     div.querySelector('.alocar-btn').addEventListener('click', abrirPopupAlocacao);
   }
 
+  // -------- Pop-up de confirmação --------
   async function abrirPopupAlocacao() {
     if (!usuariosSugeridos.length) {
       addMessage('Nenhum profissional disponível para alocar.', false);
@@ -127,21 +131,14 @@ document.addEventListener('DOMContentLoaded', async () => {
             <input type="checkbox" id="user_${u.id}" value="${u.id}">
             <label for="user_${u.id}">
               <b>${u.nome}</b> (${u.senioridade}) – ${u.cargo} – R$${(u.valorHora ?? 0).toFixed(2)}/h
-            </label><br>
-            <div style="margin-left:22px;margin-top:6px;">
-              <label>Horas por dia: </label>
-              <input id="horasPorDia_${u.id}" type="number" min="1" max="12" style="width:70px" placeholder="00">
-              &nbsp;
-              <label>Total: </label>
-              <input id="horasTotais_${u.id}" type="number" min="1" max="200" style="width:70px" placeholder="00">
-            </div>
+            </label>
           </div>
         `).join('')}
       </div>
     `;
 
     const result = await Swal.fire({
-      title: `Selecione e defina as horas para <b>${projetoSelecionado.nome}</b>`,
+      title: `Selecione os profissionais para <b>${projetoSelecionado.nome}</b>`,
       html,
       confirmButtonText: 'Confirmar',
       showCancelButton: true,
@@ -149,23 +146,11 @@ document.addEventListener('DOMContentLoaded', async () => {
       background: '#fff',
       preConfirm: () => {
         const popup = Swal.getPopup();
-        const selecionados = Array.from(popup.querySelectorAll('input[type="checkbox"]:checked')).map(cb => {
-          const id = Number(cb.value);
-          const hpd = Number(popup.querySelector(`#horasPorDia_${id}`)?.value || NaN);
-          const htl = Number(popup.querySelector(`#horasTotais_${id}`)?.value || NaN);
-          return { idUsuario: id, horasPorDia: hpd, horasTotais: htl };
-        });
-
-        if (!selecionados.length) {
+        const selecionados = Array.from(popup.querySelectorAll('input[type="checkbox"]:checked'))
+          .map(cb => Number(cb.value));
+        if (selecionados.length === 0) {
           Swal.showValidationMessage('Selecione pelo menos um profissional.');
           return false;
-        }
-
-        for (const s of selecionados) {
-          if (!Number.isFinite(s.horasPorDia) || !Number.isFinite(s.horasTotais) || s.horasPorDia <= 0 || s.horasTotais <= 0) {
-            Swal.showValidationMessage('Preencha as horas de todos os selecionados.');
-            return false;
-          }
         }
         return selecionados;
       }
@@ -176,21 +161,22 @@ document.addEventListener('DOMContentLoaded', async () => {
       addMessage(`⏳ Alocando ${selecionados.length} profissional(is)...`, false);
 
       try {
-        for (const s of selecionados) {
-          await postAlocacao(projetoSelecionado.id, s.idUsuario, s.horasTotais, s.horasPorDia);
+        for (const idUsuario of selecionados) {
+          await postAlocacao(projetoSelecionado.id, idUsuario);
         }
         Swal.fire('✅ Sucesso', 'Profissionais alocados com sucesso!', 'success');
         addMessage('✅ Todos os profissionais foram alocados com sucesso!', false);
       } catch (err) {
         console.error('Erro ao alocar:', err);
-        addMessage(`❌ Erro: ${err.message}`, false);
+        Swal.fire('Erro', 'Falha ao alocar um ou mais profissionais.', 'error');
+        addMessage(`❌ Ocorreu um erro: ${err.message}`, false);
       }
     }
 
     aguardandoAlocacao = false;
   }
 
-  // ========== Inicialização ==========
+  // -------- Inicialização --------
   const idProjeto = localStorage.getItem('idProjeto');
   const nomeProjeto = localStorage.getItem('nomeProjeto');
 
@@ -214,7 +200,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     addMessage('⚠️ Nenhum projeto selecionado. Volte à tela anterior e escolha um projeto.', false);
   }
 
-  // ========== Envio ==========
+  // -------- Envio de mensagens --------
   sendButton.addEventListener('click', () => {
     const text = inputField.value.trim();
     if (!text) return;
@@ -230,6 +216,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   });
 
+  // -------- Lógica principal --------
   async function processMessage(userText) {
     try {
       if (aguardandoAlocacao) {
