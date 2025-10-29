@@ -6,8 +6,8 @@ const API_BASE_URL = 'http://localhost:8080/api/assistente/chatbot';
 const API_PROJETOS_CHATBOT = 'http://localhost:8080/api/projetos'; // nome diferente p/ não colidir com outros scripts
 
 // ⏱️ Defaults (ajuste aqui as horas padrão)
-const DEFAULT_HORAS_DIA   = 4;   // ex: 4
-const DEFAULT_HORAS_TOTAL = 20;  // ex: 20
+const DEFAULT_HORAS_DIA   = 0;   
+const DEFAULT_HORAS_TOTAL = 0;  
 
 let aguardandoAlocacao = false;
 let projetoSelecionado = null;
