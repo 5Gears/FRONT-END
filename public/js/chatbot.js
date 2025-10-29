@@ -62,20 +62,26 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
-    async function postAlocacao(idProjeto, idUsuario, idCargo) {
-        try {
-            const response = await fetch(`${PROJETO_API_URL}/${idProjeto}/usuarios/${idUsuario}/cargo/${idCargo}`, {
-                method: 'POST'
-            });
-            if (!response.ok) {
-                const data = await response.json();
-                throw new Error(data.erro || `Erro ${response.status}`);
-            }
-        } catch (err) {
-            console.error("Erro ao alocar:", err);
-            throw err;
-        }
+    async function postAlocacao(idProjeto, idUsuario, horasAlocadas = 8, horasPorDia = 4) {
+    const body = {
+        dataAlocacao: new Date().toISOString().split('T')[0],
+        dataSaida: null,
+        horasPorDia,
+        horasAlocadas
+    };
+
+    const response = await fetch(`${PROJETO_API_URL}/${idProjeto}/usuarios/${idUsuario}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+    });
+
+    if (!response.ok) {
+        const data = await response.text();
+        throw new Error(data || `Erro ${response.status}`);
     }
+}
+
 
     // ========== Etapa principal – Buscar Profissionais ==========
     async function handleBuscaProfissionais(userText) {

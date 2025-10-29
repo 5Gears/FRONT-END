@@ -4,15 +4,28 @@ const idProjeto = localStorage.getItem('idProjeto');
 
 document.addEventListener('DOMContentLoaded', async () => {
   const selectProjeto = document.querySelector('.form select');
-  const inputNomeProf = document.querySelector('.form input:nth-of-type(1)');
+  const inputEmailProf = document.querySelector('.form input:nth-of-type(1)');
   const inputInicio = document.querySelector('.form input:nth-of-type(2)');
   const inputFim = document.querySelector('.form input:nth-of-type(3)');
   const inputHorasDia = document.querySelector('.form input:nth-of-type(4)');
   const inputHorasTotais = document.querySelector('.form input:nth-of-type(5)');
   const btnAlocar = document.getElementById('btn-alocar');
 
+  // --- SE NÃO HOUVER PROJETO SALVO, REDIRECIONA ---
+  if (!idProjeto) {
+    Swal.fire({
+      icon: 'warning',
+      title: 'Nenhum projeto selecionado',
+      text: 'Você precisa escolher um projeto antes de acessar essa tela.',
+      confirmButtonText: 'Voltar',
+    }).then(() => {
+      window.location.href = './gerenciamento.html';
+    });
+    return;
+  }
+
+  // --- Carrega projeto selecionado ---
   async function carregarProjeto() {
-    if (!idProjeto) return;
     try {
       const res = await fetch(`${API_PROJETOS}/${idProjeto}`);
       if (!res.ok) throw new Error('Erro ao carregar o projeto.');
@@ -25,26 +38,35 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   }
 
+  // --- Alocar profissional ---
   async function alocarProfissional(event) {
     event.preventDefault();
 
-    const nome = inputNomeProf.value.trim();
+    const email = inputEmailProf.value.trim();
     const dataInicio = inputInicio.value.trim();
     const dataFim = inputFim.value.trim();
     const horasPorDia = parseInt(inputHorasDia.value.trim());
     const horasTotais = parseInt(inputHorasTotais.value.trim());
 
-    if (!nome || !dataInicio || !dataFim || !horasPorDia || !horasTotais) {
+    if (!email || !dataInicio || !dataFim || !horasPorDia || !horasTotais) {
       Swal.fire('Atenção', 'Preencha todos os campos antes de alocar.', 'warning');
       return;
     }
 
+    // validação simples de datas
+    if (new Date(dataFim) < new Date(dataInicio)) {
+      Swal.fire('Erro', 'A data final não pode ser anterior à data inicial.', 'error');
+      return;
+    }
+
     try {
-      const resUser = await fetch(`${API_USUARIOS}?nome=${encodeURIComponent(nome)}`);
+      const resUser = await fetch(`${API_USUARIOS}/buscar?email=${encodeURIComponent(email)}`);
       if (!resUser.ok) throw new Error('Erro ao buscar usuário.');
-      const usuarios = await resUser.json();
-      if (!usuarios.length) throw new Error(`Usuário "${nome}" não encontrado.`);
-      const idUsuario = usuarios[0].id;
+      const usuario = await resUser.json();
+
+      if (!usuario || !usuario.idUsuario) {
+        throw new Error(`Usuário com e-mail "${email}" não encontrado.`);
+      }
 
       const body = {
         dataAlocacao: dataInicio,
@@ -53,7 +75,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         horasAlocadas: horasTotais
       };
 
-      const res = await fetch(`${API_PROJETOS}/${idProjeto}/usuarios/${idUsuario}`, {
+      const res = await fetch(`${API_PROJETOS}/${idProjeto}/usuarios/${usuario.idUsuario}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body)
@@ -64,7 +86,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       Swal.fire({
         icon: 'success',
         title: 'Profissional Alocado!',
-        text: `O usuário "${nome}" foi alocado com sucesso!`,
+        text: `O usuário "${email}" foi alocado com sucesso!`,
         confirmButtonText: 'OK'
       });
 
@@ -76,7 +98,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   function limparCampos() {
-    inputNomeProf.value = '';
+    inputEmailProf.value = '';
     inputInicio.value = '';
     inputFim.value = '';
     inputHorasDia.value = '';
