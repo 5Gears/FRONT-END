@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="../css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="../assets/5Gears-removebg-preview.png">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>
@@ -54,15 +55,3 @@
 </body>
 
 </html>
-
-<script>
-    document.getElementById("confirmar").addEventListener("click", function () {
-        if (document.getElementById("criarProjeto").checked) {
-            window.location.href = "./criar_projeto.html";
-        } else if (document.getElementById("editarProjeto").checked) {
-            window.location.href = "./editar_alocação.html";
-        } else {
-            alert("Selecione uma opção antes de confirmar.");
-        }
-    });
-</script>
