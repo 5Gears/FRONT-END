@@ -13,6 +13,8 @@
 
 <body>
     <div class="criar-projeto">
+
+        <!-- Título -->
         <div class="titulo">
             <h1>CRIAR NOVO PROJETO</h1>
             <img src="../assets/logo.png" alt="">
@@ -35,50 +37,63 @@
                 <li><a href="./meu_apontamento.html">Calendário de Horas</a></li>
                 <li><a href="#">Feedback de Profissionais</a></li>
                 <li><a href="./faq.html">Ajuda & FAQ</a></li>
-                <li><button onclick="realizarLogout()"><img src="../assets/logout.png" alt=""></button></li>
+                <li>
+                    <button onclick="realizarLogout()">
+                        <img src="../assets/logout.png" alt="">
+                    </button>
+                </li>
             </ul>
         </nav>
 
-        <div class="upload-container" id="uploadContainer">
-            <img src="../assets/ri_upload-cloud-fill.png" alt="">
-            <h5>Upload de Arquivos</h5>
-            <form id="uploadForm">
-                <input type="file" id="fileInput" accept="file/*">
-                <label for="fileInput">Escolher Arquivo</label>
-            </form>
-            <div id="imageContainer"></div>
-        </div>
+        <!-- Corpo do Projeto -->
+        <div class="corpo-projeto">
 
-        <div class="novo-projeto">
-            <span>Nome do Projeto</span>
-            <input type="text" id="nomeProjeto">
+            <!-- Coluna 1 -->
+            <div class="novo-projeto">
+                <div class="upload-container" id="uploadContainer">
+                    <img src="../assets/ri_upload-cloud-fill.png" alt="">
+                    <h5>Upload de Arquivos</h5>
+                    <form id="uploadForm">
+                        <input type="file" id="fileInput" accept="file/*">
+                        <label for="fileInput">Escolher Arquivo</label>
+                    </form>
+                    <div id="imageContainer"></div>
+                </div>
 
-            <span>Descrição do Projeto</span>
-            <input type="text" id="descricaoProjeto">
+                <span>Nome do Projeto</span>
+                <input type="text" id="nomeProjeto">
 
-            <span>Tempo Estimado (Horas)</span>
-            <input type="number" id="tempoEstimado">
+                <span>Descrição do Projeto</span>
+                <input type="text" id="descricaoProjeto">
 
-            <span>Orçamento (R$)</span>
-            <input type="number" step="0.01" id="orcamento">
+                <span>Tempo Estimado (Horas)</span>
+                <input type="number" id="tempoEstimado">
+            </div>
 
-            <span>Data de Início</span>
-            <input type="date" id="dataInicio">
+            <!-- Coluna 2 -->
+            <div class="novo-projeto1">
+                <span>Orçamento (R$)</span>
+                <input type="number" step="0.01" id="orcamento">
 
-            <span>Data Estimada de Fechamento</span>
-            <input type="date" id="dataFim">
+                <span>Data de Início</span>
+                <input type="date" id="dataInicio">
 
-            <span>Cliente</span>
-            <select id="clienteId">
-                <option value="">Selecione um cliente</option>
-            </select>
+                <span>Data Estimada de Fechamento</span>
+                <input type="date" id="dataFim">
 
-            <span>Competências Requeridas</span>
-            <input type="text" id="competenciasRequeridas">
-        </div>
+                <span>Cliente</span>
+                <select id="clienteId">
+                    <option value="">Selecione um cliente</option>
+                </select>
 
-        <div class="proximo">
-            <button id="btnCriarProjeto">CONFIRMAR</button>
+                <span>Competências Requeridas</span>
+                <input type="text" id="competenciasRequeridas">
+
+                <div class="proximo">
+                    <button id="btnCriarProjeto">CONFIRMAR</button>
+                </div>
+            </div>
+
         </div>
     </div>
 

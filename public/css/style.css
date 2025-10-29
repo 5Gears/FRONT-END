@@ -153,69 +153,85 @@ article {
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
+    align-items: center;
     height: auto;
     padding: 20px;
-    align-items: center;
 }
 
+/* UPLOAD */
 .upload-container {
     max-width: 500px;
-    margin: 0 0 8px;
+    width: 40vw;
+    margin-bottom: 8px;
     padding: 20px;
     border: 2px dashed #278FC5;
     border-radius: 5px;
     text-align: center;
     background-color: #fff;
-    width: 40vw;
-
-    img {
-        width: 30%;
-    }
-
-    input[type="file"] {
-        display: none;
-    }
-
-    label {
-        display: inline-block;
-        padding: 10px 20px;
-        background-color: #278FC5;
-        color: #fff;
-        border-radius: 5px;
-        cursor: pointer;
-    }
 }
 
-.novo-projeto {
+.upload-container img {
+    width: 30%;
+}
+
+.upload-container input[type="file"] {
+    display: none;
+}
+
+.upload-container label {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #278FC5;
+    color: #fff;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* CORPO DO PROJETO */
+.corpo-projeto {
+    display: flex;
+    justify-content: center;   
+    align-items: flex-start;   
+    gap: 30px;                 
+    flex-wrap: wrap;           
+}
+
+.novo-projeto,
+.novo-projeto1 {
     display: flex;
     flex-direction: column;
-    justify-content: space-evenly;
-    width: 35.5vw;
-    height: 50vh;
+    justify-content: flex-start; 
+    width: 35vw;                 
+    min-width: 300px;            
+    gap: 9px;                   
+}
 
-    span {
-        font-size: 1rem;
-        font-weight: 500;
-    }
+.novo-projeto span,
+.novo-projeto1 span {
+    font-size: 1rem;
+    font-weight: 500;
+}
 
-    input {
-        padding: 10px;
-        border: 1px solid #b3b3b3;
-        border-radius: 3px;
-    }
+.novo-projeto input,
+.novo-projeto1 input,
+.novo-projeto1 select {
+    padding: 10px;
+    border: 1px solid #b3b3b3;
+    border-radius: 3px;
 }
 
 .proximo {
     display: flex;
-    width: 100%;
-    height: 10vh;
     justify-content: center;
     align-items: center;
+    width: 100%;
+    height: 10vh;
     padding-top: 20px;
+}
 
-    button {
-        width: 35.5vw;
-    }
+.proximo button {
+    width: 100%;     
+    max-width: 35vw; 
 }
 
 /* TELA DE FAQ */
@@ -382,7 +398,7 @@ article {
             flex-direction: column;
             justify-content: space-evenly;
             width: 35.5vw;
-            height: 60vh;
+            height: 80vh;
 
             span {
                 font-size: 1rem;
