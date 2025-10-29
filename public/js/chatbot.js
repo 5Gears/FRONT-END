@@ -47,8 +47,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         const body = {
             dataAlocacao: new Date().toISOString().split('T')[0],
             dataSaida: null,
-            horasPorDia,
-            horasAlocadas
+            horasPorDia: horasPorDia ?? 4,
+            horasAlocadas: horasAlocadas ?? 8
         };
 
         const res = await fetch(`${API_PROJETOS}/${idProjeto}/usuarios/${idUsuario}`, {
@@ -93,7 +93,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         let texto = 'Profissionais sugeridos:\n\n';
         texto += usuariosSugeridos
-            .map(u => `${u.nome} (${u.senioridade}) – ${u.cargo} – R$${u.valorHora.toFixed(2)}/h`)
+            .map(u => {
+                const valorHora = u.valorHora ? u.valorHora.toFixed(2) : '0.00';
+                return `${u.nome} (${u.senioridade}) – ${u.cargo} – R$${valorHora}/h`;
+            })
             .join('\n\n');
 
         addMessage(texto, false);
@@ -123,14 +126,17 @@ document.addEventListener('DOMContentLoaded', async () => {
         const html = `
             <div style="text-align:left;max-height:300px;overflow-y:auto">
                 ${usuariosSugeridos
-                    .map(u => `
-                        <div style="margin-bottom:8px">
-                            <input type="checkbox" id="user_${u.id}" value="${u.id}">
-                            <label for="user_${u.id}">
-                                <b>${u.nome}</b> (${u.senioridade}) – ${u.cargo} – R$${u.valorHora}/h
-                            </label>
-                        </div>
-                    `)
+                    .map(u => {
+                        const valorHora = u.valorHora ? u.valorHora.toFixed(2) : '0.00';
+                        return `
+                            <div style="margin-bottom:8px">
+                                <input type="checkbox" id="user_${u.id}" value="${u.id}">
+                                <label for="user_${u.id}">
+                                    <b>${u.nome}</b> (${u.senioridade}) – ${u.cargo} – R$${valorHora}/h
+                                </label>
+                            </div>
+                        `;
+                    })
                     .join('')}
             </div>
         `;
@@ -145,19 +151,18 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
 
         if (result.isConfirmed) {
-            const selecionados = Array.from(document.querySelectorAll('input[type="checkbox"]:checked')).map(cb =>
-                parseInt(cb.value)
-            );
+            const checkboxes = Swal.getPopup().querySelectorAll('input[type="checkbox"]:checked');
+            const selecionados = Array.from(checkboxes).map(cb => parseInt(cb.value));
 
             if (!selecionados.length) {
                 addMessage('Nenhum profissional selecionado.', false);
                 return;
             }
 
-            addMessage(`Alocando ${selecionados.length} profissionais...`, false);
+            addMessage(`Alocando ${selecionados.length} profissional${selecionados.length > 1 ? 'es' : ''}...`, false);
             try {
                 for (const idUsuario of selecionados) {
-                    await postAlocacao(projetoSelecionado.id, idUsuario);
+                    await postAlocacao(projetoSelecionado.id, idUsuario, 8, 4);
                 }
                 Swal.fire('✅ Sucesso', 'Profissionais alocados com sucesso!', 'success');
                 addMessage('✅ Todos os profissionais foram alocados com sucesso!', false);
