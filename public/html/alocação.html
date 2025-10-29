@@ -36,35 +36,29 @@
       </ul>
     </nav>
 
-    <!-- FORMULÁRIO DE ALOCAÇÃO -->
+    <!-- FORMULÁRIO -->
     <div class="formulario">
-      <div class="form">
-
-        <!-- Projeto preenchido automaticamente -->
-        <span>Projeto Selecionado</span>
+      <form class="form">
+        <label>Projeto Selecionado</label>
         <select disabled></select>
 
-        <!-- Nome do profissional -->
-        <span>Nome do Profissional</span>
-        <input type="text" placeholder="Ex: João da Silva">
+        <label>Email do Profissional</label>
+        <input type="text" placeholder="Ex: nome@provedor.com">
 
-        <!-- Período -->
-        <span>Data alocação (Início)</span>
-        <input type="date">
-        <span>Data alocação (Fim)</span>
+        <label>Data alocação (Início)</label>
         <input type="date">
 
-        <!-- Horas -->
-        <span>Quantidade de horas por dia</span>
+        <label>Data alocação (Fim)</label>
+        <input type="date">
+
+        <label>Quantidade de horas por dia</label>
         <input type="number" min="1" max="12" placeholder="Ex: 6">
-        <span>Total de horas no projeto</span>
+
+        <label>Total de horas no projeto</label>
         <input type="number" min="1" placeholder="Ex: 120">
 
-      </div>
-
-      <div class="proximo">
-        <button><a href="#">ALOCAR</a></button>
-      </div>
+        <button id="btn-alocar" type="submit">ALOCAR</button>
+      </form>
     </div>
   </div>
 
@@ -86,7 +80,7 @@
     </div>
   </aside>
 
-  <!-- SCRIPTS -->
+  <script src="../js/chatbot.js"></script>
   <script src="../js/alocacao.js"></script>
 </body>
 </html>
