@@ -3,7 +3,7 @@
 // ===========================================
 
 const API_BASE_URL = 'http://localhost:8080/api/assistente/chatbot';
-const API_PROJETOS = 'http://localhost:8080/api/projetos';
+const API_PROJETOS_CHATBOT = 'http://localhost:8080/api/projetos'; // 🔒 renomeado para evitar conflito
 
 let aguardandoAlocacao = false;
 let projetoSelecionado = null;
@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             horasAlocadas
         };
 
-        const res = await fetch(`${API_PROJETOS}/${idProjeto}/usuarios/${idUsuario}`, {
+        const res = await fetch(`${API_PROJETOS_CHATBOT}/${idProjeto}/usuarios/${idUsuario}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(body)
@@ -71,12 +71,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Busca de Profissionais
     // ===========================================
     async function handleBuscaProfissionais(userText) {
-        if (userText.trim().length < 10) {
+        if (userText.trim().length < 5) {
             addMessage('Descreva melhor a sua necessidade, por favor.', false);
             return;
         }
 
-        addMessage('Processando sua solicitação...', false);
+        addMessage('🔎 Processando sua solicitação...', false);
 
         const body = {
             idProjeto: projetoSelecionado.id,
@@ -93,11 +93,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         usuariosSugeridos = usuarios || [];
 
         if (usuariosSugeridos.length === 0) {
-            addMessage('Não encontrei profissionais adequados à sua solicitação.', false);
+            addMessage('😕 Não encontrei profissionais adequados à sua solicitação.', false);
             return;
         }
 
-        let texto = 'Profissionais sugeridos:\n\n';
+        let texto = '👥 Profissionais sugeridos:\n\n';
         texto += usuariosSugeridos
             .map(u => {
                 const valorHora = u.valorHora ? u.valorHora.toFixed(2) : '0.00';
@@ -126,97 +126,85 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     async function abrirPopupAlocacao() {
-    if (!usuariosSugeridos.length) {
-        addMessage('Nenhum profissional disponível para alocar.', false);
-        return;
-    }
+        if (!usuariosSugeridos.length) {
+            addMessage('Nenhum profissional disponível para alocar.', false);
+            return;
+        }
 
-    // Construção dinâmica do HTML com inputs para horas
-    const html = `
-        <div style="text-align:left;max-height:300px;overflow-y:auto">
-            ${usuariosSugeridos.map(u => `
-                <div style="margin-bottom:10px;padding:6px 0;border-bottom:1px solid #ddd;">
-                    <input type="checkbox" id="user_${u.id}" value="${u.id}">
-                    <label for="user_${u.id}">
-                        <b>${u.nome}</b> (${u.senioridade}) – ${u.cargo} – R$${u.valorHora.toFixed(2)}/h
-                    </label><br>
-                    <div style="margin-left:22px;margin-top:4px;">
-                        <label>Horas por dia: </label>
-                        <input id="horasPorDia_${u.id}" type="number" min="1" max="12" style="width:60px" value="4">
-                        &nbsp;
-                        <label>Total: </label>
-                        <input id="horasTotais_${u.id}" type="number" min="1" max="200" style="width:60px" value="20">
+        const html = `
+            <div style="text-align:left;max-height:300px;overflow-y:auto">
+                ${usuariosSugeridos.map(u => `
+                    <div style="margin-bottom:10px;padding:6px 0;border-bottom:1px solid #ddd;">
+                        <input type="checkbox" id="user_${u.id}" value="${u.id}">
+                        <label for="user_${u.id}">
+                            <b>${u.nome}</b> (${u.senioridade}) – ${u.cargo} – R$${u.valorHora.toFixed(2)}/h
+                        </label><br>
+                        <div style="margin-left:22px;margin-top:4px;">
+                            <label>Horas por dia: </label>
+                            <input id="horasPorDia_${u.id}" type="number" min="1" max="12" style="width:60px" value="4">
+                            &nbsp;
+                            <label>Total: </label>
+                            <input id="horasTotais_${u.id}" type="number" min="1" max="200" style="width:60px" value="20">
+                        </div>
                     </div>
-                </div>
-            `).join('')}
-        </div>
-    `;
+                `).join('')}
+            </div>
+        `;
 
-    const result = await Swal.fire({
-        title: `Selecione e defina as horas para <b>${projetoSelecionado.nome}</b>`,
-        html,
-        confirmButtonText: 'Confirmar',
-        showCancelButton: true,
-        cancelButtonText: 'Cancelar',
-        focusConfirm: false,
-        background: '#fff',
-        preConfirm: () => {
-            // coleta de dados segura
-            const selecionados = Array.from(document.querySelectorAll('input[type="checkbox"]:checked')).map(cb => {
-                const id = parseInt(cb.value);
+        const result = await Swal.fire({
+            title: `Selecione e defina as horas para <b>${projetoSelecionado.nome}</b>`,
+            html,
+            confirmButtonText: 'Confirmar',
+            showCancelButton: true,
+            cancelButtonText: 'Cancelar',
+            focusConfirm: false,
+            background: '#fff',
+            preConfirm: async () => {
+                await new Promise(resolve => setTimeout(resolve, 50)); // garante que DOM está renderizado
 
-                // Seleciona os inputs relacionados a este usuário
-                const horasPorDiaEl = document.getElementById(`horasPorDia_${id}`);
-                const horasTotaisEl = document.getElementById(`horasTotais_${id}`);
+                const selecionados = Array.from(document.querySelectorAll('input[type="checkbox"]:checked')).map(cb => {
+                    const id = parseInt(cb.value);
+                    const horasPorDia = Number(document.getElementById(`horasPorDia_${id}`)?.value || 0);
+                    const horasTotais = Number(document.getElementById(`horasTotais_${id}`)?.value || 0);
+                    return { idUsuario: id, horasPorDia, horasTotais };
+                });
 
-                // Evita crash caso o elemento não exista
-                const horasPorDia = horasPorDiaEl?.value ? parseInt(horasPorDiaEl.value) : 0;
-                const horasTotais = horasTotaisEl?.value ? parseInt(horasTotaisEl.value) : 0;
-
-                return {
-                    idUsuario: id,
-                    horasPorDia,
-                    horasTotais
-                };
-            });
-
-            if (selecionados.length === 0) {
-                Swal.showValidationMessage('Selecione pelo menos um profissional.');
-                return false;
-            }
-
-            // Valida se algum campo está vazio
-            for (const s of selecionados) {
-                if (s.horasPorDia <= 0 || s.horasTotais <= 0) {
-                    Swal.showValidationMessage('Preencha as horas de todos os selecionados.');
+                if (!selecionados.length) {
+                    Swal.showValidationMessage('Selecione pelo menos um profissional.');
                     return false;
                 }
+
+                for (const s of selecionados) {
+                    if (s.horasPorDia <= 0 || s.horasTotais <= 0 || isNaN(s.horasPorDia) || isNaN(s.horasTotais)) {
+                        Swal.showValidationMessage('Preencha as horas de todos os selecionados.');
+                        return false;
+                    }
+                }
+
+                console.log('✅ Selecionados no popup:', selecionados);
+                return selecionados;
             }
+        });
 
-            console.log("Selecionados no popup:", selecionados);
-            return selecionados;
-        }
-    });
+        if (result.isConfirmed && result.value) {
+            const selecionados = result.value;
+            addMessage(`⏳ Alocando ${selecionados.length} profissional(is)...`, false);
 
-    if (result.isConfirmed && result.value) {
-        const selecionados = result.value;
-        addMessage(`Alocando ${selecionados.length} profissional(is)...`, false);
-
-        try {
-            for (const s of selecionados) {
-                await postAlocacao(projetoSelecionado.id, s.idUsuario, s.horasTotais, s.horasPorDia);
+            try {
+                for (const s of selecionados) {
+                    await postAlocacao(projetoSelecionado.id, s.idUsuario, s.horasTotais, s.horasPorDia);
+                }
+                Swal.fire('✅ Sucesso', 'Profissionais alocados com sucesso!', 'success');
+                addMessage('✅ Todos os profissionais foram alocados com sucesso!', false);
+            } catch (err) {
+                console.error('Erro ao alocar:', err);
+                Swal.fire('Erro', 'Falha ao alocar um ou mais profissionais.', 'error');
+                addMessage(`❌ Ocorreu um erro: ${err.message}`, false);
             }
-            Swal.fire('✅ Sucesso', 'Profissionais alocados com sucesso!', 'success');
-            addMessage('✅ Todos os profissionais foram alocados com sucesso!', false);
-        } catch (err) {
-            console.error("Erro ao alocar:", err);
-            Swal.fire('Erro', 'Falha ao alocar um ou mais profissionais.', 'error');
-            addMessage(`❌ Ocorreu um erro: ${err.message}`, false);
         }
+
+        aguardandoAlocacao = false;
     }
-
-    aguardandoAlocacao = false;
-}
 
     // ===========================================
     // Inicialização do Chatbot
@@ -226,7 +214,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     if (idProjeto) {
         try {
-            const resp = await fetch(`${API_PROJETOS}/${idProjeto}`);
+            const resp = await fetch(`${API_PROJETOS_CHATBOT}/${idProjeto}`);
             if (!resp.ok) throw new Error('Erro ao buscar projeto.');
             const projeto = await resp.json();
 
