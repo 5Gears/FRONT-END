@@ -35,26 +35,29 @@
                 <li><a href="./meu_apontamento.html">Calendário de Horas</a></li>
                 <li><a href="#">Feedback de Profissionais</a></li>
                 <li><a href="./faq.html">Ajuda & FAQ</a></li>
-                <li><button><img src="../assets/logout.png" alt=""></button></li>
+                <li><button onclick="realizarLogout()"><img src="../assets/logout.png" alt=""></button></li>
             </ul>
         </nav>
 
         <div class="formulario">
             <div class="form">
                 <span>Selecionar Projeto</span>
-                <select name="" id=""></select>
+                <select name="" id="selectProjeto"></select>
                 <span>Data alocação (Início)</span>
-                <input type="text">
+                <input type="date" id="dataInicio">
                 <span>Data alocação (Fim)</span>
-                <input type="text">
-                <button class="alterar-alocacao"><a href="./alocação.html">ALOCAR EQUIPE</a></button>
+                <input type="date" id="dataFim">
+
+                <button onclick="alocarEquipe()" class="alterar-alocacao"><a href="">ALOCAR EQUIPE</a></button>
             </div>
             <div class="alterar-excluir">
-                <button><a href="">ALTERAR</a></button>
-                <button class="excluir"><a href="">EXCLUIR</a></button>
+                <button onclick="alterarProjeto()"><a href="">ALTERAR</a></button>
+                <button onclick="excluirProjeto()" class="excluir"><a href="">EXCLUIR</a></button>
             </div>
         </div>
     </div>
+    <script src="../js/logout.js"></script>
+    <script src="../js/editarAlocacao.js"></script>
 
 </body>
 
