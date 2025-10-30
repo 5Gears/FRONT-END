@@ -1,111 +1,85 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Perfil Colaborador</title>
-    <link rel="stylesheet" href="../css/style.css">
-    <link rel="stylesheet" href="../css/perfil.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="icon" type="image/png" href="../assets/5Gears-removebg-preview.png">
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Perfil Colaborador</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/perfil.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="../assets/5Gears-removebg-preview.png">
 </head>
 
 <body>
-    <div class="titulo">
-        <h1>PERFIL COLABORADOR</h1>
-        <img src="../assets/logo.png" alt="">
+  <div class="titulo">
+    <h1>PERFIL DO COLABORADOR</h1>
+    <img src="../assets/logo.png" alt="Logo">
+  </div>
+
+  <!-- Menu hambúrguer -->
+  <input type="checkbox" id="menu-toggle" class="menu-toggle">
+  <label for="menu-toggle" class="hamburger">
+    <span></span><span></span><span></span>
+  </label>
+
+  <nav class="menu">
+    <ul>
+      <li><a href="./perfil.html">Início</a></li>
+      <li><a href="./gerenciamento.html">Gerenciar Projetos</a></li>
+      <li><a href="./cadastro.html">Cadastro de Profissionais</a></li>
+      <li><a href="./busca_profissonal.html">Busca de Profissionais</a></li>
+      <li><a href="./meu_apontamento.html">Calendário de Horas</a></li>
+      <li><a href="#">Feedback de Profissionais</a></li>
+      <li><a href="./faq.html">Ajuda & FAQ</a></li>
+      <li><button onclick="realizarLogout()"><img src="../assets/logout.png" alt="Logout"></button></li>
+    </ul>
+  </nav>
+
+  <!-- Cabeçalho do perfil -->
+  <div class="perfil">
+    <img src="../assets/image 1 (1).png" alt="Foto do colaborador">
+    <div class="infos">
+      <h2 id="perfil-nome">Carregando...</h2>
+      <h3 id="perfil-cargo">-</h3>
+    </div>
+  </div>
+
+  <!-- Cards de informações -->
+  <div class="perfil-card">
+
+    <div class="card">
+      <div class="titulo-card"><span>CONTATO</span></div>
+      <div class="conteudo-card">
+        <span id="perfil-email">-</span>
+        <span id="perfil-telefone">-</span>
+      </div>
     </div>
 
-    <!-- Hambúrguer + Menu lateral -->
-    <input type="checkbox" id="menu-toggle" class="menu-toggle">
-    <label for="menu-toggle" class="hamburger">
-        <span></span>
-        <span></span>
-        <span></span>
-    </label>
-
-    <nav class="menu">
-        <ul>
-            <li><a href="./perfil.html">Início</a></li>
-            <li><a href="./gerenciamento.html">Gerenciar Projetos</a></li>
-            <li><a href="./cadastro.html">Cadastro de Profissionais</a></li>
-            <li><a href="./busca_profissonal.html">Busca de Profissionais</a></li>
-            <li><a href="./meu_apontamento.html">Calendário de Horas</a></li>
-            <li><a href="#">Feedback de Profissionais</a></li>
-            <li><a href="./faq.html">Ajuda & FAQ</a></li>
-            <li><button><img src="../assets/logout.png" alt=""></button></li>
-        </ul>
-    </nav>
-
-    <div class="perfil">
-        <img src="../assets/image 1 (1).png" alt="">
-        <div class="infos">
-            <h2>NOME COLABORADOR</h2>
-            <h3>Número de identificação</h3>
-        </div>
+    <div class="card">
+      <div class="titulo-card"><span>ÁREA</span></div>
+      <div class="conteudo-card">
+        <span id="perfil-area">-</span>
+      </div>
     </div>
 
-    <div class="perfil-card">
-        <div class="card">
-            <div class="titulo-card">
-                <span>CONTATO</span>
-            </div>
-            <div class="conteudo-card">
-                <span>eduardo.neris@sptech.school</span>
-                <span>+55 (11) 99596-4011</span>
-            </div>
-        </div>
-
-        <div class="card">
-            <div class="titulo-card">
-                <span>CARGO</span>
-            </div>
-            <div class="conteudo-card">
-                <span>CONSULTOR DE NEGÓCIOS</span>
-            </div>
-        </div>
-
-        <div class="card">
-            <div class="titulo-card">
-                <span>ÁREA</span>
-            </div>
-            <div class="conteudo-card">
-                <span>COMERCIAL</span>
-            </div>
-        </div>
-
-        <div class="card">
-            <div class="titulo-card">
-                <span>STATUS</span>
-            </div>
-            <div class="conteudo-card">
-                <span>ALOCADO</span>
-            </div>
-        </div>
-
-        <div class="card">
-            <div class="titulo-card">
-                <span>COMPETÊNCIAS</span>
-            </div>
-            <div class="conteudo-card">
-                <span>COMINUCAÇÃO</span>
-                <span>TRABALHO EM EQUIPE</span>
-                <span>RESILIÊNCIA</span>
-            </div>
-        </div>
-
-        <div class="card">
-            <div class="titulo-card">
-                <span>LICENÇAS E CERTIFICADOS</span>
-            </div>
-            <div class="conteudo-card">
-                <span>-</span>
-            </div>
-        </div>
+    <div class="card">
+      <div class="titulo-card"><span>CARGA HORÁRIA</span></div>
+      <div class="conteudo-card">
+        <span id="perfil-carga-horaria">-</span>
+      </div>
     </div>
 
+    <div class="card">
+      <div class="titulo-card"><span>EMPRESA</span></div>
+      <div class="conteudo-card">
+        <span id="perfil-empresa">-</span>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="../js/perfil.js"></script>
+  <script src="../js/logout.js"></script>
 </body>
-
 </html>
