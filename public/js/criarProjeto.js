@@ -1,16 +1,16 @@
+const API_BASE = window.API_BASE;
+const API_CLIENTES = `${API_BASE}/api/clientes`;
+const API_PROJETOS = `${API_BASE}/api/projetos`;
+
 document.addEventListener("DOMContentLoaded", () => {
   carregarClientes();
-
-  const botaoCriar = document.getElementById("btnCriarProjeto");
-  botaoCriar.addEventListener("click", criarProjeto);
+  document.getElementById("btnCriarProjeto").addEventListener("click", criarProjeto);
 });
 
 async function carregarClientes() {
   try {
-    const resposta = await fetch("http://localhost:8080/api/clientes");
-    if (!resposta.ok) {
-      throw new Error("Erro ao buscar clientes");
-    }
+    const resposta = await fetch(API_CLIENTES);
+    if (!resposta.ok) throw new Error("Erro ao buscar clientes");
 
     const clientes = await resposta.json();
     const selectCliente = document.getElementById("clienteId");
@@ -50,7 +50,7 @@ async function criarProjeto(event) {
     Swal.fire({
       icon: "warning",
       title: "Atenção",
-      text: "Preencha ao menos o nome do projeto e esteja logado para prosseguir.",
+      text: "Preencha o nome do projeto e esteja logado para prosseguir.",
       confirmButtonColor: "#3085d6",
     });
     return;
@@ -69,11 +69,9 @@ async function criarProjeto(event) {
   };
 
   try {
-    const resposta = await fetch("http://localhost:8080/api/projetos", {
+    const resposta = await fetch(API_PROJETOS, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(projeto),
     });
 
@@ -89,12 +87,9 @@ async function criarProjeto(event) {
       title: "Projeto criado!",
       text: `O projeto "${projetoCriado.nome}" foi criado com sucesso.`,
       confirmButtonColor: "#3085d6",
-    }).then(() => {
-      window.location.href = "./perfil.html";
-    });
+    }).then(() => window.location.href = "./perfil.html");
   } catch (erro) {
     console.error("Erro ao criar projeto:", erro);
-
     Swal.fire({
       icon: "error",
       title: "Erro ao criar projeto",

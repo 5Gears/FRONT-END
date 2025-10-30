@@ -1,12 +1,8 @@
-// ===========================================
-// SunnyBOT – Integração Chatbot (FiveGears)
-// Versão final com tratamento de erros e fallback
-// ===========================================
+const API_BASE = window.API_BASE;
+const API_CHATBOT = `${API_BASE}/api/assistente/chatbot`;
+const API_PROJETOS_CHATBOT = `${API_BASE}/api/projetos`;
 
-const API_BASE_URL = 'http://localhost:8080/api/assistente/chatbot';
-const API_PROJETOS_CHATBOT = 'http://localhost:8080/api/projetos';
-
-// 🕒 Valores padrão de horas
+// 🕒 Valores padrão
 const DEFAULT_HORAS_DIA = 8;
 const DEFAULT_HORAS_TOTAL = 40;
 
@@ -19,7 +15,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const inputField = document.querySelector('.chat-input input');
   const sendButton = document.querySelector('.chat-input button');
 
-  // -------- Funções utilitárias --------
+  // -------- Utilitários --------
   function addMessage(text, isUser = true, type = 'normal') {
     const msg = document.createElement('div');
     msg.classList.add('chat-message', isUser ? 'user-message' : 'bot-message');
@@ -32,7 +28,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   async function postToBackend(endpoint, body) {
-    const res = await fetch(`${API_BASE_URL}${endpoint}`, {
+    const res = await fetch(`${API_CHATBOT}${endpoint}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body)
@@ -66,21 +62,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   }
 
-  // -------- Função para normalizar senioridade --------
+  // -------- Normalizador --------
   function normalizarSenioridade(texto) {
     const mapa = {
-      jr: 'JUNIOR',
-      júnior: 'JUNIOR',
-      junior: 'JUNIOR',
-      pleno: 'PLENO',
-      pl: 'PLENO',
-      sênior: 'SENIOR',
-      senior: 'SENIOR',
-      sr: 'SENIOR',
-      estagiario: 'ESTAGIARIO',
-      estágio: 'ESTAGIARIO',
-      estagio: 'ESTAGIARIO',
-      trainee: 'ESTAGIARIO'
+      jr: 'JUNIOR', júnior: 'JUNIOR', junior: 'JUNIOR',
+      pleno: 'PLENO', pl: 'PLENO',
+      sênior: 'SENIOR', senior: 'SENIOR', sr: 'SENIOR',
+      estagiario: 'ESTAGIARIO', estágio: 'ESTAGIARIO',
+      estagio: 'ESTAGIARIO', trainee: 'ESTAGIARIO'
     };
 
     for (const [chave, valor] of Object.entries(mapa)) {
@@ -89,7 +78,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     return null;
   }
 
-  // -------- Busca de profissionais --------
+  // -------- Busca --------
   async function handleBuscaProfissionais(userText) {
     if (userText.trim().length < 4) {
       addMessage('Por favor, descreva melhor o perfil desejado.', false, 'info');
@@ -153,7 +142,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     div.querySelector('.alocar-btn').addEventListener('click', abrirPopupAlocacao);
   }
 
-  // -------- Pop-up com horas configuráveis --------
+  // -------- Pop-up --------
   async function abrirPopupAlocacao() {
     if (!usuariosSugeridos.length) {
       addMessage('Nenhum profissional disponível para alocar.', false);
@@ -213,7 +202,6 @@ document.addEventListener('DOMContentLoaded', async () => {
       });
 
       localStorage.setItem('sugestoesSunnyBot', JSON.stringify(usuariosSugeridos));
-
       addMessage(`⏳ Alocando ${selecionados.length} profissional(is)...`, false, 'info');
 
       try {
@@ -221,7 +209,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           await postAlocacao(projetoSelecionado.id, usuario);
         }
         Swal.fire('✅ Sucesso', 'Profissionais alocados com sucesso!', 'success');
-        addMessage('✅ Todos os profissionais foram alocados com sucesso!', false, 'success');
+        addMessage('✅ Todos os profissionais foram alocados!', false, 'success');
       } catch (err) {
         console.error('Erro ao alocar:', err);
         Swal.fire('Erro', 'Falha ao alocar um ou mais profissionais.', 'error');
@@ -249,14 +237,13 @@ document.addEventListener('DOMContentLoaded', async () => {
 
       addMessage(`Olá! 👋 Sou o SunnyBOT. Projeto atual: ${projetoSelecionado.nome}.`, false, 'info');
       addMessage('Descreva os profissionais que deseja alocar neste projeto.', false);
-    } catch (err) {
-      addMessage('⚠️ Erro ao carregar o projeto. Volte à tela anterior e selecione novamente.', false, 'error');
+    } catch {
+      addMessage('⚠️ Erro ao carregar o projeto. Volte à tela anterior.', false, 'error');
     }
   } else {
     addMessage('⚠️ Nenhum projeto selecionado. Volte à tela anterior e escolha um projeto.', false, 'error');
   }
 
-  // -------- Envio de mensagens --------
   sendButton.addEventListener('click', () => {
     const text = inputField.value.trim();
     if (!text) return;
@@ -272,18 +259,16 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   });
 
-  // -------- Lógica principal --------
   async function processMessage(userText) {
     try {
       const nivelDetectado = normalizarSenioridade(userText);
-      if (nivelDetectado) {
+      if (nivelDetectado)
         addMessage(`🔎 Detectei que você busca um profissional de nível ${nivelDetectado}.`, false, 'info');
-      }
 
       if (aguardandoAlocacao) {
         aguardandoAlocacao = false;
         if (userText.toLowerCase().includes('sim')) await abrirPopupAlocacao();
-        else addMessage('Tudo bem! Você pode fazer a alocação manual depois.', false, 'info');
+        else addMessage('Tudo bem! Você pode alocar manualmente depois.', false, 'info');
         return;
       }
 
@@ -298,7 +283,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   }
 
-  // -------- Limpeza automática ao sair da página --------
   window.addEventListener('beforeunload', () => {
     localStorage.removeItem('idProjetoSelecionado');
     localStorage.removeItem('sugestoesSunnyBot');

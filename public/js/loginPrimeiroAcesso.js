@@ -1,3 +1,6 @@
+const API_BASE = window.API_BASE;
+const API_LOGIN_PRIMEIRO_ACESSO = `${API_BASE}/api/login/primeiro-acesso`;
+
 async function confirmarPrimeiroAcesso() {
   const novaSenha = document.getElementById("novaSenha").value.trim();
   const confirmarSenha = document.getElementById("confirmarSenha").value.trim();
@@ -20,10 +23,10 @@ async function confirmarPrimeiroAcesso() {
   }
 
   try {
-    const response = await fetch("http://localhost:8080/api/login/primeiro-acesso", {
+    const response = await fetch(API_LOGIN_PRIMEIRO_ACESSO, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, senha: novaSenha })
+      body: JSON.stringify({ email, senha: novaSenha }),
     });
 
     const data = await response.json().catch(() => ({}));

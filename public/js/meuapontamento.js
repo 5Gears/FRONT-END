@@ -12,11 +12,10 @@ const options = {
   start: '2025-09-25',
   end: '2025-11-05',
   orientation: 'top',
-  height: '100%', // <- faz o calendário usar toda a altura
+  height: '100%',
   margin: { item: 20, axis: 40 },
 };
 
 const timeline = new vis.Timeline(container, items, options);
 
-// Ajusta o tamanho dinamicamente
 window.addEventListener('resize', () => timeline.fit());

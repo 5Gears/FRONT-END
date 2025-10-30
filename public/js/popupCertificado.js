@@ -1,10 +1,13 @@
+const API_BASE = window.API_BASE;
+const API_LICENCAS = `${API_BASE}/api/licencas`;
+
 function licencaCertificado() {
   Swal.fire({
     title: 'Adicionar Licença ou Certificado',
     html: `
       <div style="text-align:left;">
         <label for="nome">Nome</label>
-        <input id="nome" class="swal2-input" placeholder="nome do profissional">
+        <input id="nome" class="swal2-input" placeholder="Nome do certificado">
 
         <label for="org">Organização Emissora</label>
         <input id="org" class="swal2-input" placeholder="Organização">
@@ -20,11 +23,6 @@ function licencaCertificado() {
     showCancelButton: true,
     confirmButtonText: 'Salvar',
     cancelButtonText: 'Cancelar',
-    focusConfirm: false,
-    customClass: {
-      confirmButton: 'btn-salvar',
-      cancelButton: 'btn-cancelar'
-    },
     preConfirm: () => {
       const nome = document.getElementById('nome').value;
       const org = document.getElementById('org').value;
@@ -42,24 +40,23 @@ function licencaCertificado() {
     if (result.isConfirmed) {
       const dados = result.value;
 
-      // Enviando para o backend
-      fetch('/api/licencas', {
+      fetch(API_LICENCAS, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(dados)
       })
-      .then(res => {
-        if (res.status === 200) {
-          Swal.fire('✅ Sucesso!', 'Licença/Certificado adicionado.', 'success');
-        } else if (res.status === 400) {
-          Swal.fire('❌ Erro', 'Dados inválidos.', 'error');
-        } else {
-          Swal.fire('⚠️ Atenção', 'Erro inesperado no servidor.', 'warning');
-        }
-      })
-      .catch(() => {
-        Swal.fire('❌ Erro', 'Falha na comunicação com o servidor.', 'error');
-      });
+        .then(res => {
+          if (res.status === 200) {
+            Swal.fire('✅ Sucesso!', 'Licença/Certificado adicionado.', 'success');
+          } else if (res.status === 400) {
+            Swal.fire('❌ Erro', 'Dados inválidos.', 'error');
+          } else {
+            Swal.fire('⚠️ Atenção', 'Erro inesperado no servidor.', 'warning');
+          }
+        })
+        .catch(() => {
+          Swal.fire('❌ Erro', 'Falha na comunicação com o servidor.', 'error');
+        });
     }
   });
 }

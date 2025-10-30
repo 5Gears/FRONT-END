@@ -1,3 +1,6 @@
+const API_BASE = window.API_BASE;
+const API_PROJETOS = `${API_BASE}/api/projetos`;
+
 document.addEventListener("DOMContentLoaded", async () => {
   await carregarProjetos();
 });
@@ -6,11 +9,10 @@ async function carregarProjetos() {
   const select = document.querySelector("select");
 
   try {
-    const resposta = await fetch("http://localhost:8080/api/projetos");
+    const resposta = await fetch(API_PROJETOS);
     if (!resposta.ok) throw new Error("Erro ao buscar projetos");
 
     const projetos = await resposta.json();
-
     const projetosEmDesenvolvimento = projetos.filter(
       (projeto) => projeto.status === "EM_DESENVOLVIMENTO"
     );
@@ -51,57 +53,41 @@ function alocarEquipe() {
 }
 
 async function alterarProjeto() {
-    const selectProjeto = document.getElementById("selectProjeto");
-    const idProjeto = selectProjeto.value;
-    const dataInicio = document.getElementById("dataInicio").value;
-    const dataFim = document.getElementById("dataFim").value;
+  const selectProjeto = document.getElementById("selectProjeto");
+  const idProjeto = selectProjeto.value;
+  const dataInicio = document.getElementById("dataInicio").value;
+  const dataFim = document.getElementById("dataFim").value;
 
-    if (!idProjeto) {
-        Swal.fire({
-            icon: "warning",
-            title: "Selecione um projeto!",
-        });
-        return;
-    }
+  if (!idProjeto) {
+    Swal.fire({ icon: "warning", title: "Selecione um projeto!" });
+    return;
+  }
 
-    if (!dataInicio || !dataFim) {
-        Swal.fire({
-            icon: "warning",
-            title: "Preencha as datas de início e fim!",
-        });
-        return;
-    }
+  if (!dataInicio || !dataFim) {
+    Swal.fire({ icon: "warning", title: "Preencha as datas de início e fim!" });
+    return;
+  }
 
-    const corpo = {
-        dataInicio: dataInicio,
-        dataFim: dataFim
-    };
+  const corpo = { dataInicio, dataFim };
 
-    try {
-        const resposta = await fetch(`http://localhost:8080/api/projetos/${idProjeto}`, {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(corpo)
-        });
+  try {
+    const resposta = await fetch(`${API_PROJETOS}/${idProjeto}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(corpo),
+    });
 
-        if (!resposta.ok) {
-            throw new Error("Erro ao atualizar projeto");
-        }
+    if (!resposta.ok) throw new Error("Erro ao atualizar projeto");
 
-        Swal.fire({
-            icon: "success",
-            title: "Projeto atualizado com sucesso!",
-        });
-    } catch (erro) {
-        console.error("Erro ao atualizar projeto:", erro);
-        Swal.fire({
-            icon: "error",
-            title: "Erro ao atualizar projeto",
-            text: erro.message
-        });
-    }
+    Swal.fire({ icon: "success", title: "Projeto atualizado com sucesso!" });
+  } catch (erro) {
+    console.error("Erro ao atualizar projeto:", erro);
+    Swal.fire({
+      icon: "error",
+      title: "Erro ao atualizar projeto",
+      text: erro.message,
+    });
+  }
 }
 
 async function excluirProjeto() {
@@ -129,7 +115,7 @@ async function excluirProjeto() {
   if (!confirmacao.isConfirmed) return;
 
   try {
-    const resposta = await fetch(`http://localhost:8080/api/projetos/${idProjeto}`, {
+    const resposta = await fetch(`${API_PROJETOS}/${idProjeto}`, {
       method: "DELETE",
     });
 

@@ -1,3 +1,6 @@
+const API_BASE_LOGOUT = window.API_BASE;
+const API_LOGOUT = `${API_BASE_LOGOUT}/api/login/logout`;
+
 async function realizarLogout() {
   try {
     const usuarioId = localStorage.getItem("usuarioId");
@@ -6,11 +9,9 @@ async function realizarLogout() {
       return;
     }
 
-    const resposta = await fetch(`http://localhost:8080/api/login/logout/${usuarioId}`, {
+    const resposta = await fetch(`${API_LOGOUT}/${usuarioId}`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      }
+      headers: { "Content-Type": "application/json" }
     });
 
     if (resposta.ok) {

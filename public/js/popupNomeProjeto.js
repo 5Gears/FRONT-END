@@ -1,6 +1,9 @@
+const API_BASE = window.API_BASE;
+const API_PROJETOS = `${API_BASE}/api/projetos`;
+
 function nomeProjeto() {
   Swal.fire({
-    title: 'Adicionar Um Projeto',
+    title: 'Adicionar um Projeto',
     html: `
       <div style="text-align:left;">
         <label for="nome">Nome do Projeto</label>
@@ -20,11 +23,6 @@ function nomeProjeto() {
     showCancelButton: true,
     confirmButtonText: 'Salvar',
     cancelButtonText: 'Cancelar',
-    focusConfirm: false,
-    customClass: {
-      confirmButton: 'btn-salvar',
-      cancelButton: 'btn-cancelar'
-    },
     preConfirm: () => {
       const nome = document.getElementById('nome').value.trim();
       const orcamento = document.getElementById('orcamento').value.trim();
@@ -42,24 +40,23 @@ function nomeProjeto() {
     if (result.isConfirmed) {
       const dados = result.value;
 
-      // Enviando para o backend
-      fetch('/api/projetos', {
+      fetch(API_PROJETOS, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(dados)
       })
-      .then(res => {
-        if (res.status === 200) {
-          Swal.fire('✅ Sucesso!', 'Projeto criado com sucesso.', 'success');
-        } else if (res.status === 400) {
-          Swal.fire('❌ Erro', 'Dados inválidos.', 'error');
-        } else {
-          Swal.fire('⚠️ Atenção', 'Erro inesperado no servidor.', 'warning');
-        }
-      })
-      .catch(() => {
-        Swal.fire('❌ Erro', 'Falha na comunicação com o servidor.', 'error');
-      });
+        .then(res => {
+          if (res.status === 200) {
+            Swal.fire('✅ Sucesso!', 'Projeto criado com sucesso.', 'success');
+          } else if (res.status === 400) {
+            Swal.fire('❌ Erro', 'Dados inválidos.', 'error');
+          } else {
+            Swal.fire('⚠️ Atenção', 'Erro inesperado no servidor.', 'warning');
+          }
+        })
+        .catch(() => {
+          Swal.fire('❌ Erro', 'Falha na comunicação com o servidor.', 'error');
+        });
     } else if (result.dismiss !== Swal.DismissReason.cancel) {
       Swal.fire('Erro!', 'Ocorreu um problema ao criar o projeto.', 'error');
     }
