@@ -65,9 +65,10 @@
                 <input type="number" step="0.01" id="valorHora">
 
                 <span>Cargo</span>
-                <select id="cargo">
-                    <option value="">Selecione um cargo</option>
-                </select>
+                <div class="cargo-container">
+                    <input type="text" id="cargoInput" placeholder="Digite para buscar um cargo..." autocomplete="off">
+                    <ul id="cargoSugestoes" class="sugestoes-lista"></ul>
+                </div>
 
                 <span>Senioridade</span>
                 <select id="senioridade">
@@ -88,6 +89,7 @@
                 </select>
             </div>
         </div>
+
         <div class="proximo">
             <button type="button" onclick="cadastrarUsuario()">CADASTRAR</button>
         </div>
@@ -96,5 +98,4 @@
     <script src="../js/cadastro.js"></script>
     <script src="../js/logout.js"></script>
 </body>
-
 </html>

@@ -17,40 +17,70 @@ document.addEventListener("DOMContentLoaded", () => {
     carregarNiveisPermissao();
 });
 
-// Carregar cargos do backend
+let todosCargos = [];
+
+// === AUTOCOMPLETE DE CARGOS ===
 async function carregarCargos() {
     try {
         const response = await fetch(`${BASE_URL}/cargos`);
         if (!response.ok) throw new Error("Erro ao buscar cargos");
-        const cargos = await response.json();
+        todosCargos = await response.json();
 
-        const selectCargo = document.getElementById("cargo");
-        selectCargo.innerHTML = "<option value=''>Selecione um cargo</option>";
-        cargos.forEach(cargo => {
-            const option = document.createElement("option");
-            option.value = cargo.nome; // importante: enviamos o nome, não o ID
-            option.text = cargo.nome;
-            selectCargo.appendChild(option);
+        const inputCargo = document.getElementById("cargoInput");
+        const listaSugestoes = document.getElementById("cargoSugestoes");
+
+        inputCargo.addEventListener("input", () => {
+            const valor = inputCargo.value.toLowerCase();
+            listaSugestoes.innerHTML = "";
+
+            if (valor.length < 2) {
+                listaSugestoes.style.display = "none";
+                return;
+            }
+
+            const resultados = todosCargos
+                .filter(c => c.nome.toLowerCase().includes(valor))
+                .slice(0, 10);
+
+            resultados.forEach(cargo => {
+                const li = document.createElement("li");
+                li.textContent = cargo.nome;
+                li.addEventListener("click", () => {
+                    inputCargo.value = cargo.nome;
+                    listaSugestoes.innerHTML = "";
+                    listaSugestoes.style.display = "none";
+                });
+                listaSugestoes.appendChild(li);
+            });
+
+            listaSugestoes.style.display = resultados.length ? "block" : "none";
         });
+
+        // Fecha sugestões ao clicar fora
+        document.addEventListener("click", (e) => {
+            if (!listaSugestoes.contains(e.target) && e.target !== inputCargo) {
+                listaSugestoes.style.display = "none";
+            }
+        });
+
     } catch (error) {
         console.error("Erro ao carregar cargos:", error);
         Swal.fire('⚠️ Atenção', 'Não foi possível carregar os cargos.', 'warning');
     }
 }
 
-// Carregar senioridades
+// === OUTRAS FUNÇÕES ===
 function carregarSenioridades() {
     const select = document.getElementById("senioridade");
     select.innerHTML = "<option value=''>Selecione</option>";
     senioridades.forEach(s => {
         const option = document.createElement("option");
         option.value = s;
-        option.text = s.charAt(0).toUpperCase() + s.slice(1).toLowerCase(); // exibição amigável
+        option.text = s.charAt(0).toUpperCase() + s.slice(1).toLowerCase();
         select.appendChild(option);
     });
 }
 
-// Carregar níveis de permissão
 function carregarNiveisPermissao() {
     const select = document.getElementById("nivelPermissao");
     select.innerHTML = "<option value=''>Selecione</option>";
@@ -62,7 +92,7 @@ function carregarNiveisPermissao() {
     });
 }
 
-// Função para cadastrar usuário
+// === CADASTRAR USUÁRIO ===
 async function cadastrarUsuario() {
     const idEmpresa = localStorage.getItem("idEmpresa");
     if (!idEmpresa) {
@@ -81,11 +111,10 @@ async function cadastrarUsuario() {
         valorHora: parseFloat(document.getElementById("valorHora").value) || 0,
         idEmpresa: parseInt(idEmpresa),
         idNivel: parseInt(document.getElementById("nivelPermissao").value) || 1,
-        cargoNome: document.getElementById("cargo").value || null,
+        cargoNome: document.getElementById("cargoInput").value || null,
         senioridade: document.getElementById("senioridade").value || null
     };
 
-    // Validação mínima
     if (!usuario.nome || !usuario.email) {
         Swal.fire('⚠️ Atenção', 'Nome e e-mail são obrigatórios.', 'warning');
         return;
@@ -107,7 +136,7 @@ async function cadastrarUsuario() {
         Swal.fire('✅ Sucesso', `Usuário <b>${data.nome}</b> cadastrado com sucesso!`, 'success');
 
         // Resetar formulário
-        document.getElementById("formUsuario").querySelectorAll("input, select").forEach(el => el.value = "");
+        document.querySelectorAll("#formUsuario input, #formUsuario select, #cargoInput").forEach(el => el.value = "");
 
     } catch (error) {
         console.error(error);
