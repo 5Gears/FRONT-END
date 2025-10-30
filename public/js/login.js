@@ -1,3 +1,7 @@
+const API_BASE = window.API_BASE;
+const API_LOGIN = `${API_BASE}/api/login`;
+const API_USUARIOS = `${API_BASE}/api/usuarios`;
+
 async function realizarLogin() {
   const email = document.getElementById("email").value.trim();
   const senha = document.getElementById("senha").value.trim();
@@ -10,10 +14,10 @@ async function realizarLogin() {
   const body = { email, senha };
 
   try {
-    const response = await fetch("http://localhost:8080/api/login", {
+    const response = await fetch(API_LOGIN, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body)
+      body: JSON.stringify(body),
     });
 
     const data = await response.json().catch(() => ({}));
@@ -36,12 +40,12 @@ async function realizarLogin() {
     localStorage.setItem("emailUsuario", data.email);
 
     try {
-      const usuarioResponse = await fetch(`http://localhost:8080/api/usuarios/${data.id}`, {
+      const usuarioResponse = await fetch(`${API_USUARIOS}/${data.id}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${data.token}`
-        }
+          "Authorization": `Bearer ${data.token}`,
+        },
       });
 
       if (usuarioResponse.ok) {
