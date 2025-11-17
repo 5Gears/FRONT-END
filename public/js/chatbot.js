@@ -42,10 +42,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     return await res.json();
   }
 
-  async function postAlocacao(idProjeto, usuario) {
+  // agora recebe também dataSaida
+  async function postAlocacao(idProjeto, usuario, dataSaida) {
     const body = {
       dataAlocacao: new Date().toISOString().split('T')[0],
-      dataSaida: null,
+      dataSaida: dataSaida, // <= data final vinda do popup
       horasPorDia: usuario.horasPorDia || DEFAULT_HORAS_DIA,
       horasAlocadas: usuario.horasTotais || DEFAULT_HORAS_TOTAL
     };
@@ -65,11 +66,18 @@ document.addEventListener('DOMContentLoaded', async () => {
   // -------- Normalizador --------
   function normalizarSenioridade(texto) {
     const mapa = {
-      jr: 'JUNIOR', júnior: 'JUNIOR', junior: 'JUNIOR',
-      pleno: 'PLENO', pl: 'PLENO',
-      sênior: 'SENIOR', senior: 'SENIOR', sr: 'SENIOR',
-      estagiario: 'ESTAGIARIO', estágio: 'ESTAGIARIO',
-      estagio: 'ESTAGIARIO', trainee: 'ESTAGIARIO'
+      jr: 'JUNIOR',
+      júnior: 'JUNIOR',
+      junior: 'JUNIOR',
+      pleno: 'PLENO',
+      pl: 'PLENO',
+      sênior: 'SENIOR',
+      senior: 'SENIOR',
+      sr: 'SENIOR',
+      estagiario: 'ESTAGIARIO',
+      estágio: 'ESTAGIARIO',
+      estagio: 'ESTAGIARIO',
+      trainee: 'ESTAGIARIO'
     };
 
     for (const [chave, valor] of Object.entries(mapa)) {
@@ -149,8 +157,15 @@ document.addEventListener('DOMContentLoaded', async () => {
       return;
     }
 
+    const hojeStr = new Date().toISOString().split('T')[0];
+
     const html = `
       <div style="text-align:left;max-height:350px;overflow-y:auto;">
+        <div style="margin-bottom:12px;">
+          <label style="font-size:13px;font-weight:600;">Data final da alocação (para todos os selecionados):</label><br>
+          <input type="date" id="dataFimGlobal" value="${hojeStr}" style="margin-top:5px;padding:4px 6px;">
+        </div>
+        <hr/>
         ${usuariosSugeridos.map(u => `
           <div style="margin-bottom:12px;padding:8px 0;border-bottom:1px solid #ddd;">
             <input type="checkbox" id="user_${u.id}" value="${u.id}">
@@ -178,17 +193,27 @@ document.addEventListener('DOMContentLoaded', async () => {
       background: '#fff',
       preConfirm: () => {
         const popup = Swal.getPopup();
-        const selecionados = Array.from(popup.querySelectorAll('input[type="checkbox"]:checked'))
-          .map(cb => {
-            const id = Number(cb.value);
-            const horasDia = Number(popup.querySelector(`#horasDia_${id}`).value);
-            const horasTotais = Number(popup.querySelector(`#horasTotal_${id}`).value);
-            return { id, horasPorDia: horasDia, horasTotais };
-          });
+        const dataFimGlobal = popup.querySelector('#dataFimGlobal').value;
+
+        if (!dataFimGlobal) {
+          Swal.showValidationMessage('Defina a data final da alocação.');
+          return false;
+        }
+
+        const selecionados = Array.from(
+          popup.querySelectorAll('input[type="checkbox"]:checked')
+        ).map(cb => {
+          const id = Number(cb.value);
+          const horasDia = Number(popup.querySelector(`#horasDia_${id}`).value);
+          const horasTotais = Number(popup.querySelector(`#horasTotal_${id}`).value);
+          return { id, horasPorDia: horasDia, horasTotais, dataFim: dataFimGlobal };
+        });
+
         if (selecionados.length === 0) {
           Swal.showValidationMessage('Selecione pelo menos um profissional.');
           return false;
         }
+
         return selecionados;
       }
     });
@@ -196,6 +221,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (result.isConfirmed && result.value) {
       const selecionados = result.value;
 
+      // Atualiza cache local com horas e dataFim
       usuariosSugeridos = usuariosSugeridos.map(u => {
         const sel = selecionados.find(s => s.id === u.id);
         return sel ? { ...u, ...sel } : u;
@@ -206,7 +232,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
       try {
         for (const usuario of selecionados) {
-          await postAlocacao(projetoSelecionado.id, usuario);
+          await postAlocacao(projetoSelecionado.id, usuario, usuario.dataFim);
         }
         Swal.fire('✅ Sucesso', 'Profissionais alocados com sucesso!', 'success');
         addMessage('✅ Todos os profissionais foram alocados!', false, 'success');

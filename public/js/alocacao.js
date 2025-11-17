@@ -1,4 +1,3 @@
-const API_BASE = window.API_BASE;
 const API_PROJETOS = `${API_BASE}/api/projetos`;
 const API_USUARIOS = `${API_BASE}/api/usuarios`;
 const idProjeto = localStorage.getItem('idProjeto');
@@ -26,14 +25,24 @@ document.addEventListener('DOMContentLoaded', async () => {
     try {
       const res = await fetch(`${API_PROJETOS}/${idProjeto}`);
       if (!res.ok) throw new Error('Erro ao carregar o projeto.');
+
       const projeto = await res.json();
-      selectProjeto.innerHTML = `<option value="${projeto.id}" selected>${projeto.nome}</option>`;
+
+      // Preenche o select com apenas 1 opção
+      selectProjeto.innerHTML = `
+        <option value="${projeto.id}" selected>
+            ${projeto.nome}
+        </option>
+      `;
+
       selectProjeto.disabled = true;
+
     } catch (err) {
       console.error('Erro ao carregar projeto:', err);
       Swal.fire('Erro', 'Não foi possível carregar o projeto.', 'error');
     }
   }
+
 
   async function alocarProfissional(event) {
     event.preventDefault();

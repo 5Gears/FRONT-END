@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 
 <head>
     <meta charset="UTF-8">
@@ -56,12 +56,20 @@
             <div class="novo-projeto">
                 <div class="upload-container" id="uploadContainer">
                     <img src="../assets/ri_upload-cloud-fill.png" alt="">
-                    <h5>Upload de Arquivos</h5>
-                    <form id="uploadForm">
-                        <input type="file" id="fileInput" accept="file/*">
+                    <h5>Upload de Arquivo do Projeto (PDF)</h5>
+
+                    <form id="uploadForm" onsubmit="return false;">
+                        <input type="file" id="fileInput" accept=".pdf">
                         <label for="fileInput">Escolher Arquivo</label>
                     </form>
-                    <div id="imageContainer"></div>
+
+                    <button type="button" id="btnAnalisarPDF" class="btn-analisar">
+                        ANALISAR PDF
+                    </button>
+
+                    <small id="statusAnalise" class="status-analise">
+                        Nenhum arquivo analisado ainda.
+                    </small>
                 </div>
 
                 <span>Nome do Projeto</span>
@@ -100,8 +108,6 @@
 
         </div>
     </div>
-
-    
 </body>
 
 </html>

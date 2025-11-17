@@ -29,15 +29,17 @@ document.addEventListener("DOMContentLoaded", () => {
         title: "Redirecionando...",
         text: "Você será direcionado para a tela de criação de projeto.",
         showConfirmButton: false,
-        timer: 1500,
+        timer: 1200,
       }).then(() => window.location.href = "./criar_projeto.html");
-    } else if (editarProjeto.checked) {
+    }
+
+    if (editarProjeto.checked) {
       Swal.fire({
         icon: "info",
         title: "Redirecionando...",
-        text: "Você será direcionado para a tela de edição de projeto.",
+        text: "Você será direcionado para a tela de edição do projeto.",
         showConfirmButton: false,
-        timer: 1500,
+        timer: 1200,
       }).then(() => window.location.href = "./editar_alocação.html");
     }
   });

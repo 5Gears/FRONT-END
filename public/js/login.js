@@ -59,7 +59,7 @@ async function realizarLogin() {
     }
 
     await Swal.fire('✅ Sucesso', 'Bem-vindo!', 'success');
-    window.location.href = "../html/cadastro.html";
+    window.location.href = "../html/perfil.html";
 
   } catch (error) {
     console.error("Erro na requisição:", error);
