@@ -1,141 +1,335 @@
 const API_BASE = window.API_BASE;
 const API_PROJETOS = `${API_BASE}/api/projetos`;
 
+let projetosCache = [];
+
+// ===============================
+// LOAD
+// ===============================
 document.addEventListener("DOMContentLoaded", async () => {
-  await carregarProjetos();
+    await carregarProjetos();
+
+    const selectProjeto = document.getElementById("selectProjeto");
+    if (selectProjeto) {
+        selectProjeto.addEventListener("change", atualizarInfoProjeto);
+    }
 });
 
+// ===============================
+// CARREGAR PROJETOS
+// ===============================
 async function carregarProjetos() {
-  const select = document.querySelector("select");
+    const select = document.getElementById("selectProjeto");
 
-  try {
-    const resposta = await fetch(API_PROJETOS);
-    if (!resposta.ok) throw new Error("Erro ao buscar projetos");
+    try {
+        const resposta = await fetch(API_PROJETOS);
+        if (!resposta.ok) throw new Error("Erro ao buscar projetos");
 
-    const projetos = await resposta.json();
-    const projetosEmDesenvolvimento = projetos.filter(
-      (projeto) => projeto.status === "EM_DESENVOLVIMENTO"
-    );
+        const projetos = await resposta.json();
 
-    select.innerHTML = "<option value=''>Selecione um projeto</option>";
-    projetosEmDesenvolvimento.forEach((projeto) => {
-      const option = document.createElement("option");
-      option.value = projeto.id;
-      option.textContent = projeto.nome;
-      select.appendChild(option);
-    });
+        projetosCache = projetos.filter(
+            (projeto) => projeto.status === "EM_DESENVOLVIMENTO"
+        );
 
-  } catch (erro) {
-    console.error("Erro ao carregar projetos:", erro);
-    Swal.fire({
-      icon: "error",
-      title: "Erro",
-      text: "Não foi possível carregar os projetos!",
-    });
-  }
+        select.innerHTML = "<option value=''>Selecione um projeto</option>";
+
+        const hoje = new Date();
+        hoje.setHours(0, 0, 0, 0);
+
+        projetosCache.forEach((projeto) => {
+            const option = document.createElement("option");
+            option.value = projeto.id;
+
+            let atrasado = false;
+
+            if (projeto.atrasado === true) {
+                atrasado = true;
+            } else if (projeto.dataFim) {
+                const dataFim = new Date(projeto.dataFim);
+                dataFim.setHours(0, 0, 0, 0);
+                atrasado = dataFim < hoje;
+            }
+
+            if (atrasado) {
+                option.textContent = `${projeto.nome} (ATRASADO)`;
+                option.classList.add("projeto-atrasado-option");
+            } else {
+                option.textContent = projeto.nome;
+            }
+
+            select.appendChild(option);
+        });
+
+    } catch (erro) {
+        console.error("Erro ao carregar projetos:", erro);
+        Swal.fire({
+            icon: "error",
+            title: "Erro",
+            text: "Não foi possível carregar os projetos!"
+        });
+    }
 }
 
+// ===============================
+// INFO DO PROJETO
+// ===============================
+function atualizarInfoProjeto() {
+    const select = document.getElementById("selectProjeto");
+    const infoDiv = document.getElementById("infoProjeto");
+    const idProjeto = parseInt(select.value, 10);
+
+    if (!idProjeto) {
+        infoDiv.innerHTML = "Selecione um projeto para ver os detalhes.";
+        infoDiv.classList.remove("atrasado");
+        return;
+    }
+
+    const projeto = projetosCache.find((p) => p.id === idProjeto);
+    if (!projeto) {
+        infoDiv.innerHTML = "Projeto não encontrado.";
+        infoDiv.classList.remove("atrasado");
+        return;
+    }
+
+    const hoje = new Date();
+    hoje.setHours(0, 0, 0, 0);
+
+    let atrasado = false;
+
+    if (projeto.atrasado === true) {
+        atrasado = true;
+    } else if (projeto.dataFim) {
+        const dataFim = new Date(projeto.dataFim);
+        dataFim.setHours(0, 0, 0, 0);
+        atrasado = dataFim < hoje;
+    }
+
+    let html = `
+        <strong>Status:</strong> ${projeto.status.replace(/_/g, " ")}<br>
+        <strong>Data início:</strong> ${projeto.dataInicio || "—"}<br>
+        <strong>Data fim:</strong> ${projeto.dataFim || "—"}
+    `;
+
+    if (atrasado) {
+        html += `<br><strong>⚠ Projeto atrasado</strong>`;
+        infoDiv.classList.add("atrasado");
+    } else {
+        infoDiv.classList.remove("atrasado");
+    }
+
+    infoDiv.innerHTML = html;
+
+    // Preenche inputs
+    document.getElementById("dataInicio").value = projeto.dataInicio || "";
+    document.getElementById("dataFim").value = projeto.dataFim || "";
+}
+
+// ===============================
+// ALOCAR EQUIPE
+// ===============================
 function alocarEquipe() {
-  const select = document.querySelector("select");
-  const idProjeto = select.value;
+    const select = document.getElementById("selectProjeto");
+    const idProjeto = select.value;
 
-  if (!idProjeto) {
-    Swal.fire({
-      icon: "warning",
-      title: "Atenção",
-      text: "Selecione um projeto antes de continuar!",
-    });
-    return;
-  }
+    if (!idProjeto) {
+        Swal.fire({
+            icon: "warning",
+            title: "Atenção",
+            text: "Selecione um projeto antes de continuar!"
+        });
+        return;
+    }
 
-  localStorage.setItem("idProjeto", idProjeto);
-  window.location.href = "./alocacão.html";
+    localStorage.setItem("idProjeto", idProjeto);
+    window.location.href = "./alocacão.html";
 }
 
+// ===============================
+// VERIFICAÇÃO DE DATAS
+// ===============================
+function validarDatas(dataInicio, dataFim) {
+    const hoje = new Date();
+    hoje.setHours(0, 0, 0, 0);
+
+    const inicio = new Date(dataInicio);
+    const fim = new Date(dataFim);
+
+    if (inicio < hoje) {
+        Swal.fire({
+            icon: "warning",
+            title: "Data inválida",
+            text: "A data de início não pode ser no passado."
+        });
+        return false;
+    }
+
+    if (fim < inicio) {
+        Swal.fire({
+            icon: "warning",
+            title: "Data inválida",
+            text: "A data de término não pode ser antes do início."
+        });
+        return false;
+    }
+
+    return true;
+}
+
+// ===============================
+// ALTERAR DATAS
+// ===============================
 async function alterarProjeto() {
-  const selectProjeto = document.getElementById("selectProjeto");
-  const idProjeto = selectProjeto.value;
-  const dataInicio = document.getElementById("dataInicio").value;
-  const dataFim = document.getElementById("dataFim").value;
+    const idProjeto = document.getElementById("selectProjeto").value;
+    const dataInicio = document.getElementById("dataInicio").value;
+    const dataFim = document.getElementById("dataFim").value;
 
-  if (!idProjeto) {
-    Swal.fire({ icon: "warning", title: "Selecione um projeto!" });
-    return;
-  }
+    if (!idProjeto) {
+        Swal.fire({ icon: "warning", title: "Selecione um projeto!" });
+        return;
+    }
 
-  if (!dataInicio || !dataFim) {
-    Swal.fire({ icon: "warning", title: "Preencha as datas de início e fim!" });
-    return;
-  }
+    if (!dataInicio || !dataFim) {
+        Swal.fire({
+            icon: "warning",
+            title: "Preencha as datas de início e fim!"
+        });
+        return;
+    }
 
-  const corpo = { dataInicio, dataFim };
+    if (!validarDatas(dataInicio, dataFim)) return;
 
-  try {
-    const resposta = await fetch(`${API_PROJETOS}/${idProjeto}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(corpo),
-    });
+    const corpo = { dataInicio, dataFim };
 
-    if (!resposta.ok) throw new Error("Erro ao atualizar projeto");
+    try {
+        const resposta = await fetch(`${API_PROJETOS}/${idProjeto}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(corpo)
+        });
 
-    Swal.fire({ icon: "success", title: "Projeto atualizado com sucesso!" });
-  } catch (erro) {
-    console.error("Erro ao atualizar projeto:", erro);
-    Swal.fire({
-      icon: "error",
-      title: "Erro ao atualizar projeto",
-      text: erro.message,
-    });
-  }
+        if (!resposta.ok) {
+            throw new Error(await resposta.text());
+        }
+
+        Swal.fire({
+            icon: "success",
+            title: "Projeto atualizado!"
+        });
+
+        await carregarProjetos();
+        atualizarInfoProjeto();
+
+    } catch (erro) {
+        console.error("Erro ao atualizar projeto:", erro);
+        Swal.fire({
+            icon: "error",
+            title: "Erro ao atualizar projeto",
+            text: erro.message
+        });
+    }
 }
 
+// ===============================
+// FINALIZAR PROJETO
+// ===============================
+async function finalizarProjeto() {
+    const idProjeto = document.getElementById("selectProjeto").value;
+
+    if (!idProjeto) {
+        Swal.fire({
+            icon: "warning",
+            title: "Selecione um projeto para finalizar!"
+        });
+        return;
+    }
+
+    const escolha = await Swal.fire({
+        title: "Finalizar projeto",
+        text: "Deseja marcar como CONCLUÍDO ou CANCELADO?",
+        icon: "question",
+        showCancelButton: true,
+        showDenyButton: true,
+        confirmButtonText: "Concluído",
+        denyButtonText: "Cancelado",
+        cancelButtonText: "Voltar"
+    });
+
+    if (!escolha.isConfirmed && !escolha.isDenied) return;
+
+    const concluido = escolha.isConfirmed;
+
+    try {
+        const resposta = await fetch(
+            `${API_PROJETOS}/${idProjeto}/finalizar?concluido=${concluido}`,
+            { method: "PUT" }
+        );
+
+        if (!resposta.ok) throw new Error(await resposta.text());
+
+        Swal.fire({
+            icon: "success",
+            title: "Projeto finalizado!",
+            text: concluido ? "Marcado como CONCLUÍDO" : "Marcado como CANCELADO"
+        });
+
+        await carregarProjetos();
+        atualizarInfoProjeto();
+
+    } catch (erro) {
+        Swal.fire({
+            icon: "error",
+            title: "Erro ao finalizar projeto",
+            text: erro.message
+        });
+    }
+}
+
+// ===============================
+// EXCLUIR PROJETO
+// ===============================
 async function excluirProjeto() {
-  const select = document.querySelector("select");
-  const idProjeto = select.value;
+    const idProjeto = document.getElementById("selectProjeto").value;
 
-  if (!idProjeto) {
-    Swal.fire({
-      icon: "warning",
-      title: "Atenção",
-      text: "Selecione um projeto para excluir!",
-    });
-    return;
-  }
+    if (!idProjeto) {
+        Swal.fire({
+            icon: "warning",
+            title: "Selecione um projeto para excluir!"
+        });
+        return;
+    }
 
-  const confirmacao = await Swal.fire({
-    title: "Tem certeza?",
-    text: "Essa ação não pode ser desfeita!",
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonText: "Sim, excluir!",
-    cancelButtonText: "Cancelar",
-  });
-
-  if (!confirmacao.isConfirmed) return;
-
-  try {
-    const resposta = await fetch(`${API_PROJETOS}/${idProjeto}`, {
-      method: "DELETE",
+    const confirmacao = await Swal.fire({
+        title: "Tem certeza?",
+        text: "Essa ação não pode ser desfeita!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Sim, excluir!",
+        cancelButtonText: "Cancelar"
     });
 
-    if (!resposta.ok) throw new Error("Erro ao excluir projeto");
+    if (!confirmacao.isConfirmed) return;
 
-    Swal.fire({
-      icon: "success",
-      title: "Excluído!",
-      text: "O projeto foi excluído com sucesso.",
-    });
+    try {
+        const resposta = await fetch(`${API_PROJETOS}/${idProjeto}`, {
+            method: "DELETE"
+        });
 
-    const option = select.querySelector(`option[value='${idProjeto}']`);
-    if (option) option.remove();
+        if (!resposta.ok) throw new Error("Erro ao excluir");
 
-  } catch (erro) {
-    console.error("Erro ao excluir projeto:", erro);
-    Swal.fire({
-      icon: "error",
-      title: "Erro",
-      text: "Não foi possível excluir o projeto!",
-    });
-  }
+        Swal.fire({
+            icon: "success",
+            title: "Excluído!",
+            text: "O projeto foi excluído com sucesso."
+        });
+
+        await carregarProjetos();
+        atualizarInfoProjeto();
+
+    } catch (erro) {
+        Swal.fire({
+            icon: "error",
+            title: "Erro ao excluir projeto",
+            text: erro.message
+        });
+    }
 }

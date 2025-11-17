@@ -1,13 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alterações Manuais</title>
-    <link rel="stylesheet" href="../css/style.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Editar Projeto</title>
+
+    <link rel="stylesheet" href="../css/style.css" />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="../assets/5Gears-removebg-preview.png">
+
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="../js/env.js"></script>
     <script src="../js/config.js"></script>
@@ -19,16 +21,14 @@
 
     <div class="tela-alocacao">
         <div class="titulo">
-            <h1>EDITAR ALOCAÇÃO</h1>
+            <h1>EDITAR PROJETO</h1>
             <img src="../assets/logo.png" alt="">
         </div>
 
-        <!-- Hambúrguer + Menu lateral -->
+        <!-- MENU HAMBÚRGUER -->
         <input type="checkbox" id="menu-toggle" class="menu-toggle">
         <label for="menu-toggle" class="hamburger">
-            <span></span>
-            <span></span>
-            <span></span>
+            <span></span><span></span><span></span>
         </label>
 
         <nav class="menu">
@@ -45,24 +45,44 @@
         </nav>
 
         <div class="formulario">
+
             <div class="form">
+
+                <!-- SELEÇÃO DE PROJETO -->
                 <span>Selecionar Projeto</span>
-                <select name="" id="selectProjeto"></select>
-                <span>Data alocação (Início)</span>
+                <select id="selectProjeto"></select>
+
+                <!-- INFORMAÇÕES DO PROJETO -->
+                <div id="infoProjeto" class="info-projeto">
+                    Selecione um projeto para ver os detalhes.
+                </div>
+
+                <!-- DATAS -->
+                <span>Data de Início</span>
                 <input type="date" id="dataInicio">
-                <span>Data alocação (Fim)</span>
+
+                <span>Data de Término</span>
                 <input type="date" id="dataFim">
 
-                <button type="button" onclick="alocarEquipe()" class="alterar-alocacao">ALOCAR EQUIPE</button>
+                <!-- AÇÕES PRINCIPAIS -->
+                <div class="alterar-excluir">
+                    <!-- ALTERAR DATAS -->
+                    <button onclick="alterarProjeto()">ALTERAR DATAS</button>
+
+                    <!-- FINALIZAR -->
+                    <button onclick="finalizarProjeto()">FINALIZAR</button>
+
+                    <!-- EXCLUIR -->
+                    <button class="excluir" onclick="excluirProjeto()">EXCLUIR</button>
+                </div>
+
+                <!-- ALOCAR EQUIPE (BOTÃO PADRÃO DO SEU CSS) -->
+                <button class="alterar-alocacao" onclick="alocarEquipe()">ALOCAR EQUIPE</button>
+
             </div>
-            <div class="alterar-excluir">
-                <button onclick="alterarProjeto()"><a href="">ALTERAR</a></button>
-                <button onclick="excluirProjeto()" class="excluir"><a href="">EXCLUIR</a></button>
-            </div>
+
         </div>
     </div>
-
-
 
 </body>
 
