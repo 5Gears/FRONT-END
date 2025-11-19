@@ -4,6 +4,7 @@ const API_LOGOUT = `${API_BASE_LOGOUT}/api/login/logout`;
 async function realizarLogout() {
   try {
     const usuarioId = localStorage.getItem("usuarioId");
+
     if (!usuarioId) {
       Swal.fire('⚠️ Atenção', 'Nenhum usuário está logado.', 'warning');
       return;
@@ -14,14 +15,16 @@ async function realizarLogout() {
       headers: { "Content-Type": "application/json" }
     });
 
+    const data = await resposta.json().catch(() => ({}));
+
     if (resposta.ok) {
       await Swal.fire('✅ Sucesso', 'Logout realizado com sucesso!', 'success');
       localStorage.clear();
-      window.location.href = "/public/login.html";
+      window.location.href = "../index.html";
     } else {
-      const erro = await resposta.json();
-      Swal.fire('❌ Erro', `Erro ao realizar logout: ${erro.erro || "Erro desconhecido"}`, 'error');
+      Swal.fire('❌ Erro', data.erro || "Erro ao realizar logout.", 'error');
     }
+
   } catch (error) {
     console.error("Erro na requisição de logout:", error);
     Swal.fire('⚠️ Erro', 'Erro de conexão ao tentar realizar logout.', 'error');
