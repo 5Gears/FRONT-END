@@ -17,7 +17,7 @@ async function realizarLogout() {
     if (resposta.ok) {
       await Swal.fire('✅ Sucesso', 'Logout realizado com sucesso!', 'success');
       localStorage.clear();
-      window.location.href = "login.html";
+      window.location.href = "/public/login.html";
     } else {
       const erro = await resposta.json();
       Swal.fire('❌ Erro', `Erro ao realizar logout: ${erro.erro || "Erro desconhecido"}`, 'error');

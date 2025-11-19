@@ -6,9 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Primeiro Acesso</title>
   <link rel="stylesheet" href="./css/style.css">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <link rel="icon" type="image/png" href="./assets/5Gears-removebg-preview.png">
   <script src="./js/env.js"></script>
   <script src="./js/config.js"></script>
   <script src="./js/loginPrimeiroAcesso.js"></script>
@@ -18,15 +16,19 @@
   <div class="login">
     <aside>
       <img src="./assets/Design sem nome 1.png" alt="">
+
       <div class="formulario">
         <h2>Primeiro Acesso</h2>
-        <h5>Defina sua nova senha para continuar</h5>
+        <h5>Use sua senha temporária e cadastre uma nova senha</h5>
 
-        <span>Nova Senha</span>
-        <input id="novaSenha" class="input" type="password" placeholder="*******" required>
+        <span>Senha temporária</span>
+        <input id="senhaTemporaria" class="input" type="password" placeholder="********">
 
-        <span>Confirmar Senha</span>
-        <input id="confirmarSenha" class="input" type="password" placeholder="*******" required>
+        <span>Nova senha</span>
+        <input id="novaSenha" class="input" type="password" placeholder="********">
+
+        <span>Confirmar nova senha</span>
+        <input id="confirmarSenha" class="input" type="password" placeholder="********">
       </div>
 
       <button onclick="confirmarPrimeiroAcesso()">SALVAR SENHA</button>
@@ -36,7 +38,5 @@
       <img src="./assets/mobile-password-forgot (2) 1.png" alt="">
     </article>
   </div>
-  
-
 </body>
 </html>

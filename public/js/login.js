@@ -1,13 +1,55 @@
 const API_BASE = window.API_BASE;
 const API_LOGIN = `${API_BASE}/api/login`;
-const API_USUARIOS = `${API_BASE}/api/usuarios`;
+const API_VERIFICAR = `${API_BASE}/api/login/verificar-primeiro-acesso`;
+
+// Elementos
+const campoSenha = document.getElementById("senha");
+const botaoLogin = document.getElementById("btnLogin");
+
+// Inicialmente esconde a senha até verificar o e-mail
+campoSenha.style.display = "none";
+
+async function verificarEmail() {
+  const email = document.getElementById("email").value.trim();
+
+  if (!email) return;
+
+  try {
+    const res = await fetch(API_VERIFICAR, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email })
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      Swal.fire("Erro", data.erro || "Email não encontrado.", "error");
+      return;
+    }
+
+    if (data.primeiroAcesso) {
+      // Redireciona para o primeiro acesso
+      localStorage.setItem("emailUsuario", email);
+      Swal.fire("Primeiro acesso", "Defina sua nova senha!", "info");
+      window.location.href = "/public/loginPrimeiroAcesso.html";
+    } else {
+      // Mostra campo de senha e segue login normal
+      campoSenha.style.display = "block";
+      botaoLogin.innerText = "Entrar";
+    }
+
+  } catch (e) {
+    Swal.fire("Erro", "Falha ao verificar e-mail.", "error");
+  }
+}
 
 async function realizarLogin() {
   const email = document.getElementById("email").value.trim();
   const senha = document.getElementById("senha").value.trim();
 
   if (!email || !senha) {
-    Swal.fire('⚠️ Atenção', 'Por favor, preencha o e-mail e a senha.', 'warning');
+    Swal.fire("Atenção", "Informe seu e-mail e senha.", "warning");
     return;
   }
 
@@ -20,49 +62,23 @@ async function realizarLogin() {
       body: JSON.stringify(body),
     });
 
-    const data = await response.json().catch(() => ({}));
-
-    if (response.status === 401 && data.erro?.includes("primeiro acesso")) {
-      localStorage.setItem("emailUsuario", email);
-      await Swal.fire('🔐 Primeiro acesso detectado!', 'Defina uma nova senha.', 'info');
-      window.location.href = "../html/loginPrimeiroAcesso.html";
-      return;
-    }
+    const data = await response.json();
 
     if (!response.ok) {
-      Swal.fire('❌ Erro', data.erro || 'Erro ao tentar realizar login.', 'error');
+      Swal.fire("Erro", data.erro || "Erro ao efetuar login.", "error");
       return;
     }
 
+    // Salva dados da sessão
     localStorage.setItem("usuarioId", data.id);
     localStorage.setItem("nomeUsuario", data.nome);
     localStorage.setItem("token", data.token);
     localStorage.setItem("emailUsuario", data.email);
 
-    try {
-      const usuarioResponse = await fetch(`${API_USUARIOS}/${data.id}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${data.token}`,
-        },
-      });
-
-      if (usuarioResponse.ok) {
-        const usuarioData = await usuarioResponse.json();
-        localStorage.setItem("idEmpresa", usuarioData.idEmpresa);
-      } else {
-        console.warn("Não foi possível obter os dados completos do usuário.");
-      }
-    } catch (erroUsuario) {
-      console.error("Erro ao buscar os dados do usuário:", erroUsuario);
-    }
-
-    await Swal.fire('✅ Sucesso', 'Bem-vindo!', 'success');
-    window.location.href = "../html/perfil.html";
+    Swal.fire("Sucesso", "Bem-vindo!", "success");
+    window.location.href = "/public/perfil.html";
 
   } catch (error) {
-    console.error("Erro na requisição:", error);
-    Swal.fire('⚠️ Erro', 'Não foi possível conectar ao servidor.', 'error');
+    Swal.fire("Erro", "Falha ao conectar ao servidor.", "error");
   }
 }
