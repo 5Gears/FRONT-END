@@ -2,10 +2,11 @@ const API_BASE = window.API_BASE;
 const API_LOGIN_PRIMEIRO_ACESSO = `${API_BASE}/api/login/primeiro-acesso`;
 
 async function confirmarPrimeiroAcesso() {
+  const senhaTemporaria = document.getElementById("senhaTemporaria").value.trim();
   const novaSenha = document.getElementById("novaSenha").value.trim();
   const confirmarSenha = document.getElementById("confirmarSenha").value.trim();
 
-  if (!novaSenha || !confirmarSenha) {
+  if (!senhaTemporaria || !novaSenha || !confirmarSenha) {
     Swal.fire('⚠️ Atenção', 'Preencha todos os campos!', 'warning');
     return;
   }
@@ -17,30 +18,36 @@ async function confirmarPrimeiroAcesso() {
 
   const email = localStorage.getItem("emailUsuario");
   if (!email) {
-    await Swal.fire('⚠️ Atenção', 'Usuário não identificado. Volte para o login.', 'warning');
-    window.location.href = "./login.html";
+    Swal.fire('⚠️ Atenção', 'Usuário não identificado. Volte ao login.', 'warning');
+    window.location.href = "/public/login.html";
     return;
   }
+
+  const body = {
+    email,
+    senhaTemporaria,
+    novaSenha
+  };
 
   try {
     const response = await fetch(API_LOGIN_PRIMEIRO_ACESSO, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, senha: novaSenha }),
+      body: JSON.stringify(body),
     });
 
     const data = await response.json().catch(() => ({}));
 
     if (response.ok) {
-      await Swal.fire('✅ Sucesso', 'Senha cadastrada com sucesso! Faça login novamente.', 'success');
+      await Swal.fire('✅ Sucesso', 'Senha alterada com sucesso! Faça login novamente.', 'success');
       localStorage.removeItem("emailUsuario");
-      window.location.href = "./login.html";
+      window.location.href = "/public/login.html";
     } else {
-      Swal.fire('❌ Erro', data.erro || 'Erro ao definir senha. Tente novamente.', 'error');
+      Swal.fire('❌ Erro', data.erro || 'Erro ao definir senha.', 'error');
     }
 
   } catch (error) {
-    console.error("Erro na requisição:", error);
-    Swal.fire('⚠️ Erro', 'Erro de conexão com o servidor.', 'error');
+    console.error("Erro:", error);
+    Swal.fire('⚠️ Erro', 'Falha ao conectar ao servidor.', 'error');
   }
 }

@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
         text: "Você será direcionado para a tela de criação de projeto.",
         showConfirmButton: false,
         timer: 1200,
-      }).then(() => window.location.href = "./criar_projeto.html");
+      }).then(() => window.location.href = "/public/criar_projeto.html");
     }
 
     if (editarProjeto.checked) {
@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
         text: "Você será direcionado para a tela de edição do projeto.",
         showConfirmButton: false,
         timer: 1200,
-      }).then(() => window.location.href = "./editar_alocação.html");
+      }).then(() => window.location.href = "/public/editar_alocação.html");
     }
   });
 });

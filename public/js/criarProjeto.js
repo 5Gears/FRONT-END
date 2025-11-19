@@ -220,7 +220,7 @@ async function criarProjeto(event) {
       title: "Projeto criado!",
       text: `O projeto "${projetoCriado.nome}" foi criado com sucesso.`,
       confirmButtonColor: "#3085d6",
-    }).then(() => window.location.href = "./perfil.html");
+    }).then(() => window.location.href = "/public/perfil.html");
   } catch (erro) {
     console.error("Erro ao criar projeto:", erro);
     Swal.fire({
