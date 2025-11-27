@@ -8,7 +8,7 @@ async function carregarPerfil() {
 
     if (!usuarioId) {
       Swal.fire('⚠️ Atenção', 'Nenhum usuário logado.', 'warning');
-      window.location.href = "/public/index.html";
+      window.location.href = "../index.html";
       return;
     }
 
