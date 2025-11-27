@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       title: 'Nenhum projeto selecionado',
       text: 'Você precisa escolher um projeto antes de acessar essa tela.',
       confirmButtonText: 'Voltar',
-    }).then(() => window.location.href = '/public/gerenciamento.html');
+    }).then(() => window.location.href = '../gerenciamento.html');
     return;
   }
 
