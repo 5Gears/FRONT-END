@@ -19,7 +19,7 @@ async function confirmarPrimeiroAcesso() {
   const email = localStorage.getItem("emailUsuario");
   if (!email) {
     Swal.fire('⚠️ Atenção', 'Usuário não identificado. Volte ao login.', 'warning');
-    window.location.href = "../index.html";
+    window.location.href = "./index.html";
     return;
   }
 
@@ -41,7 +41,7 @@ async function confirmarPrimeiroAcesso() {
     if (response.ok) {
       await Swal.fire('✅ Sucesso', 'Senha alterada com sucesso! Faça login novamente.', 'success');
       localStorage.removeItem("emailUsuario");
-      window.location.href = "../index.html";
+      window.location.href = "./index.html";
     } else {
       Swal.fire('❌ Erro', data.erro || 'Erro ao definir senha.', 'error');
     }

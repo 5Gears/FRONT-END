@@ -20,7 +20,7 @@ async function realizarLogout() {
     if (resposta.ok) {
       await Swal.fire('✅ Sucesso', 'Logout realizado com sucesso!', 'success');
       localStorage.clear();
-      window.location.href = "../index.html";
+      window.location.href = "./index.html";
     } else {
       Swal.fire('❌ Erro', data.erro || "Erro ao realizar logout.", 'error');
     }

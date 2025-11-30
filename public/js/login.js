@@ -32,7 +32,7 @@ async function verificarEmail() {
       // Redireciona para o primeiro acesso
       localStorage.setItem("emailUsuario", email);
       Swal.fire("Primeiro acesso", "Defina sua nova senha!", "info");
-      window.location.href = "../loginPrimeiroAcesso.html";
+      window.location.href = "./loginPrimeiroAcesso.html";
     } else {
       // Mostra campo de senha e segue login normal
       campoSenha.style.display = "block";
@@ -76,7 +76,7 @@ async function realizarLogin() {
     localStorage.setItem("emailUsuario", data.email);
 
     Swal.fire("Sucesso", "Bem-vindo!", "success");
-    window.location.href = "../perfil.html";
+    window.location.href = "./perfil.html";
 
   } catch (error) {
     Swal.fire("Erro", "Falha ao conectar ao servidor.", "error");

@@ -87,7 +87,7 @@ async function cadastrarUsuario() {
   const idEmpresa = localStorage.getItem("idEmpresa");
   if (!idEmpresa) {
     await Swal.fire('⚠️ Atenção', 'Usuário não identificado. Faça login novamente.', 'warning');
-    window.location.href = "../index.html";
+    window.location.href = "./index.html";
     return;
   }
 

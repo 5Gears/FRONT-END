@@ -141,7 +141,7 @@ function alocarEquipe() {
     }
 
     localStorage.setItem("idProjeto", idProjeto);
-    window.location.href = "../alocacão.html";
+    window.location.href = "./alocacão.html";
 }
 
 // ===============================
