@@ -161,30 +161,56 @@ article {
 /* UPLOAD */
 .upload-container {
     max-width: 500px;
-    width: 40vw;
-    margin-bottom: 8px;
+    width: 100%;
+    margin: 0 auto 12px;
     padding: 20px;
     border: 2px dashed #278FC5;
-    border-radius: 5px;
+    border-radius: 8px;
     text-align: center;
     background-color: #fff;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
 }
 
 .upload-container img {
-    width: 30%;
+    width: 120px;
+    height: auto;
 }
 
 .upload-container input[type="file"] {
     display: none;
 }
 
-.upload-container label {
-    display: inline-block;
-    padding: 10px 20px;
+/* --- Botões iguais e alinhados --- */
+.btn-file,
+.btn-analisar {
+    width: 200px;
+    padding: 12px 20px;
     background-color: #278FC5;
     color: #fff;
-    border-radius: 5px;
+    border-radius: 6px;
     cursor: pointer;
+    font-size: 14px;
+    text-align: center;
+    border: none;
+    display: inline-block;
+}
+
+.btn-analisar {
+    background-color: #1f6f97;
+    padding: 20px 20px;
+    width: 240px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.status-analise {
+    font-size: 13px;
+    color: #666;
 }
 
 /* CORPO DO PROJETO */
@@ -226,7 +252,7 @@ article {
     align-items: center;
     width: 100%;
     height: 10vh;
-    padding-top: 20px;
+    padding-top: 15px;
 }
 
 .proximo button {
@@ -652,10 +678,10 @@ article {
 }
 
 #cargoInput {
-    width: 34.5vw;               
+    width: 34vw;               
     padding: 10px;
-    border-radius: 8px;
-    border: 1px solid #ccc;
+    border-radius: 3px;
+    border: 1px solid #b3b3b3;
     outline: none;
     font-family: 'Poppins', sans-serif;
 }
@@ -715,17 +741,18 @@ article {
 .alterar-excluir {
     display: flex;
     width: 100%;
-    margin-top: 20px;
     gap: 10px;
 }
 
 .alterar-excluir button {
     flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     padding: 12px;
     border: none;
     border-radius: 6px;
     font-size: 0.9rem;
-    font-weight: 600;
     color: white;
     cursor: pointer;
     transition: 0.2s ease;
@@ -737,7 +764,7 @@ article {
 }
 
 .alterar-excluir button:nth-child(1) {
-    background-color: #2586c6; /* Alterar datas */
+    background-color: #278FC5; /* Alterar datas */
 }
 
 .alterar-excluir button:nth-child(1):hover {
@@ -761,18 +788,18 @@ article {
 }
 
 .alterar-alocacao {
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 100%;
-    margin-top: 25px;
     padding: 14px;
     border: none;
     border-radius: 6px;
-    background-color: #187bcd;
     color: white;
     font-size: 1rem;
-    font-weight: 600;
     cursor: pointer;
-    transition: 0.2s ease;
+    transition: 0.2s 
+ease;
 }
 
 .alterar-alocacao:hover {
