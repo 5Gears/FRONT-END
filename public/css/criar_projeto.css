@@ -1,0 +1,112 @@
+/* TELA DE CRIAÇÃO DE PROJETOS */
+
+.criar-projeto {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    height: auto;
+    padding: 20px;
+}
+
+/* UPLOAD */
+.upload-container {
+    max-width: 500px;
+    width: 100%;
+    margin: 0 auto 12px;
+    padding: 20px;
+    border: 2px dashed #278FC5;
+    border-radius: 8px;
+    text-align: center;
+    background-color: #fff;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.upload-container img {
+    width: 120px;
+    height: auto;
+}
+
+.upload-container input[type="file"] {
+    display: none;
+}
+
+/* --- Botões iguais e alinhados --- */
+.btn-file,
+.btn-analisar {
+    width: 200px;
+    padding: 12px 20px;
+    background-color: #278FC5;
+    color: #fff;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    text-align: center;
+    border: none;
+    display: inline-block;
+}
+
+.btn-analisar {
+    background-color: #1f6f97;
+    padding: 20px 20px;
+    width: 240px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.status-analise {
+    font-size: 13px;
+    color: #666;
+}
+
+/* CORPO DO PROJETO */
+.corpo-projeto {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+.novo-projeto,
+.novo-projeto1 {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    width: 35vw;
+    min-width: 300px;
+    gap: 9px;
+}
+
+.novo-projeto span,
+.novo-projeto1 span {
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.novo-projeto input,
+.novo-projeto1 input,
+.novo-projeto1 select {
+    padding: 10px;
+    border: 1px solid #b3b3b3;
+    border-radius: 3px;
+}
+
+.proximo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 10vh;
+    padding-top: 15px;
+}
+
+.proximo button {
+    width: 100%;
+    max-width: 35vw;
+}

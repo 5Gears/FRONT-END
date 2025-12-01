@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Criar Novo Projeto</title>
+    <link rel="stylesheet" href="./css/criar_projeto.css">
     <link rel="stylesheet" href="./css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="./assets/5Gears-removebg-preview.png">
@@ -16,92 +17,90 @@
 </head>
 
 <body>
-    <div class="criar-projeto">
 
-        <!-- Título -->
-        <div class="titulo">
-            <h1>CRIAR NOVO PROJETO</h1>
-            <img src="./assets/logo.png" alt="">
-        </div>
+    <!-- Título -->
+    <div class="titulo">
+        <h1>CRIAR NOVO PROJETO</h1>
+        <img src="./assets/logo.png" alt="">
+    </div>
 
-        <!-- Hambúrguer + Menu lateral -->
-        <input type="checkbox" id="menu-toggle" class="menu-toggle">
-        <label for="menu-toggle" class="hamburger">
-            <span></span>
-            <span></span>
-            <span></span>
-        </label>
+    <!-- Hambúrguer + Menu lateral -->
+    <input type="checkbox" id="menu-toggle" class="menu-toggle">
+    <label for="menu-toggle" class="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+    </label>
 
-        <nav class="menu">
-            <ul>
-                <li><a href="./perfil.html">Início</a></li>
-                <li><a href="./gerenciamento.html">Gerenciar Projetos</a></li>
-                <li><a href="./cadastro.html">Cadastro de Profissionais</a></li>
-                <li><a href="#">Feedback de Profissionais</a></li>
-                <li><a href="./faq.html">Ajuda & FAQ</a></li>
-                <li><button><img src="./assets/logout.png" alt="Logout"></button></li>
-            </ul>
-        </nav>
+    <nav class="menu">
+        <ul>
+            <li><a href="./perfil.html">Meu Perfil</a></li>
+            <li><a href="./gerenciamento.html">Projetos</a></li>
+            <li><a href="./cadastro.html">Equipe</a></li>
+            <li><a href="./feedback.html">Avaliações</a></li>
+            <li><a href="./faq.html">Suporte</a></li>
+            <li><button onclick="realizarLogout()"><img src="./assets/logout.png" alt="Logout"></button></li>
+        </ul>
+    </nav>
 
-        <!-- Corpo do Projeto -->
-        <div class="corpo-projeto">
+    <!-- Corpo do Projeto -->
+    <div class="corpo-projeto">
 
-            <!-- Coluna 1 -->
-            <div class="novo-projeto">
-                <div class="upload-container" id="uploadContainer">
-                    <img src="./assets/ri_upload-cloud-fill.png" alt="">
-                    <h5>Upload de Arquivo do Projeto (PDF)</h5>
+        <!-- Coluna 1 -->
+        <div class="novo-projeto">
+            <div class="upload-container" id="uploadContainer">
+                <img src="./assets/ri_upload-cloud-fill.png" alt="">
+                <h5>Upload de Arquivo do Projeto (PDF)</h5>
 
-                    <form id="uploadForm" onsubmit="return false;">
-                        <input type="file" id="fileInput" accept=".pdf">
+                <form id="uploadForm" onsubmit="return false;">
+                    <input type="file" id="fileInput" accept=".pdf">
 
-                        <label for="fileInput" class="btn-file">Escolher Arquivo</label>
-                    </form>
+                    <label for="fileInput" class="btn-file">Escolher Arquivo</label>
+                </form>
 
-                    <button type="button" id="btnAnalisarPDF" class="btn-analisar">
-                        ANALISAR PDF
-                    </button>
+                <button type="button" id="btnAnalisarPDF" class="btn-analisar">
+                    ANALISAR PDF
+                </button>
 
-                    <small id="statusAnalise" class="status-analise">
-                        Nenhum arquivo analisado ainda.
-                    </small>
-                </div>
-
-                <span>Nome do Projeto</span>
-                <input type="text" id="nomeProjeto">
-
-                <span>Descrição do Projeto</span>
-                <input type="text" id="descricaoProjeto">
-
-                <span>Tempo Estimado (Horas)</span>
-                <input type="number" id="tempoEstimado">
+                <small id="statusAnalise" class="status-analise">
+                    Nenhum arquivo analisado ainda.
+                </small>
             </div>
 
-            <!-- Coluna 2 -->
-            <div class="novo-projeto1">
-                <span>Orçamento (R$)</span>
-                <input type="number" step="0.01" id="orcamento">
+            <span>Nome do Projeto</span>
+            <input type="text" id="nomeProjeto">
 
-                <span>Data de Início</span>
-                <input type="date" id="dataInicio">
+            <span>Descrição do Projeto</span>
+            <input type="text" id="descricaoProjeto">
 
-                <span>Data Estimada de Fechamento</span>
-                <input type="date" id="dataFim">
-
-                <span>Cliente</span>
-                <select id="clienteId">
-                    <option value="">Selecione um cliente</option>
-                </select>
-
-                <span>Competências Requeridas</span>
-                <input type="text" id="competenciasRequeridas">
-
-                <div class="proximo">
-                    <button id="btnCriarProjeto" class="btn-proximo">CONFIRMAR</button>
-                </div>
-            </div>
-
+            <span>Tempo Estimado (Horas)</span>
+            <input type="number" id="tempoEstimado">
         </div>
+
+        <!-- Coluna 2 -->
+        <div class="novo-projeto1">
+            <span>Orçamento (R$)</span>
+            <input type="number" step="0.01" id="orcamento">
+
+            <span>Data de Início</span>
+            <input type="date" id="dataInicio">
+
+            <span>Data Estimada de Fechamento</span>
+            <input type="date" id="dataFim">
+
+            <span>Cliente</span>
+            <select id="clienteId">
+                <option value="">Selecione um cliente</option>
+            </select>
+
+            <span>Competências Requeridas</span>
+            <input type="text" id="competenciasRequeridas">
+
+            <div class="proximo">
+                <button id="btnCriarProjeto" class="btn-proximo">CONFIRMAR</button>
+            </div>
+        </div>
+
     </div>
 </body>
 

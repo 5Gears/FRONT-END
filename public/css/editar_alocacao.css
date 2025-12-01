@@ -1,0 +1,86 @@
+.alterar-excluir {
+    display: flex;
+    width: 100%;
+    gap: 10px;
+}
+
+.alterar-excluir {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+
+    button {
+        width: 15vw;
+    }
+
+    .excluir {
+        background-color: #FF4242;
+    }
+}
+
+.alterar-excluir button {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px;
+    border: none;
+    border-radius: 3px;
+    color: white;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.alterar-excluir button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.alterar-excluir button:nth-child(1) {
+    background-color: #278FC5;
+    /* Alterar datas */
+}
+
+.alterar-excluir button:nth-child(1):hover {
+    background-color: #1b6ea4;
+}
+
+.alterar-excluir button:nth-child(2) {
+    background-color: #3ab54a;
+    /* Finalizar */
+}
+
+.alterar-excluir button:nth-child(2):hover {
+    background-color: #2e9a3c;
+}
+
+.alterar-excluir button.excluir {
+    background-color: #e53935;
+    /* Excluir */
+}
+
+.alterar-excluir button.excluir:hover {
+    background-color: #c62828;
+}
+
+.alterar-alocacao {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 3px;
+    color: white;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.alterar-alocacao:hover {
+    background-color: #0f5fa0;
+}
+
+.alterar-alocacao:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}

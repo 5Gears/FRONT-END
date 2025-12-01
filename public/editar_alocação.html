@@ -7,6 +7,7 @@
     <title>Editar Projeto</title>
 
     <link rel="stylesheet" href="./css/style.css" />
+    <link rel="stylesheet" href="./css/editar_alocacao.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="./assets/5Gears-removebg-preview.png">
 
@@ -18,68 +19,65 @@
 </head>
 
 <body>
+    <div class="titulo">
+        <h1>EDITAR PROJETO</h1>
+        <img src="./assets/logo.png" alt="">
+    </div>
 
-    <div class="tela-alocacao">
-        <div class="titulo">
-            <h1>EDITAR PROJETO</h1>
-            <img src="./assets/logo.png" alt="">
-        </div>
+    <!-- MENU HAMBÚRGUER -->
+    <input type="checkbox" id="menu-toggle" class="menu-toggle">
+    <label for="menu-toggle" class="hamburger">
+        <span></span><span></span><span></span>
+    </label>
 
-        <!-- MENU HAMBÚRGUER -->
-        <input type="checkbox" id="menu-toggle" class="menu-toggle">
-        <label for="menu-toggle" class="hamburger">
-            <span></span><span></span><span></span>
-        </label>
+    <nav class="menu">
+        <ul>
+            <li><a href="./perfil.html">Meu Perfil</a></li>
+            <li><a href="./gerenciamento.html">Projetos</a></li>
+            <li><a href="./cadastro.html">Equipe</a></li>
+            <li><a href="./feedback.html">Avaliações</a></li>
+            <li><a href="./faq.html">Suporte</a></li>
+            <li><button onclick="realizarLogout()"><img src="./assets/logout.png" alt="Logout"></button></li>
+        </ul>
+    </nav>
 
-        <nav class="menu">
-            <ul>
-                <li><a href="./perfil.html">Início</a></li>
-                <li><a href="./gerenciamento.html">Gerenciar Projetos</a></li>
-                <li><a href="./cadastro.html">Cadastro de Profissionais</a></li>
-                <li><a href="#">Feedback de Profissionais</a></li>
-                <li><a href="./faq.html">Ajuda & FAQ</a></li>
-                <li><button><img src="./assets/logout.png" alt="Logout"></button></li>
-            </ul>
-        </nav>
+    <div class="formulario">
 
-        <div class="formulario">
+        <div class="form">
 
-            <div class="form">
+            <!-- SELEÇÃO DE PROJETO -->
+            <span>Selecionar Projeto</span>
+            <select id="selectProjeto"></select>
 
-                <!-- SELEÇÃO DE PROJETO -->
-                <span>Selecionar Projeto</span>
-                <select id="selectProjeto"></select>
-
-                <!-- INFORMAÇÕES DO PROJETO -->
-                <div id="infoProjeto" class="info-projeto">
-                    Selecione um projeto para ver os detalhes.
-                </div>
-
-                <!-- DATAS -->
-                <span>Data de Início</span>
-                <input type="date" id="dataInicio">
-
-                <span>Data de Término</span>
-                <input type="date" id="dataFim">
-
-                <!-- AÇÕES PRINCIPAIS -->
-                <div class="alterar-excluir">
-                    <!-- ALTERAR DATAS -->
-                    <button onclick="alterarProjeto()">ALTERAR DATAS</button>
-
-                    <!-- FINALIZAR -->
-                    <button onclick="finalizarProjeto()">FINALIZAR</button>
-
-                    <!-- EXCLUIR -->
-                    <button class="excluir" onclick="excluirProjeto()">EXCLUIR</button>
-                </div>
-
-                <!-- ALOCAR EQUIPE (BOTÃO PADRÃO DO SEU CSS) -->
-                <button class="alterar-alocacao" onclick="alocarEquipe()">ALOCAR EQUIPE</button>
-
+            <!-- INFORMAÇÕES DO PROJETO -->
+            <div id="infoProjeto" class="info-projeto">
+                Selecione um projeto para ver os detalhes.
             </div>
 
+            <!-- DATAS -->
+            <span>Data de Início</span>
+            <input type="date" id="dataInicio">
+
+            <span>Data de Término</span>
+            <input type="date" id="dataFim">
+
+            <!-- AÇÕES PRINCIPAIS -->
+            <div class="alterar-excluir">
+                <!-- ALTERAR DATAS -->
+                <button onclick="alterarProjeto()">ALTERAR DATAS</button>
+
+                <!-- FINALIZAR -->
+                <button onclick="finalizarProjeto()">FINALIZAR</button>
+
+                <!-- EXCLUIR -->
+                <button class="excluir" onclick="excluirProjeto()">EXCLUIR</button>
+            </div>
+
+            <!-- ALOCAR EQUIPE (BOTÃO PADRÃO DO SEU CSS) -->
+            <button class="alterar-alocacao" onclick="alocarEquipe()">ALOCAR EQUIPE</button>
+
         </div>
+
     </div>
 
 </body>
