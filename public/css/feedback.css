@@ -1,0 +1,89 @@
+/* ESTILO DAS ESTRELAS */
+.feedback-container {
+    width: 90%;
+    max-width: 900px;
+    margin: 40px auto;
+    background: #fff;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.feedback-title {
+    font-size: 22px;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+.feedback-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.feedback-item:last-child {
+    border-bottom: none;
+}
+
+.stars {
+    display: flex;
+    gap: 6px;
+}
+
+.rating input {
+    display: none;
+}
+
+.rating label {
+    font-size: 26px;
+    color: #ccc;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.rating input:checked~label,
+.rating label:hover,
+.rating label:hover~label {
+    color: #ffb400;
+}
+
+/* Ajusta ordem da seleção (sempre do 1 ao 5) */
+.rating {
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+.rating label {
+    margin-left: 4px;
+}
+
+.btn-enviar {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+
+    button {
+        margin-top: 20px;
+        padding: 10px 20px;
+        border: none;
+        background: #278FC5;
+        color: #fff;
+        border-radius: 3px;
+        cursor: pointer;
+    }
+}
+
+/* ESTILO DO SELECT */
+.select-profissional {
+    margin-bottom: 25px;
+}
+
+select {
+    width: 36vw;
+    padding: 10px;
+    border: 1px solid #b3b3b3;
+    border-radius: 3px;
+}

@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro de Profissionais</title>
     <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/cadastro.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="icon" type="image/png" href="../assets/5Gears-removebg-preview.png">
@@ -16,85 +17,82 @@
 </head>
 
 <body>
+    <div class="titulo">
+        <h1>CADASTRO DE PROFISSIONAIS</h1>
+        <img src="./assets/logo.png" alt="">
+    </div>
 
-    <div class="tela-cadastro">
-        <div class="titulo">
-            <h1>CADASTRO DE PROFISSIONAIS</h1>
-            <img src="./assets/logo.png" alt="">
+    <input type="checkbox" id="menu-toggle" class="menu-toggle">
+    <label for="menu-toggle" class="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+    </label>
+
+    <nav class="menu">
+        <ul>
+            <li><a href="./perfil.html">Meu Perfil</a></li>
+            <li><a href="./gerenciamento.html">Projetos</a></li>
+            <li><a href="./cadastro.html">Equipe</a></li>
+            <li><a href="./feedback.html">Avaliações</a></li>
+            <li><a href="./faq.html">Suporte</a></li>
+            <li><button onclick="realizarLogout()"><img src="./assets/logout.png" alt="Logout"></button></li>
+        </ul>
+    </nav>
+
+    <div class="form-cadastro">
+        <div class="form" id="formUsuario">
+            <span>Nome</span>
+            <input type="text" id="nome" required>
+
+            <span>Email</span>
+            <input type="email" id="email" required>
+
+            <span>CPF</span>
+            <input type="text" id="cpf">
+
+            <span>Telefone</span>
+            <input type="text" id="telefone">
+
+            <span>Área</span>
+            <input type="text" id="area">
         </div>
 
-        <input type="checkbox" id="menu-toggle" class="menu-toggle">
-        <label for="menu-toggle" class="hamburger">
-            <span></span>
-            <span></span>
-            <span></span>
-        </label>
+        <div class="form">
+            <span>Carga Horária p/ Semana</span>
+            <input type="number" id="cargaHoraria">
 
-        <nav class="menu">
-            <ul>
-                <li><a href="./perfil.html">Início</a></li>
-                <li><a href="./gerenciamento.html">Gerenciar Projetos</a></li>
-                <li><a href="./cadastro.html">Cadastro de Profissionais</a></li>
-                <li><a href="#">Feedback de Profissionais</a></li>
-                <li><a href="./faq.html">Ajuda & FAQ</a></li>
-                <li><button><img src="./assets/logout.png" alt="Logout"></button></li>
-            </ul>
-        </nav>
+            <span>Valor Hora</span>
+            <input type="number" step="0.01" id="valorHora">
 
-        <div class="formulario">
-            <div class="form" id="formUsuario">
-                <span>Nome</span>
-                <input type="text" id="nome" required>
-
-                <span>Email</span>
-                <input type="email" id="email" required>
-
-                <span>CPF</span>
-                <input type="text" id="cpf">
-
-                <span>Telefone</span>
-                <input type="text" id="telefone">
-
-                <span>Área</span>
-                <input type="text" id="area">
+            <span>Cargo</span>
+            <div class="cargo-container">
+                <input type="text" id="cargoInput" placeholder="Digite para buscar um cargo..." autocomplete="off">
+                <ul id="cargoSugestoes" class="sugestoes-lista"></ul>
             </div>
 
-            <div class="form">
-                <span>Carga Horária p/ Semana</span>
-                <input type="number" id="cargaHoraria">
+            <span>Senioridade</span>
+            <select id="senioridade">
+                <option value="">Selecione a senioridade</option>
+                <option value="ESTAGIARIO">Estagiário</option>
+                <option value="JUNIOR">Júnior</option>
+                <option value="PLENO">Pleno</option>
+                <option value="SENIOR">Sênior</option>
+            </select>
 
-                <span>Valor Hora</span>
-                <input type="number" step="0.01" id="valorHora">
-
-                <span>Cargo</span>
-                <div class="cargo-container">
-                    <input type="text" id="cargoInput" placeholder="Digite para buscar um cargo..." autocomplete="off">
-                    <ul id="cargoSugestoes" class="sugestoes-lista"></ul>
-                </div>
-
-                <span>Senioridade</span>
-                <select id="senioridade">
-                    <option value="">Selecione a senioridade</option>
-                    <option value="ESTAGIARIO">Estagiário</option>
-                    <option value="JUNIOR">Júnior</option>
-                    <option value="PLENO">Pleno</option>
-                    <option value="SENIOR">Sênior</option>
-                </select>
-
-                <span>Nível de Permissão</span>
-                <select id="nivelPermissao">
-                    <option value="">Selecione o nível</option>
-                    <option value="1">FUNCIONARIO</option>
-                    <option value="2">GERENTE</option>
-                    <option value="3">PROJETOS</option>
-                    <option value="4">ADMIN</option>
-                </select>
-            </div>
+            <span>Nível de Permissão</span>
+            <select id="nivelPermissao">
+                <option value="">Selecione o nível</option>
+                <option value="1">FUNCIONARIO</option>
+                <option value="2">GERENTE</option>
+                <option value="3">PROJETOS</option>
+                <option value="4">ADMIN</option>
+            </select>
         </div>
+    </div>
 
-        <div class="proximo">
-            <button type="button" onclick="cadastrarUsuario()">CADASTRAR</button>
-        </div>
+    <div class="proximo">
+        <button type="button" onclick="cadastrarUsuario()">CADASTRAR</button>
     </div>
 
 </body>

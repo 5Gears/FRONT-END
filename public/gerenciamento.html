@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gerenciar Projetos</title>
+    <link rel="stylesheet" href="./css/gerenciamento.css">
     <link rel="stylesheet" href="./css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="./assets/5Gears-removebg-preview.png">
@@ -17,46 +18,43 @@
 </head>
 
 <body>
-    <div class="tela-gerenciar">
-        <div class="titulo">
-            <h1>GERENCIAR PROJETOS</h1>
-            <img src="./assets/logo.png" alt="">
-        </div>
-
-        <!-- MENU -->
-        <input type="checkbox" id="menu-toggle" class="menu-toggle">
-        <label for="menu-toggle" class="hamburger">
-            <span></span>
-            <span></span>
-            <span></span>
-        </label>
-
-        <nav class="menu">
-            <ul>
-                <li><a href="./perfil.html">Início</a></li>
-                <li><a href="./gerenciamento.html">Gerenciar Projetos</a></li>
-                <li><a href="./cadastro.html">Cadastro de Profissionais</a></li>
-                <li><a href="#">Feedback de Profissionais</a></li>
-                <li><a href="./faq.html">Ajuda & FAQ</a></li>
-                <li><button><img src="./assets/logout.png" alt="Logout"></button></li>
-            </ul>
-        </nav>
-
-        <div class="gerenciar-projeto">
-            <div class="gerenciamento">
-                <div class="opcoes-projeto">
-                    <input type="checkbox" id="criarProjeto">
-                    <span>Criar Novo Projeto</span>
-
-                    <input type="checkbox" id="editarProjeto">
-                    <span>Editar Projeto</span>
-                </div>
-
-                <button id="confirmar">CONFIRMAR</button>
-            </div>
-        </div>
+    <div class="titulo">
+        <h1>GERENCIAR PROJETOS</h1>
+        <img src="./assets/logo.png" alt="">
     </div>
 
+    <!-- MENU -->
+    <input type="checkbox" id="menu-toggle" class="menu-toggle">
+    <label for="menu-toggle" class="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+    </label>
+
+    <nav class="menu">
+        <ul>
+            <li><a href="./perfil.html">Meu Perfil</a></li>
+            <li><a href="./gerenciamento.html">Projetos</a></li>
+            <li><a href="./cadastro.html">Equipe</a></li>
+            <li><a href="./feedback.html">Avaliações</a></li>
+            <li><a href="./faq.html">Suporte</a></li>
+            <li><button onclick="realizarLogout()"><img src="./assets/logout.png" alt="Logout"></button></li>
+        </ul>
+    </nav>
+
+    <div class="gerenciar-projeto">
+        <div class="gerenciamento">
+            <div class="opcoes-projeto">
+                <input type="checkbox" id="criarProjeto">
+                <span>Criar Novo Projeto</span>
+
+                <input type="checkbox" id="editarProjeto">
+                <span>Editar Projeto</span>
+            </div>
+
+            <button id="confirmar">CONFIRMAR</button>
+        </div>
+    </div>
 </body>
 
 </html>

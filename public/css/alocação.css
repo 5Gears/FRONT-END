@@ -1,0 +1,289 @@
+.titulo {
+    img {
+        left: 25vw;
+    }
+}
+
+/* --- ESTILOS DO CHATBOT --- */
+
+/* Esconde o checkbox que controla o chat (necessário para a lógica de abrir/fechar via CSS) */
+.chat-toggle {
+    display: none;
+}
+
+/* Ícone do Chatbot (o botão flutuante no canto superior direito) */
+.chatbot-icon {
+    position: fixed;
+    /* --- POSIÇÃO AJUSTADA PARA O TOPO E DIREITA --- */
+    top: 120px;
+    /* VALOR SUGERIDO: Ajuste este valor (ex: 100px, 140px) para alinhar perfeitamente com seu primeiro input */
+    right: 50px;
+    /* ----------------------------------------------- */
+    width: 60px;
+    height: 60px;
+    background-color: #60B7DF;
+    /* Usando sua cor principal */
+    border-radius: 50%;
+    /* Circular */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    /* Garante que fique acima de tudo */
+    transition: opacity 0.3s ease, background-color 0.3s;
+    /* Adiciona transição de opacidade */
+}
+
+.chatbot-icon:hover {
+    background-color: #1a6fa0;
+    /* Um tom mais escuro ao passar o mouse */
+}
+
+/* Estilo da imagem/ícone dentro do botão */
+.chat-icon-img {
+    width: 40px;
+    height: 40px;
+}
+
+/* Aba Lateral do Chat (Sidebar) - Desliza da direita e fica ancorada no topo */
+.chat-sidebar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 320px;
+    /* Largura da aba */
+    height: 100%;
+    background-color: #ffffff;
+    /* Fundo branco */
+    box-shadow: -2px 0 10px rgba(0, 0, 0, 0.2);
+    z-index: 999;
+    /* Por padrão, a aba fica fora da tela */
+    transform: translateX(100%);
+    transition: transform 0.4s ease-in-out;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Estado Aberto: Quando o checkbox está checado, a aba é puxada para a tela */
+.chat-toggle:checked~.chat-sidebar {
+    transform: translateX(0);
+}
+
+/* Esconder o ícone flutuante quando o chat estiver aberto */
+.chat-toggle:checked~.chatbot-icon {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Estilos de conteúdo interno da aba */
+.chat-header {
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.chat-header h2 {
+    margin: 0;
+    font-size: 1.1rem;
+    color: #333;
+}
+
+.close-chat {
+    cursor: pointer;
+    font-weight: bold;
+    /* Adiciona espaçamento interno */
+    padding: 5px 10px;
+    /* Adiciona espaçamento externo para afastar da borda direita da sidebar */
+    margin-right: 5px;
+    font-size: 1.2rem;
+    color: #555;
+}
+
+.chat-body {
+    flex-grow: 1;
+    padding: 15px;
+    overflow-y: auto;
+    font-size: 0.9rem;
+    color: #444;
+
+    /* Correções para manter mensagens dentro do chat */
+    box-sizing: border-box;
+    /* inclui padding na largura total */
+    width: 100%;
+    /* garante que não ultrapasse a sidebar */
+    max-width: 100%;
+    /* previne overflow horizontal */
+    word-break: break-word;
+    /* força quebra de palavras longas */
+}
+
+.chat-input {
+    padding: 10px;
+    border-top: 1px solid #eee;
+    display: flex;
+    align-items: center;
+}
+
+.chat-input input {
+    flex-grow: 1;
+    padding: 10px;
+    margin-right: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: auto;
+    height: auto;
+}
+
+.chat-input button {
+    width: auto;
+    height: auto;
+    background-color: #278FC5;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+/* --- ESTILOS DE MENSAGENS DO CHAT --- */
+.chat-message {
+    padding: 8px 12px;
+    border-radius: 15px;
+    margin-bottom: 10px;
+    max-width: 80%;
+    word-wrap: break-word;
+    /* Garante que o texto longo quebre a linha */
+}
+
+/* Estilo para mensagens do usuário (alinhadas à direita) */
+.user-message {
+    background-color: #60B7DF;
+    /* Sua cor principal */
+    color: white;
+    margin-left: auto;
+    /* Alinha o box à direita */
+    border-top-right-radius: 5px;
+    /* Deixa o canto superior direito mais quadrado */
+}
+
+/* Estilo para mensagens do bot (alinhadas à esquerda) */
+.bot-message {
+    background-color: #e2e2e2;
+    color: #333;
+    margin-right: auto;
+    /* Alinha o box à esquerda */
+    border-top-left-radius: 5px;
+    /* Deixa o canto superior esquerdo mais quadrado */
+}
+
+/* --- BOTÃO DE ALOCAR NO CHAT --- */
+.chat-action {
+    display: flex;
+    justify-content: flex-start;
+    /* Alinha à esquerda do chat */
+    padding: 10px 0;
+}
+
+.chat-action .alocar-btn {
+    background-color: #278FC5;
+    /* mesma cor do botão "Enviar" */
+    color: white;
+    border: none;
+    border-radius: 6px;
+    /* suaviza as bordas */
+    padding: 8px 16px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+}
+
+.chat-action .alocar-btn:hover {
+    background-color: #1a6fa0;
+    /* tom mais escuro no hover */
+}
+
+.chat-action .alocar-btn:active {
+    transform: scale(0.97);
+    /* efeito de clique */
+}
+
+.chat-action .alocar-btn:disabled {
+    background-color: #b0c4d9;
+    /* cor cinza clara quando desabilitado */
+    cursor: not-allowed;
+}
+
+.swal2-confirm {
+    background-color: #278FC5;
+}
+
+.swal2-confirm:hover {
+    background-color: #1a6fa0;
+}
+
+#cargoInput {
+    width: 34vw;
+    padding: 10px;
+    border-radius: 3px;
+    border: 1px solid #b3b3b3;
+    outline: none;
+    font-family: 'Poppins', sans-serif;
+}
+
+.sugestoes-lista {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border: 1px solid #ccc;
+    max-height: 200px;
+    overflow-y: auto;
+    background: white;
+    position: absolute;
+    width: 35.5vw;
+    z-index: 10;
+    display: none;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.sugestoes-lista li {
+    padding: 10px;
+    cursor: pointer;
+    font-family: 'Poppins', sans-serif;
+}
+
+.sugestoes-lista li:hover {
+    background-color: #f4f4f4;
+}
+
+#cargoInput:focus {
+    border-color: #278FC5;
+    box-shadow: 0 0 5px rgba(39, 143, 197, 0.5);
+}
+
+.projeto-atrasado {
+    color: #888 !important;
+    font-style: italic;
+}
+
+.projeto-atrasado-option {
+    color: #888;
+    font-style: italic;
+}
+
+.info-projeto {
+    margin-top: 8px;
+    font-size: 0.9rem;
+    color: #444;
+}
+
+.info-projeto.atrasado {
+    color: #c0392b;
+    font-weight: 600;
+}

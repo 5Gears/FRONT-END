@@ -1,5 +1,12 @@
 body {
+    display: block;
     padding: 20px;
+}
+
+.titulo {
+    img {
+        left: 30vw;
+    }
 }
 
 .perfil {

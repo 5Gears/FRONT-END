@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback da Equipe</title>
+
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/feedback.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="./assets/5Gears-removebg-preview.png">
+
+    <script src="./js/env.js"></script>
+    <script src="./js/config.js"></script>
+    <script src="./js/logout.js"></script>
+</head>
+
+<body>
+    <div class="titulo">
+        <h1>FEEDBACK DA EQUIPE</h1>
+        <img src="./assets/logo.png" alt="">
+    </div>
+
+    <!-- MENU LATERAL -->
+    <input type="checkbox" id="menu-toggle" class="menu-toggle">
+    <label for="menu-toggle" class="hamburger">
+        <span></span><span></span><span></span>
+    </label>
+
+    <nav class="menu">
+        <ul>
+            <li><a href="./perfil.html">Meu Perfil</a></li>
+            <li><a href="./gerenciamento.html">Projetos</a></li>
+            <li><a href="./cadastro.html">Equipe</a></li>
+            <li><a href="./feedback.html">Avaliações</a></li>
+            <li><a href="./faq.html">Suporte</a></li>
+            <li><button onclick="realizarLogout()"><img src="./assets/logout.png" alt="Logout"></button></li>
+        </ul>
+    </nav>
+
+    <!-- ÁREA DE AVALIAÇÃO -->
+    <div class="feedback-container">
+        <div class="feedback-title">Avalie as Competências</div>
+
+        <!-- SELECT DO PROJETO -->
+        <div class="select-projeto" style="margin-bottom: 20px;">
+            <label for="projeto"><span>Selecione o projeto:</span></label><br><br>
+            <select id="projeto">
+                <option value="">Selecione...</option>
+                <option value="101">Sistema de Gestão</option>
+                <option value="102">Aplicativo Mobile</option>
+                <option value="103">Site Institucional</option>
+                <option value="104">API Interna</option>
+            </select>
+        </div>
+
+        <!-- SELECT DO PROFISSIONAL -->
+        <div class="select-profissional">
+            <label for="profissional"><span>Selecione o profissional a ser avaliado:</span></label><br><br>
+            <select id="profissional">
+                <option value="">Selecione...</option>
+                <option value="1">João Silva</option>
+                <option value="2">Maria Oliveira</option>
+                <option value="3">Carlos Santos</option>
+                <option value="4">Ana Souza</option>
+            </select>
+        </div>
+
+        <!-- COMPETÊNCIA 1 -->
+        <div class="feedback-item">
+            <span>Comunicação</span>
+            <div class="rating">
+                <input type="radio" id="com-5" name="comunicacao" value="5"><label for="com-5">★</label>
+                <input type="radio" id="com-4" name="comunicacao" value="4"><label for="com-4">★</label>
+                <input type="radio" id="com-3" name="comunicacao" value="3"><label for="com-3">★</label>
+                <input type="radio" id="com-2" name="comunicacao" value="2"><label for="com-2">★</label>
+                <input type="radio" id="com-1" name="comunicacao" value="1"><label for="com-1">★</label>
+            </div>
+        </div>
+
+        <!-- COMPETÊNCIA 2 -->
+        <div class="feedback-item">
+            <span>Pontualidade</span>
+            <div class="rating">
+                <input type="radio" id="pont-5" name="pontualidade" value="5"><label for="pont-5">★</label>
+                <input type="radio" id="pont-4" name="pontualidade" value="4"><label for="pont-4">★</label>
+                <input type="radio" id="pont-3" name="pontualidade" value="3"><label for="pont-3">★</label>
+                <input type="radio" id="pont-2" name="pontualidade" value="2"><label for="pont-2">★</label>
+                <input type="radio" id="pont-1" name="pontualidade" value="1"><label for="pont-1">★</label>
+            </div>
+        </div>
+
+        <!-- COMPETÊNCIA 3 -->
+        <div class="feedback-item">
+            <span>Conhecimento Técnico</span>
+            <div class="rating">
+                <input type="radio" id="tec-5" name="tecnico" value="5"><label for="tec-5">★</label>
+                <input type="radio" id="tec-4" name="tecnico" value="4"><label for="tec-4">★</label>
+                <input type="radio" id="tec-3" name="tecnico" value="3"><label for="tec-3">★</label>
+                <input type="radio" id="tec-2" name="tecnico" value="2"><label for="tec-2">★</label>
+                <input type="radio" id="tec-1" name="tecnico" value="1"><label for="tec-1">★</label>
+            </div>
+        </div>
+
+        <!-- COMPETÊNCIA 4 -->
+        <div class="feedback-item">
+            <span>Trabalho em Equipe</span>
+            <div class="rating">
+                <input type="radio" id="team-5" name="equipe" value="5"><label for="team-5">★</label>
+                <input type="radio" id="team-4" name="equipe" value="4"><label for="team-4">★</label>
+                <input type="radio" id="team-3" name="equipe" value="3"><label for="team-3">★</label>
+                <input type="radio" id="team-2" name="equipe" value="2"><label for="team-2">★</label>
+                <input type="radio" id="team-1" name="equipe" value="1"><label for="team-1">★</label>
+            </div>
+        </div>
+
+        <!-- COMPETÊNCIA 5 -->
+        <div class="feedback-item">
+            <span>Proatividade</span>
+            <div class="rating">
+                <input type="radio" id="pro-5" name="proatividade" value="5"><label for="pro-5">★</label>
+                <input type="radio" id="pro-4" name="proatividade" value="4"><label for="pro-4">★</label>
+                <input type="radio" id="pro-3" name="proatividade" value="3"><label for="pro-3">★</label>
+                <input type="radio" id="pro-2" name="proatividade" value="2"><label for="pro-2">★</label>
+                <input type="radio" id="pro-1" name="proatividade" value="1"><label for="pro-1">★</label>
+            </div>
+        </div>
+
+        <!-- COMPETÊNCIA 6 -->
+        <div class="feedback-item">
+            <span>Liderança</span>
+            <div class="rating">
+                <input type="radio" id="lid-5" name="lideranca" value="5"><label for="lid-5">★</label>
+                <input type="radio" id="lid-4" name="lideranca" value="4"><label for="lid-4">★</label>
+                <input type="radio" id="lid-3" name="lideranca" value="3"><label for="lid-3">★</label>
+                <input type="radio" id="lid-2" name="lideranca" value="2"><label for="lid-2">★</label>
+                <input type="radio" id="lid-1" name="lideranca" value="1"><label for="lid-1">★</label>
+            </div>
+        </div>
+
+        <!-- COMPETÊNCIA 7 -->
+        <div class="feedback-item">
+            <span>Resolução de Problemas</span>
+            <div class="rating">
+                <input type="radio" id="prob-5" name="problemas" value="5"><label for="prob-5">★</label>
+                <input type="radio" id="prob-4" name="problemas" value="4"><label for="prob-4">★</label>
+                <input type="radio" id="prob-3" name="problemas" value="3"><label for="prob-3">★</label>
+                <input type="radio" id="prob-2" name="problemas" value="2"><label for="prob-2">★</label>
+                <input type="radio" id="prob-1" name="problemas" value="1"><label for="prob-1">★</label>
+            </div>
+        </div>
+
+        <!-- COMPETÊNCIA 8 -->
+        <div class="feedback-item">
+            <span>Organização</span>
+            <div class="rating">
+                <input type="radio" id="org-5" name="organizacao" value="5"><label for="org-5">★</label>
+                <input type="radio" id="org-4" name="organizacao" value="4"><label for="org-4">★</label>
+                <input type="radio" id="org-3" name="organizacao" value="3"><label for="org-3">★</label>
+                <input type="radio" id="org-2" name="organizacao" value="2"><label for="org-2">★</label>
+                <input type="radio" id="org-1" name="organizacao" value="1"><label for="org-1">★</label>
+            </div>
+        </div>
+
+        <!-- COMPETÊNCIA 9 -->
+        <div class="feedback-item">
+            <span>Responsabilidade</span>
+            <div class="rating">
+                <input type="radio" id="resp-5" name="responsabilidade" value="5"><label for="resp-5">★</label>
+                <input type="radio" id="resp-4" name="responsabilidade" value="4"><label for="resp-4">★</label>
+                <input type="radio" id="resp-3" name="responsabilidade" value="3"><label for="resp-3">★</label>
+                <input type="radio" id="resp-2" name="responsabilidade" value="2"><label for="resp-2">★</label>
+                <input type="radio" id="resp-1" name="responsabilidade" value="1"><label for="resp-1">★</label>
+            </div>
+        </div>
+
+        <!-- COMPETÊNCIA 10 -->
+        <div class="feedback-item">
+            <span>Adaptabilidade</span>
+            <div class="rating">
+                <input type="radio" id="ada-5" name="adaptabilidade" value="5"><label for="ada-5">★</label>
+                <input type="radio" id="ada-4" name="adaptabilidade" value="4"><label for="ada-4">★</label>
+                <input type="radio" id="ada-3" name="adaptabilidade" value="3"><label for="ada-3">★</label>
+                <input type="radio" id="ada-2" name="adaptabilidade" value="2"><label for="ada-2">★</label>
+                <input type="radio" id="ada-1" name="adaptabilidade" value="1"><label for="ada-1">★</label>
+            </div>
+        </div>
+
+        <div class="btn-enviar">
+            <button onclick="enviarFeedback()">ENVIAR FEEDBACK</button>
+        </div>
+    </div>
+
+</body>
+
+</html>

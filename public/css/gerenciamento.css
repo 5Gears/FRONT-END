@@ -1,0 +1,34 @@
+/* TELA DE GERENCIAMENTO DE PROJETOS */
+
+.gerenciar-projeto {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    height: 80vh;
+}
+
+.gerenciamento {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    height: 50vh;
+    width: 40vw;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+    align-items: center;
+
+    .opcoes-projeto {
+        display: flex;
+        width: 30vw;
+        height: 10vh;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .selacao-projeto {
+        display: flex;
+        flex-direction: column;
+        height: 10vh;
+    }
+}

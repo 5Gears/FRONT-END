@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Alocação de Profissionais</title>
   <link rel="stylesheet" href="./css/style.css">
+  <link rel="stylesheet" href="./css/alocação.css">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <link rel="icon" type="image/png" href="./assets/5Gears-removebg-preview.png">
@@ -14,56 +16,54 @@
   <script src="./js/alocacao.js"></script>
   <script src="./js/logout.js"></script>
 </head>
-  
+
 <body>
 
-  <div class="tela-alocacao">
-    <div class="titulo">
-      <h1>ALOCAÇÃO DE PROFISSIONAIS</h1>
-      <img src="./assets/logo.png" alt="Logo FiveGears">
-    </div>
+  <div class="titulo">
+    <h1>ALOCAÇÃO DE PROFISSIONAIS</h1>
+    <img src="./assets/logo.png" alt="Logo FiveGears">
+  </div>
 
-    <!-- MENU LATERAL -->
-    <input type="checkbox" id="menu-toggle" class="menu-toggle">
-    <label for="menu-toggle" class="hamburger">
-      <span></span><span></span><span></span>
-    </label>
+  <!-- MENU LATERAL -->
+  <input type="checkbox" id="menu-toggle" class="menu-toggle">
+  <label for="menu-toggle" class="hamburger">
+    <span></span><span></span><span></span>
+  </label>
 
-    <nav class="menu">
-      <ul>
-        <li><a href="./perfil.html">Início</a></li>
-        <li><a href="./gerenciamento.html">Gerenciar Projetos</a></li>
-        <li><a href="./cadastro.html">Cadastro de Profissionais</a></li>
-        <li><a href="#">Feedback de Profissionais</a></li>
-        <li><a href="./faq.html">Ajuda & FAQ</a></li>
-        <li><button><img src="./assets/logout.png" alt="Logout"></button></li>
-      </ul>
-    </nav>
+  <nav class="menu">
+    <ul>
+      <li><a href="./perfil.html">Meu Perfil</a></li>
+      <li><a href="./gerenciamento.html">Projetos</a></li>
+      <li><a href="./cadastro.html">Equipe</a></li>
+      <li><a href="./feedback.html">Avaliações</a></li>
+      <li><a href="./faq.html">Suporte</a></li>
+      <li><button onclick="realizarLogout()"><img src="./assets/logout.png" alt="Logout"></button></li>
+    </ul>
+  </nav>
 
-    <!-- FORMULÁRIO -->
-    <div class="formulario">
-      <form class="form">
-        <label>Projeto Selecionado</label>
-        <select id="selectProjeto" disabled></select>
+  <!-- FORMULÁRIO -->
+  <div class="formulario">
+    <form class="form">
+      <label>Projeto Selecionado</label>
+      <select id="selectProjeto" disabled></select>
 
-        <label>Email do Profissional</label>
-        <input type="text" placeholder="Ex: nome@provedor.com">
+      <label>Email do Profissional</label>
+      <input type="text" placeholder="Ex: nome@provedor.com">
 
-        <label>Data alocação (Início)</label>
-        <input type="date">
+      <label>Data alocação (Início)</label>
+      <input type="date">
 
-        <label>Data alocação (Fim)</label>
-        <input type="date">
+      <label>Data alocação (Fim)</label>
+      <input type="date">
 
-        <label>Quantidade de horas por dia</label>
-        <input type="number" min="1" max="12" placeholder="Ex: 6">
+      <label>Quantidade de horas por dia</label>
+      <input type="number" min="1" max="12" placeholder="Ex: 6">
 
-        <label>Total de horas no projeto</label>
-        <input type="number" min="1" placeholder="Ex: 120">
+      <label>Total de horas no projeto</label>
+      <input type="number" min="1" placeholder="Ex: 120">
 
-        <button id="btn-alocar" type="submit" class="alterar-alocacao">ALOCAR</button>
-      </form>
-    </div>
+      <button id="btn-alocar" type="submit" class="alterar-alocacao">ALOCAR</button>
+    </form>
   </div>
 
   <!-- CHATBOT -->
