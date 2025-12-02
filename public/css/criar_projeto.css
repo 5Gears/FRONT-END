@@ -110,3 +110,23 @@
     width: 100%;
     max-width: 35vw;
 }
+
+/* ================================
+   RESPONSIVIDADE — TELAS MÉDIAS
+   (max 1280px)
+================================ */
+@media (max-width: 1280px) {
+
+    .corpo-projeto {
+        gap: 60px;
+    }
+
+    .novo-projeto,
+    .novo-projeto1 {
+        width: 40vw; /* leve ajuste sem quebrar layout */
+    }
+
+    .proximo button {
+        max-width: 40vw;
+    }
+}
