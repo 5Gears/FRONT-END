@@ -14,6 +14,9 @@
     <script src="./js/env.js"></script>
     <script src="./js/config.js"></script>
     <script src="./js/logout.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="./js/feedback.js"></script>
+    <script src="./js/logout.js"></script>
 </head>
 
 <body>
@@ -71,121 +74,122 @@
         <div class="feedback-item">
             <span>Comunicação</span>
             <div class="rating">
-                <input type="radio" id="com-5" name="comunicacao" value="5"><label for="com-5">★</label>
-                <input type="radio" id="com-4" name="comunicacao" value="4"><label for="com-4">★</label>
-                <input type="radio" id="com-3" name="comunicacao" value="3"><label for="com-3">★</label>
-                <input type="radio" id="com-2" name="comunicacao" value="2"><label for="com-2">★</label>
-                <input type="radio" id="com-1" name="comunicacao" value="1"><label for="com-1">★</label>
+                <input type="radio" id="ss1-5" name="ss1" value="5"><label for="ss1-5">★</label>
+                <input type="radio" id="ss1-4" name="ss1" value="4"><label for="ss1-4">★</label>
+                <input type="radio" id="ss1-3" name="ss1" value="3"><label for="ss1-3">★</label>
+                <input type="radio" id="ss1-2" name="ss1" value="2"><label for="ss1-2">★</label>
+                <input type="radio" id="ss1-1" name="ss1" value="1"><label for="ss1-1">★</label>
             </div>
         </div>
 
         <!-- COMPETÊNCIA 2 -->
         <div class="feedback-item">
-            <span>Pontualidade</span>
+            <span>Trabalho em equipe</span>
             <div class="rating">
-                <input type="radio" id="pont-5" name="pontualidade" value="5"><label for="pont-5">★</label>
-                <input type="radio" id="pont-4" name="pontualidade" value="4"><label for="pont-4">★</label>
-                <input type="radio" id="pont-3" name="pontualidade" value="3"><label for="pont-3">★</label>
-                <input type="radio" id="pont-2" name="pontualidade" value="2"><label for="pont-2">★</label>
-                <input type="radio" id="pont-1" name="pontualidade" value="1"><label for="pont-1">★</label>
+                <input type="radio" id="ss2-5" name="ss2" value="5"><label for="ss2-5">★</label>
+                <input type="radio" id="ss2-4" name="ss2" value="4"><label for="ss2-4">★</label>
+                <input type="radio" id="ss2-3" name="ss2" value="3"><label for="ss2-3">★</label>
+                <input type="radio" id="ss2-2" name="ss2" value="2"><label for="ss2-2">★</label>
+                <input type="radio" id="ss2-1" name="ss2" value="1"><label for="ss2-1">★</label>
             </div>
         </div>
 
         <!-- COMPETÊNCIA 3 -->
         <div class="feedback-item">
-            <span>Conhecimento Técnico</span>
+            <span>Liderança</span>
             <div class="rating">
-                <input type="radio" id="tec-5" name="tecnico" value="5"><label for="tec-5">★</label>
-                <input type="radio" id="tec-4" name="tecnico" value="4"><label for="tec-4">★</label>
-                <input type="radio" id="tec-3" name="tecnico" value="3"><label for="tec-3">★</label>
-                <input type="radio" id="tec-2" name="tecnico" value="2"><label for="tec-2">★</label>
-                <input type="radio" id="tec-1" name="tecnico" value="1"><label for="tec-1">★</label>
+                <input type="radio" id="ss3-5" name="ss3" value="5"><label for="ss3-5">★</label>
+                <input type="radio" id="ss3-4" name="ss3" value="4"><label for="ss3-4">★</label>
+                <input type="radio" id="ss3-3" name="ss3" value="3"><label for="ss3-3">★</label>
+                <input type="radio" id="ss3-2" name="ss3" value="2"><label for="ss3-2">★</label>
+                <input type="radio" id="ss3-1" name="ss3" value="1"><label for="ss3-1">★</label>
             </div>
         </div>
 
         <!-- COMPETÊNCIA 4 -->
         <div class="feedback-item">
-            <span>Trabalho em Equipe</span>
+            <span>Adaptabilidade</span>
             <div class="rating">
-                <input type="radio" id="team-5" name="equipe" value="5"><label for="team-5">★</label>
-                <input type="radio" id="team-4" name="equipe" value="4"><label for="team-4">★</label>
-                <input type="radio" id="team-3" name="equipe" value="3"><label for="team-3">★</label>
-                <input type="radio" id="team-2" name="equipe" value="2"><label for="team-2">★</label>
-                <input type="radio" id="team-1" name="equipe" value="1"><label for="team-1">★</label>
+                <input type="radio" id="ss4-5" name="ss4" value="5"><label for="ss4-5">★</label>
+                <input type="radio" id="ss4-4" name="ss4" value="4"><label for="ss4-4">★</label>
+                <input type="radio" id="ss4-3" name="ss4" value="3"><label for="ss4-3">★</label>
+                <input type="radio" id="ss4-2" name="ss4" value="2"><label for="ss4-2">★</label>
+                <input type="radio" id="ss4-1" name="ss4" value="1"><label for="ss4-1">★</label>
             </div>
         </div>
 
         <!-- COMPETÊNCIA 5 -->
         <div class="feedback-item">
-            <span>Proatividade</span>
+            <span>Criatividade</span>
             <div class="rating">
-                <input type="radio" id="pro-5" name="proatividade" value="5"><label for="pro-5">★</label>
-                <input type="radio" id="pro-4" name="proatividade" value="4"><label for="pro-4">★</label>
-                <input type="radio" id="pro-3" name="proatividade" value="3"><label for="pro-3">★</label>
-                <input type="radio" id="pro-2" name="proatividade" value="2"><label for="pro-2">★</label>
-                <input type="radio" id="pro-1" name="proatividade" value="1"><label for="pro-1">★</label>
+                <input type="radio" id="ss5-5" name="ss5" value="5"><label for="ss5-5">★</label>
+                <input type="radio" id="ss5-4" name="ss5" value="4"><label for="ss5-4">★</label>
+                <input type="radio" id="ss5-3" name="ss5" value="3"><label for="ss5-3">★</label>
+                <input type="radio" id="ss5-2" name="ss5" value="2"><label for="ss5-2">★</label>
+                <input type="radio" id="ss5-1" name="ss5" value="1"><label for="ss5-1">★</label>
             </div>
         </div>
 
         <!-- COMPETÊNCIA 6 -->
         <div class="feedback-item">
-            <span>Liderança</span>
+            <span>Pensamento crítico</span>
             <div class="rating">
-                <input type="radio" id="lid-5" name="lideranca" value="5"><label for="lid-5">★</label>
-                <input type="radio" id="lid-4" name="lideranca" value="4"><label for="lid-4">★</label>
-                <input type="radio" id="lid-3" name="lideranca" value="3"><label for="lid-3">★</label>
-                <input type="radio" id="lid-2" name="lideranca" value="2"><label for="lid-2">★</label>
-                <input type="radio" id="lid-1" name="lideranca" value="1"><label for="lid-1">★</label>
+                <input type="radio" id="ss6-5" name="ss6" value="5"><label for="ss6-5">★</label>
+                <input type="radio" id="ss6-4" name="ss6" value="4"><label for="ss6-4">★</label>
+                <input type="radio" id="ss6-3" name="ss6" value="3"><label for="ss6-3">★</label>
+                <input type="radio" id="ss6-2" name="ss6" value="2"><label for="ss6-2">★</label>
+                <input type="radio" id="ss6-1" name="ss6" value="1"><label for="ss6-1">★</label>
             </div>
         </div>
 
         <!-- COMPETÊNCIA 7 -->
         <div class="feedback-item">
-            <span>Resolução de Problemas</span>
+            <span>Gestão de tempo</span>
             <div class="rating">
-                <input type="radio" id="prob-5" name="problemas" value="5"><label for="prob-5">★</label>
-                <input type="radio" id="prob-4" name="problemas" value="4"><label for="prob-4">★</label>
-                <input type="radio" id="prob-3" name="problemas" value="3"><label for="prob-3">★</label>
-                <input type="radio" id="prob-2" name="problemas" value="2"><label for="prob-2">★</label>
-                <input type="radio" id="prob-1" name="problemas" value="1"><label for="prob-1">★</label>
+                <input type="radio" id="ss7-5" name="ss7" value="5"><label for="ss7-5">★</label>
+                <input type="radio" id="ss7-4" name="ss7" value="4"><label for="ss7-4">★</label>
+                <input type="radio" id="ss7-3" name="ss7" value="3"><label for="ss7-3">★</label>
+                <input type="radio" id="ss7-2" name="ss7" value="2"><label for="ss7-2">★</label>
+                <input type="radio" id="ss7-1" name="ss7" value="1"><label for="ss7-1">★</label>
             </div>
         </div>
 
         <!-- COMPETÊNCIA 8 -->
         <div class="feedback-item">
-            <span>Organização</span>
+            <span>Empatia</span>
             <div class="rating">
-                <input type="radio" id="org-5" name="organizacao" value="5"><label for="org-5">★</label>
-                <input type="radio" id="org-4" name="organizacao" value="4"><label for="org-4">★</label>
-                <input type="radio" id="org-3" name="organizacao" value="3"><label for="org-3">★</label>
-                <input type="radio" id="org-2" name="organizacao" value="2"><label for="org-2">★</label>
-                <input type="radio" id="org-1" name="organizacao" value="1"><label for="org-1">★</label>
+                <input type="radio" id="ss8-5" name="ss8" value="5"><label for="ss8-5">★</label>
+                <input type="radio" id="ss8-4" name="ss8" value="4"><label for="ss8-4">★</label>
+                <input type="radio" id="ss8-3" name="ss8" value="3"><label for="ss8-3">★</label>
+                <input type="radio" id="ss8-2" name="ss8" value="2"><label for="ss8-2">★</label>
+                <input type="radio" id="ss8-1" name="ss8" value="1"><label for="ss8-1">★</label>
             </div>
         </div>
 
         <!-- COMPETÊNCIA 9 -->
         <div class="feedback-item">
-            <span>Responsabilidade</span>
+            <span>Proatividade</span>
             <div class="rating">
-                <input type="radio" id="resp-5" name="responsabilidade" value="5"><label for="resp-5">★</label>
-                <input type="radio" id="resp-4" name="responsabilidade" value="4"><label for="resp-4">★</label>
-                <input type="radio" id="resp-3" name="responsabilidade" value="3"><label for="resp-3">★</label>
-                <input type="radio" id="resp-2" name="responsabilidade" value="2"><label for="resp-2">★</label>
-                <input type="radio" id="resp-1" name="responsabilidade" value="1"><label for="resp-1">★</label>
+                <input type="radio" id="ss9-5" name="ss9" value="5"><label for="ss9-5">★</label>
+                <input type="radio" id="ss9-4" name="ss9" value="4"><label for="ss9-4">★</label>
+                <input type="radio" id="ss9-3" name="ss9" value="3"><label for="ss9-3">★</label>
+                <input type="radio" id="ss9-2" name="ss9" value="2"><label for="ss9-2">★</label>
+                <input type="radio" id="ss9-1" name="ss9" value="1"><label for="ss9-1">★</label>
             </div>
         </div>
 
         <!-- COMPETÊNCIA 10 -->
         <div class="feedback-item">
-            <span>Adaptabilidade</span>
+            <span>Resiliência</span>
             <div class="rating">
-                <input type="radio" id="ada-5" name="adaptabilidade" value="5"><label for="ada-5">★</label>
-                <input type="radio" id="ada-4" name="adaptabilidade" value="4"><label for="ada-4">★</label>
-                <input type="radio" id="ada-3" name="adaptabilidade" value="3"><label for="ada-3">★</label>
-                <input type="radio" id="ada-2" name="adaptabilidade" value="2"><label for="ada-2">★</label>
-                <input type="radio" id="ada-1" name="adaptabilidade" value="1"><label for="ada-1">★</label>
+                <input type="radio" id="ss10-5" name="ss10" value="5"><label for="ss10-5">★</label>
+                <input type="radio" id="ss10-4" name="ss10" value="4"><label for="ss10-4">★</label>
+                <input type="radio" id="ss10-3" name="ss10" value="3"><label for="ss10-3">★</label>
+                <input type="radio" id="ss10-2" name="ss10" value="2"><label for="ss10-2">★</label>
+                <input type="radio" id="ss10-1" name="ss10" value="1"><label for="ss10-1">★</label>
             </div>
         </div>
+
 
         <div class="btn-enviar">
             <button onclick="enviarFeedback()">ENVIAR FEEDBACK</button>

@@ -9,8 +9,14 @@
     <link rel="stylesheet" href="./css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="./assets/5Gears-removebg-preview.png">
+
+    <!-- SWEET ALERT -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script src="./js/env.js"></script>
     <script src="./js/config.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="./js/visualizarProjetos.js"></script>
 </head>
 
 
@@ -32,11 +38,11 @@
             </div>
         </div>
     </div>
+
+    <!-- Cabeçalho da tabela -->
     <div class="boxTabelaNav display-flex meio bordaBoxTabelNav">
         <div class="container display-flex row alinhar-meio justify-evenly">
-            <div class="boxCheckBox display-flex alinhar-meio meio">
-                </label>
-            </div>
+            <div class="boxCheckBox display-flex alinhar-meio meio"></div>
             <div class="boxSpan display-flex meio">
                 <span>Nome do Projeto</span>
             </div>
@@ -54,104 +60,9 @@
             </div>
         </div>
     </div>
-    <div class="boxTabelaNav display-flex meio">
-        <div class="container display-flex row alinhar-meio justify-evenly">
-            <div class="boxCheckBox display-flex alinhar-meio meio">
-                <label class="checkbox-container">
-                    <input type="checkbox" name="opcao1">
-                </label>
-            </div>
-            <div class="boxSpan display-flex meio">
-                <span>VerdeConnect</span>
-            </div>
-            <div class="boxSpan display-flex meio">
-                <span>Em andamento</span>
-            </div>
-            <div class="boxSpan display-flex meio">
-                <span>01/01/2021</span>
-            </div>
-            <div class="boxSpan display-flex meio">
-                <span>01/01/2022</span>
-            </div>
-            <div class="boxSpan display-flex meio">
-                <span>Lucas Andrade</span>
-            </div>
-        </div>
-    </div>
-    <div class="boxTabelaNav display-flex meio">
-        <div class="container display-flex row alinhar-meio justify-evenly">
-            <div class="boxCheckBox display-flex alinhar-meio meio">
-                <label class="checkbox-container">
-                    <input type="checkbox" name="opcao3">
-                </label>
-            </div>
-            <div class="boxSpan display-flex meio">
-                <span>Projeto Nebula</span>
-            </div>
-            <div class="boxSpan display-flex meio">
-                <span>Concluído</span>
-            </div>
-            <div class="boxSpan display-flex meio">
-                <span>02/11/2025</span>
-            </div>
-            <div class="boxSpan display-flex meio">
-                <span>12/11/2025</span>
-            </div>
-            <div class="boxSpan display-flex meio">
-                <span>Camila Sampaio</span>
-            </div>
-        </div>
-    </div>
-    <div class="boxTabelaNav display-flex meio">
-        <div class="container display-flex row alinhar-meio justify-evenly">
-            <div class="boxCheckBox display-flex alinhar-meio meio">
-                <label class="checkbox-container">
-                    <input type="checkbox" name="opcao4">
-                </label>
-            </div>
-            <div class="boxSpan display-flex meio">
-                <span>Dragão Rubi</span>
-            </div>
-            <div class="boxSpan display-flex meio">
-                <span>Cancelado</span>
-            </div>
-            <div class="boxSpan display-flex meio">
-                <span>18/04/2029</span>
-            </div>
-            <div class="boxSpan display-flex meio">
-                <span>22/06/2029</span>
-            </div>
-            <div class="boxSpan display-flex meio">
-                <span>Rafael Menezes</span>
-            </div>
-        </div>
-    </div>
-    <div class="boxTabelaNav display-flex meio">
-        <div class="container display-flex row alinhar-meio justify-evenly">
-            <div class="boxCheckBox display-flex alinhar-meio meio">
-                <label class="checkbox-container">
-                    <input type="checkbox" name="opcao1">
-                </label>
-            </div>
-            <div class="boxSpan display-flex meio">
-                <span>Orbe Lunar X-9</span>
-            </div>
-            <div class="boxSpan display-flex meio">
-                <span>Em análise</span>
-            </div>
-            <div class="boxSpan display-flex meio">
-                <span>12/03/2030</span>
-            </div>
-            <div class="boxSpan display-flex meio">
-                <span>05/08/2032</span>
-            </div>
-            <div class="boxSpan display-flex meio">
-                <span>Isabela Duarte</span>
-            </div>
-        </div>
-    </div>
 
-
+    <!-- LISTA DINÂMICA DE PROJETOS -->
+    <div id="lista-projetos"></div>
 
 </body>
 
