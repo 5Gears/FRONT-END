@@ -1,17 +1,24 @@
 FROM nginx:alpine
 
-# Limpa o diretório
+# Garante que o entrypoint antigo (que não existe mais no alpine) não quebre
+SHELL ["/bin/ash", "-eo", "pipefail", "-c"]
+
+# Limpa o diretório HTML
 RUN rm -rf /usr/share/nginx/html/*
 
-# Copia todo o conteúdo da pasta 'public' (que inclui js, css, assets e HTMLs)
-# Assumimos que a pasta 'public' contém a estrutura final do front-end.
+# Copia o front compilado
 COPY ./public /usr/share/nginx/html
 
-# Copia o entrypoint customizado
+# Copia o entrypoint customizado para o local esperado
 COPY ./docker-entrypoint.sh /docker-entrypoint.sh
-RUN chmod +x /docker-entrypoint.sh
+
+# Converte para formato UNIX (muito importante se você desenvolveu no Windows)
+RUN sed -i 's/\r$//' /docker-entrypoint.sh && chmod +x /docker-entrypoint.sh
+
+# Garante que o ENTRYPOINT seja o seu
+ENTRYPOINT ["/docker-entrypoint.sh"]
+
+# CMD padrão do nginx
+CMD ["nginx", "-g", "daemon off;"]
 
 EXPOSE 80
-
-ENTRYPOINT ["/docker-entrypoint.sh"]
-CMD ["nginx", "-g", "daemon off;"]
