@@ -3,7 +3,8 @@
     padding: 30px;
     display: flex;
     gap: 10px;
-    justify-content: space-evenly;
+    justify-content: center;
+    flex-wrap: wrap;
 }
 
 .col-eqp {
@@ -68,4 +69,42 @@
     display: flex;
     justify-content: space-between;
     margin-top: 5px;
+}
+
+.seletor-projeto {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+}
+
+.label-projeto {
+    display: flex;
+    flex-direction: column;
+}
+
+.select-projeto {
+    padding: 10px;
+    border: 1px solid #b3b3b3;
+    border-radius: 3px;
+    width: 37vw;
+}
+
+#btnBuscarEquipe {
+    width: 37vw;
+    border-radius: 3px;
+}
+
+#tituloEquipe {
+    display: flex;
+    align-items: center;
+    justify-content:center;
+}
+
+.content-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }

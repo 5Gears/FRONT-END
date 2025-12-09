@@ -1,20 +1,21 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Equipe - Gerenciamento</title>
 
     <link rel="stylesheet" href="./css/style.css">
-    <link rel="stylesheet" href="./css/equipe.css"> 
+    <link rel="stylesheet" href="./css/equipe.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="./assets/5Gears-removebg-preview.png">
 
     <script src="./js/env.js"></script>
     <script src="./js/config.js"></script>
-  <script src="./js/auth.js"></script>
+    <script src="./js/auth.js"></script>
     <script src="./js/logout.js"></script>
-    <script src="./js/equipe.js" defer></script> 
+    <script src="./js/equipe.js" defer></script>
 </head>
 
 <body>
@@ -39,15 +40,17 @@
             <li><button onclick="realizarLogout()"><img src="./assets/logout.png" alt="Logout"></button></li>
         </ul>
     </nav>
-    
+
     <main class="content-container">
 
         <!-- SELEÇÃO DE PROJETO -->
         <div class="seletor-projeto">
-            <label for="selectProjeto">Selecione o Projeto:</label>
-            <select id="selectProjeto">
-                <option value="">Carregando projetos...</option>
-            </select> <br>
+            <div class="label-projeto">
+                <label for="selectProjeto">Selecione o Projeto:</label>
+                <select id="selectProjeto" class="select-projeto">
+                    <option value="">Carregando projetos...</option>
+                </select>
+            </div>
             <button id="btnBuscarEquipe">Buscar Equipe</button>
         </div>
 
@@ -58,4 +61,5 @@
         <div id="containerEquipe" class="equipe"></div>
     </main>
 </body>
+
 </html>

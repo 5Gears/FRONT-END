@@ -40,7 +40,9 @@ body {
 }
 
 .container {
-    width: 95%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
 }
 
 .boxtitulo {
@@ -196,6 +198,7 @@ body {
 
 .boxTabelaNav {
     height: 7vh;
+    width: 100%;
 
 
     /* background-color: red; */
@@ -216,4 +219,8 @@ body {
             text-align: center;
         }
     }
+}
+
+#lista-projetos {
+    width: 100%;
 }
